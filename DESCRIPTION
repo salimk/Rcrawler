@@ -1,0 +1,14 @@
+Package: Rcrawler
+Type: Package
+Title: Crawl a website and extract its contents
+Version: 0.1
+Date: 2016-10-1
+Author: Salim KHALIL
+Maintainer: Salim KHALIL <khalilsalim1@gmail.com>
+Description: Rcrawler supports data collection of web content under R environment. It is designed to crawl, parse, store web pages and produce data that can be directly used for web content mining applications.
+License: What license is it under?
+LazyData: TRUE
+Depends: httr, rJava, xml2, data.table, foreach, doParallel, parallel,
+        data.table
+NeedsCompilation: no
+Packaged: 2016-11-08 18:52:50 UTC; Salim
