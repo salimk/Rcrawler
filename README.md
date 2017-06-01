@@ -9,7 +9,7 @@ devtools::install_github("salimk/Rcrawler")
 ## RCrawler main features  
 ## Functions and practical usage
 ## Design and Implementation
-[R web scraping](http://www.sciencedirect.com/science/article/pii/S2352711017300110)
+If you want to learn more about web scraper/crawler architecture, functional properties and implementation using R language, you can download the published paper for free from this link :  [R web scraping](http://www.sciencedirect.com/science/article/pii/S2352711017300110)
 ## How to cite Rcrawler
 Our paper is submitted, you can cite our work
 
