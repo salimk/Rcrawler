@@ -19,23 +19,14 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
 `
 
 ###### Bibtex :
-
 `
 @article{khalil2017rcrawler,
-  
   title={RCrawler: An R package for parallel web crawling and scraping},
-  
   author={Khalil, Salim and Fakir, Mohamed},
-  
   journal={SoftwareX},
-  
   volume={6},
-  
   pages={98--106},
-  
   year={2017},
-  
   publisher={Elsevier}
-
 }
 `
