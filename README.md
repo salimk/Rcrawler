@@ -1,7 +1,9 @@
 # Rcrawler: A web crawler and scraper using R
 
+## RCrawler main features  
+
 ## Installation 
-First make sure to verify Java 64-bit is installed on your computer. Preferably, intall both 32-bit and 64-bit .   
+First make sure to verify Java 64-bit is installed on your computer. Preferably, install both 32-bit and 64-bit .   
 ```
 #check java version
 system("java -version")
@@ -15,8 +17,9 @@ Or the development version from github:
 # install.packages("devtools")
 devtools::install_github("salimk/Rcrawler")
 ```
-## RCrawler main features  
-## Functions and practical usage
+## How to use Rcrawler
+
+
 ## Design and Implementation
 If you want to learn more about web scraper/crawler architecture, functional properties and implementation using R language, you can download the published paper for free from this link :  [R web scraping](http://www.sciencedirect.com/science/article/pii/S2352711017300110)
 ## How to cite Rcrawler
