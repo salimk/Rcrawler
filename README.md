@@ -1,7 +1,16 @@
 # Rcrawler: A web crawler and scraper using R
 
 ## Installation 
-You can install the development version from github
+First make sure to verify Java 64-bit is installed on your computer. Preferably, intall both 32-bit and 64-bit .   
+```
+#check java version
+system("java -version")
+```
+Install the release version from CRAN:
+```
+install.packages("Rcrawler")
+```
+Or the development version from github:
 ```
 # install.packages("devtools")
 devtools::install_github("salimk/Rcrawler")
