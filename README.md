@@ -25,7 +25,7 @@ Start by loading the library
 library(Rcrawler)
 ```
 
-###### Collecting all web pages of a specific website
+###1- Collecting all web pages of a specific website
 
 This command allows downloading all HTML files of a website from the server to your computer. It can be useful if you want to do analysis on the whole web page (HTML file). Also, if you want to use a specific data extraction technique on collected web pages.
 NOTE: Make sure that the website you want to crawl is not so big, as it may take more computer resources and time to finish. Stay polite, avoid overloading the server, the chance to get banned from the host server is bigger when you use many parallel connections. 
