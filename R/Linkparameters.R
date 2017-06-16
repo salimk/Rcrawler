@@ -1,4 +1,4 @@
-#' Link parameters
+#' Get the list of parameters and values from an URL
 #'
 #' A function that take a URL _charachter_ as input, and extract the parameters and values from this URL .
 #' @param URL character, the URL to extract
@@ -7,8 +7,10 @@
 #' @details
 #' This function extract the link parameters and values (Up to 10 parameters)
 #' @export
+#' @examples
 #'
-#'
+#' Linkparameters("http://www.glogile.com/index.php?name=jake&age=23&template=2&filter=true")
+#' # Extract all URL parameters with values as vector
 #'
 Linkparameters<-function(URL){
   str<-URL

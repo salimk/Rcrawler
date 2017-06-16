@@ -2,19 +2,22 @@
 #'
 #' This function remove a given set of parameters from a specific URL
 #' @param URL character, the URL from which params and values have to be removed
-#' @param params character vector, parameters to be removed
+#' @param params character vector, List of url parameters to be removed
 #' @return return a URL wihtout given parameters
 #' @author salim khalil
 #' @details
 #' This function exclude given parameters from the urls,
 #' @export
+#' @examples
+#' url<-"http://www.glogile.com/index.php?name=jake&age=23&tmp=2&ord=1"
+#' url<-Linkparamsfilter(url,c("ord","tmp"))
 #'
-#'
+#' #exclude filter and template parameters from URL.
 #'
 Linkparamsfilter<-function(URL, params){
   str<-URL
   paramsv<-Linkparameters(str)
-  if (paramsv!="NULL"){
+  if (!is.null(paramsv)){
   #extract parameters names
   paramsid<-unlist(lapply(paramsv, FUN = function(el) gsub("(.*)\\=.*", "\\1", el)))
   nbparams<-length(paramsid)

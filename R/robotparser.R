@@ -1,14 +1,18 @@
-#' RobotParser
+#' RobotParser fetch and parse robots.txt
 #'
 #' This function fetch and parse robots.txt file of the website which is specified in the first argument and return the list of correspending rules .
 #' @param website character, url of the website which rules have to be extracted  .
-#' @param Useragent character, the useragent of the crawler
-#' @return return a list of three elements, the first is a character vector of Disallowed directories, the third is a Boolean value which is TRUE if the user agent of the crawler is blocked.
-#' @details
-#' xxx
-#' @seealso \code{other function}
+#' @param useragent character, the useragent of the crawler
+#' @return
+#' return a list of three elements, the first is a character vector of Disallowed directories, the third is a Boolean value which is TRUE if the user agent of the crawler is blocked.
 #' @import httr
 #' @export
+#'
+#' @examples
+#'
+#' RobotParser("http://www.glofile.com","AgentX")
+#' #Return robot.txt rules and check whether AgentX is blocked or not.
+#'
 #'
 RobotParser <- function(website, useragent) {
   URLrobot<-paste(website,"/robots.txt", sep = "")
@@ -16,6 +20,7 @@ RobotParser <- function(website, useragent) {
   bots<-as.character(content(bots, as="text"))
   write(bots, file = "robots.txt")
   bots <- readLines("robots.txt") # dans le repertoire du site
+  if (missing(useragent)) useragent<-"Rcrawler"
   useragent <- c(useragent, "*")
   ua_positions <- which(grepl( "[Uu]ser-[Aa]gent:[ ].+", bots))
   Disallow_dir<-vector()
