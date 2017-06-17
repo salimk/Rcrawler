@@ -29,7 +29,7 @@ Start by loading the library
 library(Rcrawler)
 ```
 
-###### 1- Collecting all web pages of a specific website
+###### 1- Collecting web pages from a website
 ```
 Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4)
 ```
@@ -42,9 +42,10 @@ At the end of crawling process this function will return :
 - A directory named as the website's domain, in this case, "glofile.com" it's by default located in your working directory (R workspace). This directory contains all crawled and downloaded web pages (.html files). Files are named with the same numeric "id" they have in INDEX.
 ![File repository](http://imgh.us/repository.png)
 
-###### 1- Collecting all web pages of a specific website
-
 NOTE: Make sure that the website you want to crawl is not so big, as it may take more computer resources and time to finish. Stay polite, avoid overloading the server, the chance to get banned from the host server is bigger when you use many parallel connections. 
+
+As you know a Web page might be a category page (list of elements,) or a detail page (like product/article page). For some reason, you may want to collect just the detail pages or just pages in a particular website section, In this case, you need to filter-out URLs using Regular expressions. 
+
 
 ## Design and Implementation
 If you want to learn more about web scraper/crawler architecture, functional properties and implementation using R language, you can download the published paper for free from this link :  [R web scraping](http://www.sciencedirect.com/science/article/pii/S2352711017300110)
