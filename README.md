@@ -13,6 +13,10 @@ Install the release version from CRAN:
 ```
 install.packages("Rcrawler")
 ```
+*If you got this error: No CurrentVersion entry in Software/JavaSoft registry! Try re-installing Java and make sure R and Java have matching architectures. Then use : *
+```
+install.packages("Rcrawler", INSTALL_opts = "--no-multiarch")
+```
 Or the development version from github:
 ```
 # install.packages("devtools")
