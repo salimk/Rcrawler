@@ -30,8 +30,19 @@ library(Rcrawler)
 ```
 
 ###### 1- Collecting all web pages of a specific website
-
+```
+Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4)
+```
 This command allows downloading all HTML files of a website from the server to your computer. It can be useful if you want to do analysis on the whole web page (HTML file). Also, if you want to use a specific data extraction technique on collected web pages.
+
+At the end of crawling process this function will return :
+
+- A variable named "INDEX" in your global environment: It's a data frame representing the generic URL index, which includes all crawled/scraped web pages with their details (content type, HTTP state, the number of out-links and in-links, encoding type, and level). 
+
+- A directory named as the website's domain, in this case, "glofile.com" it's by default located in your working directory (R workspace). This directory contains all crawled and downloaded web pages (.html files). Files are named with the same numeric "id" they have in INDEX.
+
+###### 1- Collecting all web pages of a specific website
+
 NOTE: Make sure that the website you want to crawl is not so big, as it may take more computer resources and time to finish. Stay polite, avoid overloading the server, the chance to get banned from the host server is bigger when you use many parallel connections. 
 
 ## Design and Implementation
