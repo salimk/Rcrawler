@@ -40,6 +40,7 @@ At the end of crawling process this function will return :
 - A variable named "INDEX" in your global environment: It's a data frame representing the generic URL index, which includes all crawled/scraped web pages with their details (content type, HTTP state, the number of out-links and in-links, encoding type, and level). 
 ![INDEX variable](http://imgh.us/INDEX_34.png)
 - A directory named as the website's domain, in this case, "glofile.com" it's by default located in your working directory (R workspace). This directory contains all crawled and downloaded web pages (.html files). Files are named with the same numeric "id" they have in INDEX.
+![File repository](http://imgh.us/repository.png)
 
 ###### 1- Collecting all web pages of a specific website
 
