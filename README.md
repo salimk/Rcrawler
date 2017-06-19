@@ -44,8 +44,17 @@ At the end of crawling process this function will return :
 
 NOTE: Make sure that the website you want to crawl is not so big, as it may take more computer resources and time to finish. Stay polite, avoid overloading the server, the chance to get banned from the host server is bigger when you use many parallel connections. 
 
-As you know a Web page might be a category page (list of elements,) or a detail page (like product/article page). For some reason, you may want to collect just the detail pages or just pages in a particular website section, In this case, you need to filter-out URLs using Regular expressions. 
-
+###### 2- Filtering collected/parsed Urls by Regular expression
+As you know a Web page might be a category page (list of elements,) or a detail page (like product/article page). For some reason, you may want to collect just the detail pages or you may want to collect just pages in a particular website section. In this case, you need to use Regular expressions as it's shown below:
+```
+Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, urlregexfilter ="/[0-9]{4}/[0-9]{2}/" )
+```
+This command collect all URLs matching this regular expression "/[0-9]{4}/[0-9]{2}/[0-9]{2}/". Ulrs having 4-digit/2-digit/2-digit/, which are blog post pages in our example .
+```
+ http://www.glofile.com/2017/06/08/sondage-quel-budget-prevoyez-vous
+ http://www.glofile.com/2017/06/08/jcdecaux-reconduction-dun-cont
+ http://www.glofile.com/2017/06/08/taux-nette-detente-en-italie-bc
+```
 
 ## Design and Implementation
 If you want to learn more about web scraper/crawler architecture, functional properties and implementation using R language, you can download the published paper for free from this link :  [R web scraping](http://www.sciencedirect.com/science/article/pii/S2352711017300110)
