@@ -1,4 +1,4 @@
-# Rcrawler: A web crawler and scraper using R
+# An R web crawler and scraper 
 
 Rcrawler is an R package for web crawling web sites and extracting structured data which can be used for a wide range of useful applications, like data mining, information processing or historical archival.
 ## RCrawler main features  
