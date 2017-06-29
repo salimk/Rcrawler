@@ -37,7 +37,7 @@ This command allows downloading all HTML files of a website from the server to y
 
 At the end of crawling process this function will return :
 
-- A variable named "INDEX" in your global environment: It's a data frame representing the generic URL index, which includes all crawled/scraped web pages with their details (content type, HTTP state, the number of out-links and in-links, encoding type, and level). 
+- A variable named "INDEX" in global environment: It's a data frame representing the generic URL index, which includes all crawled/scraped web pages with their details (content type, HTTP state, the number of out-links and in-links, encoding type, and level). 
 ![INDEX variable](http://imgh.us/INDEX_34.png)
 - A directory named as the website's domain, in this case, "glofile.com" it's by default located in your working directory (R workspace). This directory contains all crawled and downloaded web pages (.html files). Files are named with the same numeric "id" they have in INDEX.
 ![File repository](http://imgh.us/repository.png)
@@ -47,7 +47,7 @@ NOTE: Make sure that the website you want to crawl is not so big, as it may take
 ###### 2- Filtering collected/parsed Urls by Regular expression
 As you know a Web page might be a category page (list of elements,) or a detail page (like product/article page). For some reason, you may want to collect just the detail pages or you may want to collect just pages in a particular website section. In this case, you need to use Regular expressions as it's shown below:
 ```
-Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, urlregexfilter ="/[0-9]{4}/[0-9]{2}/" )
+Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, urlregexfilter ="/[0-9]{4}/[0-9]{2}/[0-9]{2}/" )
 ```
 This command collect all URLs matching this regular expression "/[0-9]{4}/[0-9]{2}/[0-9]{2}/". Ulrs having 4-digit/2-digit/2-digit/, which are blog post pages in our example .
 ```
@@ -55,6 +55,14 @@ This command collect all URLs matching this regular expression "/[0-9]{4}/[0-9]{
  http://www.glofile.com/2017/06/08/jcdecaux-reconduction-dun-cont
  http://www.glofile.com/2017/06/08/taux-nette-detente-en-italie-bc
 ```
+###### 3-Scrape data while crawling a website
+In the example below , we will try to extract articles and titles from our demo blog. To do this we need to filter out blog post pages (see 2), also we need to specify xpath pattern of elements to extract.  
+```
+Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, urlregexfilter ="/[0-9]{4}/[0-9]{2}/[0-9]{2}/", ExtractPatterns = c("//h1","//article"))
+```
+As result this function will return in addition to "INDEX" variable and file repository :
+- A variable named "DATA" in global environment: It's a list of extracted contents. 
+![DATA and INDEX variable](http://imgh.us/result-3-rcrawler.png)
 
 ## Design and Implementation
 If you want to learn more about web scraper/crawler architecture, functional properties and implementation using R language, you can download the published paper for free from this link :  [R web scraping](http://www.sciencedirect.com/science/article/pii/S2352711017300110)
