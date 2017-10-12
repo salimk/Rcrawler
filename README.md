@@ -4,18 +4,10 @@ Rcrawler is an R package for web crawling web sites and extracting structured da
 ## RCrawler main features  
 
 ## Installation 
-First make sure to verify Java 64-bit is installed on your computer. Preferably, install both 32-bit and 64-bit .   
-```
-#check java version
-system("java -version")
-```
+
 Install the release version from CRAN:
 ```
 install.packages("Rcrawler")
-```
-*If you got this error: No CurrentVersion entry in Software/JavaSoft registry! Try re-installing Java and make sure R and Java have matching architectures. Then use :*
-```
-install.packages("Rcrawler", INSTALL_opts = "--no-multiarch")
 ```
 Or the development version from github:
 ```
@@ -64,6 +56,22 @@ As result this function will return in addition to "INDEX" variable and file rep
 - A variable named "DATA" in global environment: It's a list of extracted contents. 
 ![DATA and INDEX variable](http://imgh.us/result-3-rcrawler.png)
 
+###### 4-Filter collected/ scraped web page by search terms/keywords
+If you want to crawl a website and collect/scrape only some web pages related to a specific topic, Rcrawler function has two useful parameters KeywordsFilter and KeywordsAccuracy
+KeywordsFilter : a character vector, here you should provide keywords/temrs of the topic you are looking, Rcrawler will calculate an accuracy score based matched keywords and their occurence on the page, then by default it collects or scrape only webpage with at lease a score of 1% wich mean at least on keyword is founded one time on the page. This parameter must be a vector with at least one keyword like c("mykeyword").
+KeywordsAccuracy. integer value range bewteen 0 and 100, used only with KeywordsFilter parameter to determine the accuracy of web pages to collect. You can use one or more search terms, the accuracy will be calculated based on how many provided keywords exist on the page plus their occurrence rate.    
+```
+Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "keyword2"))`
+```
+Crawl the website and collect only webpages containing keyword1 or keyword2 or both.
+
+```
+Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "keyword2"), KeywordsAccuracy = 50)
+```
+Crawl the website and collect only webpages that has an accuracy percentage higher than 50%
+of matching keyword1 and keyword2.
+
+
 ## Design and Implementation
 If you want to learn more about web scraper/crawler architecture, functional properties and implementation using R language, you can download the published paper for free from this link :  [R web scraping](http://www.sciencedirect.com/science/article/pii/S2352711017300110)
 ## How to cite Rcrawler
@@ -86,3 +94,15 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
   publisher={Elsevier}
 }
 `
+## Brief on Updates
+UPDATE V 0.1.3 :
+- Support HTTPS protocole
+- Scraping articles filtered by term search using keywords matching. 
+- Fixing the subscript out of band error 
+UPDATE V 0.1.2 :
+- Fixing some issues opened on github
+- Drop  simhash dulicate detection using java call due to many problems loading the package and rjava environement for many users.
+UPDATE V 0.1.1 :
+- Fix an issue in some examples (ignore special character which had effect on generated PDF ) 
+- Add SystemRequirements field to Description with Java (>= 1.5)
+- Compile java classe with a lower JDK (1.5), to overcome this error (Unsupported major.minor version 52.0) encountered during package check with r-patched-solaris-x86 and r-oldrel-osx-x86_64 
