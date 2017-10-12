@@ -39,6 +39,7 @@ ContentScraper <- function(webpage, patterns, patnames, excludepat, astext=TRUE,
    }
 
     if(astext){
+      content[[i]]<-gsub("<script\\b[^<]*>[^<]*(?:<(?!/script>)[^<]*)*</script>", "", content[[i]], perl=T)
       content[[i]]<-gsub("<.*?>", "", content[[i]])
       content[[i]]<-gsub(pattern = "\n" ," ", content[[i]])
       content[[i]]<-gsub("^\\s+|\\s+$", "", content[[i]])

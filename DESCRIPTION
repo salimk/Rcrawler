@@ -1,8 +1,8 @@
 Package: Rcrawler
 Type: Package
 Title: Web Crawler and Scraper
-Version: 0.1
-Date: 2017-6-5
+Version: 0.1.3
+Date: 2017-10-11
 Authors@R: person("Salim", "Khalil", email = "khalilsalim1@gmail.com",
                   role = c("aut", "cre"))
 Description: Performs parallel web crawling and web scraping. It is designed to crawl, parse and store web pages to produce data that can be directly used for analysis application. For details see Khalil and Fakir (2017) <DOI:10.1016/j.softx.2017.04.004>.
@@ -10,9 +10,5 @@ License: MIT + file LICENSE
 URL: https://github.com/salimk/Rcrawler/
 BugReports: https://github.com/salimk/Rcrawler/issues
 LazyData: TRUE
-Imports: httr, rJava, xml2, data.table, foreach, doParallel, parallel
+Imports: httr, xml2, data.table, foreach, doParallel, parallel
 RoxygenNote: 6.0.1
-NeedsCompilation: no
-Packaged: 2017-06-15 16:03:54 UTC; Salim
-Author: Salim Khalil [aut, cre]
-Maintainer: Salim Khalil <khalilsalim1@gmail.com>

@@ -5,10 +5,10 @@
 \title{Rcrawler}
 \usage{
 Rcrawler(Website, no_cores, no_conn, MaxDepth, DIR, RequestsDelay = 0,
-  duplicatedetect = FALSE, Obeyrobots = FALSE, Useragent, Timeout = 5,
-  URLlenlimit = 255, urlExtfilter, urlregexfilter, ignoreUrlParams,
-  statslinks = FALSE, Encod, ExtractPatterns, PatternsNames, ExcludePatterns,
-  ExtractAsText = TRUE)
+  Obeyrobots = FALSE, Useragent, Timeout = 5, URLlenlimit = 255,
+  urlExtfilter, urlregexfilter, ignoreUrlParams, KeywordsFilter,
+  KeywordsAccuracy, statslinks = FALSE, Encod, ExtractPatterns, PatternsNames,
+  ExcludePatterns, ExtractAsText = TRUE)
 }
 \arguments{
 \item{Website}{character, the root URL of the website to crawl and scrape.}
@@ -23,8 +23,6 @@ Rcrawler(Website, no_cores, no_conn, MaxDepth, DIR, RequestsDelay = 0,
 
 \item{RequestsDelay}{integer, The time interval between each round of parallel http requests, in seconds used to avoid overload the website server. default to 0.}
 
-\item{duplicatedetect}{boolean, if true the crawler performs a near duplicate detection using SimHash algorithm to ignore documents that has been scraped.}
-
 \item{Obeyrobots}{boolean, if TRUE, the crawler will parse the website\'s robots.txt file and obey its rules allowed and disallowed directories.}
 
 \item{Useragent}{character, the User-Agent HTTP header that is supplied with any HTTP requests made by this function.it is important to simulate different browser's user-agent to continue crawling without getting banned.}
@@ -38,6 +36,10 @@ Rcrawler(Website, no_cores, no_conn, MaxDepth, DIR, RequestsDelay = 0,
 \item{urlregexfilter}{character's vector, filter crawled Urls by regular expression pattern, this is useful when you try to scrape content or index only specific web pages (product pages, post pages).}
 
 \item{ignoreUrlParams}{character's vector, the list of Url paremeter to be ignored during crawling .}
+
+\item{KeywordsFilter}{character vector,  For users who desires to scrape or collect only web pages that contains some keywords one or more. Rcrawler calculate an accuracy score based of the number of founded keywords. This parameter must be a vector with at least one keyword like c("mykeyword").}
+
+\item{KeywordsAccuracy}{integer value range bewteen 0 and 100, used only with KeywordsFilter parameter to determine the accuracy of web pages to collect. The web page Accuracy value is calculated using the number of matched keywords and their occurence.}
 
 \item{statslinks}{boolean, if TRUE, the crawler counts the number of input and output links of each crawled web page.}
 
@@ -84,34 +86,45 @@ Link: http://www.sciencedirect.com/science/article/pii/S2352711017300110
 Don't forget to cite Rcrawler paper:
 
 Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling and scraping. SoftwareX, 6, 98-106.
+}
+\examples{
 
- @examples
+\dontrun{
 
-\\dontrun{
- Rcrawler(Website ="http://glofile.com/", no_cores = 2, no_conn = 6)
- #Crawl, index, and store web pages using 2 cores and 2 parallel requests
+ Rcrawler(Website ="http://glofile.com/", no_cores = 4, no_conn = 4)
 
- #Rcrawler(Website = "http://glofile.com/", urlregexfilter =  "/\\d{4}/\\d{2}/",
+ #Crawl, index, and store web pages using 4 cores and 4 parallel requests
+
+ Rcrawler(Website = "http://glofile.com/", urlregexfilter =  "/[0-9]{4}/[0-9]{2}/",
  ExtractPatterns = c("//*/article","//*/h1"), PatternsNames = c("content","title"))
 
  #Crawl the website using the default configuration and scrape content matching two XPath
-  patterns only from post pages matching a specific regular expression. Note that the user can
-  use the excludepattern  parameter to exclude a node from being extracted,
+  patterns only from post pages matching a specific regular expression "/[0-9]{4}/[0-9]{2}/".
+  Note that the user can use the excludepattern  parameter to exclude a node from being extracted,
   e.g., in the case that a desired node includes (is a parent of) an undesired "child" node.
+
   Rcrawler(Website = "http://www.example.com/", no_cores=8, no_conn=8, Obeyrobots = TRUE,
- Useragent="Mozilla 3.11")
+  Useragent="Mozilla 3.11")
+  # Crawl and index the website using 8 cores and 8 parallel requests with respect to
+  robot.txt rules.
 
- # Crawl and index the website using 8 cores and 8 parallel requests with respect to
- robot.txt rules.
-
- Rcrawler(Website = "http://www.example.com/", no_cores = 4, no_conn = 4,
- urlregexfilter =  "/\\d{4}/\\d{2}/", DIR = "./myrepo", MaxDepth=3)
+  Rcrawler(Website = "http://www.example.com/", no_cores = 4, no_conn = 4,
+  urlregexfilter =  "/[0-9]{4}/[0-9]{2}/", DIR = "./myrepo", MaxDepth=3)
 
  # Crawl the website using  4 cores and 4 parallel requests. However, this will only
-  index URLs matching the regular expression pattern (/\\d{4}/\\d{2}/), and stores pages
+  index URLs matching the regular expression pattern (/[0-9]{4}/[0-9]{2}/), and stores pages
   in a custom directory "myrepo". The crawler stops when it reaches the third level.
 
+  Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "keyword2"))
+ # Crawl the website and collect only webpages containing keyword1 or keyword2 or both.
+
+  Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "keyword2"),
+   KeywordsAccuracy = 50)
+ # Crawl the website and collect only webpages that has an accuracy percentage higher than 50\%
+  of matching keyword1 and keyword2.
 }
+
+
 }
 \author{
 salim khalil

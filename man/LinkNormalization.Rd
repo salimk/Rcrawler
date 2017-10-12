@@ -24,8 +24,10 @@ This funcion call an external java class
 
 # Normalize a set of links
 
-links<-c("/finance/banks/page-2017.html",
+links<-c("http://www.twitter.com/share?url=http://glofile.com/page.html",
+         "/finance/banks/page-2017.html",
          "./section/subscription.php",
+         "//section/",
          "www.glofile.com/home/",
          "glofile.com/sport/foot/page.html",
          "sub.glofile.com/index.php",

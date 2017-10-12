@@ -72,7 +72,7 @@ LinkExtractor <- function(url, id, lev, IndexErrPages, Useragent, Timeout=5, URL
               #limit length URL to 255
               if( nchar(links[s])<=URLlenlimit) {
                 ext<-tools::file_ext(sub("\\?.+", "", basename(links[s])))
-                # 6 Filtre eliminer les liens externes , le lien source lui meme, les lien avec diese et les liens deja dans dans liste ( evite double), les types de fichier filtrer, les lien tres longs
+                # 6 Filtre eliminer les liens externes , le lien source lui meme, les lien avec diese et les liens deja dans dans liste ( evite double), les types de fichier filtrer, les lien tres longs , les liens de type share
                 if(grepl(domain,links[s]) && !(url==links[s]) && !(links[s] %in% links2) && !(ext %in% urlExtfilter)){
                   links2<-c(links2,links[s])
                 #calcul de nombre des liens OUT

@@ -13,7 +13,6 @@
 #' @param MaxDepth integer, repsents the max deph level for the crawler, this is not the file depth in a directory structure, but 1+ number of links between this document and root document, default to 10.
 #' @param DIR character, correspond to the path of the local repository where all crawled data will be stored ex, "C:/collection" , by default R working directory.
 #' @param RequestsDelay integer, The time interval between each round of parallel http requests, in seconds used to avoid overload the website server. default to 0.
-#' @param duplicatedetect boolean, if true the crawler performs a near duplicate detection using SimHash algorithm to ignore documents that has been scraped.
 #' @param Obeyrobots boolean, if TRUE, the crawler will parse the website\'s robots.txt file and obey its rules allowed and disallowed directories.
 #' @param Useragent character, the User-Agent HTTP header that is supplied with any HTTP requests made by this function.it is important to simulate different browser's user-agent to continue crawling without getting banned.
 #' @param Timeout integer, the maximum request time, the number of seconds to wait for a response until giving up, in order to prevent wasting time waiting for responses from slow servers or huge pages, default to 5 sec.
@@ -22,6 +21,8 @@
 #' @param urlregexfilter character's vector, filter crawled Urls by regular expression pattern, this is useful when you try to scrape content or index only specific web pages (product pages, post pages).
 #' @param ignoreUrlParams character's vector, the list of Url paremeter to be ignored during crawling .
 #' @param statslinks boolean, if TRUE, the crawler counts the number of input and output links of each crawled web page.
+#' @param KeywordsFilter character vector,  For users who desires to scrape or collect only web pages that contains some keywords one or more. Rcrawler calculate an accuracy score based of the number of founded keywords. This parameter must be a vector with at least one keyword like c("mykeyword").
+#' @param KeywordsAccuracy integer value range bewteen 0 and 100, used only with KeywordsFilter parameter to determine the accuracy of web pages to collect. The web page Accuracy value is calculated using the number of matched keywords and their occurence.
 #' @param Encod character, set the website caharacter encoding, by default the crawler will automatically detect the website defined character encoding.
 #' @param ExtractPatterns character's vector, vector of xpath patterns to use for data extraction process.
 #' @param PatternsNames character vector, given names for each xpath pattern to extract.
@@ -58,33 +59,43 @@
 #'
 #' Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling and scraping. SoftwareX, 6, 98-106.
 #'
-#'  @examples
+#' @examples
 #'
-#' \\dontrun{
-#'  Rcrawler(Website ="http://glofile.com/", no_cores = 2, no_conn = 6)
-#'  #Crawl, index, and store web pages using 2 cores and 2 parallel requests
+#' \dontrun{
 #'
-#'  #Rcrawler(Website = "http://glofile.com/", urlregexfilter =  "/\\d{4}/\\d{2}/",
+#'  Rcrawler(Website ="http://glofile.com/", no_cores = 4, no_conn = 4)
+#'
+#'  #Crawl, index, and store web pages using 4 cores and 4 parallel requests
+#'
+#'  Rcrawler(Website = "http://glofile.com/", urlregexfilter =  "/[0-9]{4}/[0-9]{2}/",
 #'  ExtractPatterns = c("//*/article","//*/h1"), PatternsNames = c("content","title"))
 #'
 #'  #Crawl the website using the default configuration and scrape content matching two XPath
-#'   patterns only from post pages matching a specific regular expression. Note that the user can
-#'   use the excludepattern  parameter to exclude a node from being extracted,
+#'   patterns only from post pages matching a specific regular expression "/[0-9]{4}/[0-9]{2}/".
+#'   Note that the user can use the excludepattern  parameter to exclude a node from being extracted,
 #'   e.g., in the case that a desired node includes (is a parent of) an undesired "child" node.
+#'
 #'   Rcrawler(Website = "http://www.example.com/", no_cores=8, no_conn=8, Obeyrobots = TRUE,
-#'  Useragent="Mozilla 3.11")
+#'   Useragent="Mozilla 3.11")
+#'   # Crawl and index the website using 8 cores and 8 parallel requests with respect to
+#'   robot.txt rules.
 #'
-#'  # Crawl and index the website using 8 cores and 8 parallel requests with respect to
-#'  robot.txt rules.
-#'
-#'  Rcrawler(Website = "http://www.example.com/", no_cores = 4, no_conn = 4,
-#'  urlregexfilter =  "/\\d{4}/\\d{2}/", DIR = "./myrepo", MaxDepth=3)
+#'   Rcrawler(Website = "http://www.example.com/", no_cores = 4, no_conn = 4,
+#'   urlregexfilter =  "/[0-9]{4}/[0-9]{2}/", DIR = "./myrepo", MaxDepth=3)
 #'
 #'  # Crawl the website using  4 cores and 4 parallel requests. However, this will only
-#'   index URLs matching the regular expression pattern (/\\d{4}/\\d{2}/), and stores pages
+#'   index URLs matching the regular expression pattern (/[0-9]{4}/[0-9]{2}/), and stores pages
 #'   in a custom directory "myrepo". The crawler stops when it reaches the third level.
 #'
+#'   Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "keyword2"))
+#'  # Crawl the website and collect only webpages containing keyword1 or keyword2 or both.
+#'
+#'   Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "keyword2"),
+#'    KeywordsAccuracy = 50)
+#'  # Crawl the website and collect only webpages that has an accuracy percentage higher than 50%
+#'   of matching keyword1 and keyword2.
 #' }
+#'
 #'
 #' @author salim khalil
 #' @import foreach doParallel parallel data.table
@@ -95,13 +106,13 @@
 #'
 
 
-Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,
-                     duplicatedetect=FALSE, Obeyrobots=FALSE,
+Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,Obeyrobots=FALSE,
                      Useragent, Timeout=5, URLlenlimit=255, urlExtfilter,
-                     urlregexfilter, ignoreUrlParams, statslinks=FALSE, Encod,
+                     urlregexfilter, ignoreUrlParams, KeywordsFilter,KeywordsAccuracy,statslinks=FALSE, Encod,
                      ExtractPatterns,PatternsNames,ExcludePatterns,ExtractAsText=TRUE) {
 
   if (missing(DIR)) DIR<-getwd()
+  if (missing(KeywordsAccuracy)) KeywordsAccuracy<-1
   if (missing(ignoreUrlParams)) ignoreUrlParams<-""
   if (missing(MaxDepth)) MaxDepth<-10
   if (missing(no_cores)) no_cores<-parallel::detectCores()-1
@@ -115,9 +126,16 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,
     if (Encod=="NULL") { Encod="UTF-8" }
     }
   if(missing(urlExtfilter)){ urlExtfilter<-c("flv","mov","swf","txt","xml","js","css","zip","gz","rar","7z","tgz","tar","z","gzip","bzip","tar","mp3","mp4","aac","wav","au","wmv","avi","mpg","mpeg","pdf","doc","docx","xls","xlsx","ppt","pptx","jpg","jpeg","png","gif","psd","ico","bmp","odt","ods","odp","odb","odg","odf") }
+  keywordCheck<-FALSE
+  if(missing(KeywordsFilter) ){
+    keywordCheck<-FALSE
+  } else {
+    if(is.vector(KeywordsFilter)) {
+      keywordCheck<-TRUE
+    }
+  }
 
   domain<-strsplit(gsub("http://|https://|www\\.", "", Website), "/")[[c(1, 1)]]
-
   if (Obeyrobots) {
     rules<-RobotParser(Website,Useragent)
     urlbotfiler<-rules[[2]]
@@ -140,7 +158,7 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,
   if(!missing(ExtractPatterns)) {
     Filecontent <- file(paste(path,"/","extracted_contents.csv", sep = ""), "w")
       }
-
+  duplicatedetect<-FALSE
   #create Dataframe
   id<-vector()
   urls<-vector()
@@ -153,12 +171,12 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,
   contenttype<-vector()
   encoding<-vector()
   hashcode<-vector()
+  Accuracy<-vector()
   allpaquet<-list()
   pkg.env <- new.env()
   if (!missing(ExtractPatterns)) { pkg.env$Exdata<-list() }
-  pkg.env$shema<-data.frame(id,urls,status,level,out,inn,httpstat,contenttype,encoding,hashcode)
-  names(pkg.env$shema) <- c("Id","Url","Stats","Level","OUT","IN","Http Resp","Content Type","Encoding","Hash")
-  #
+  pkg.env$shema<-data.frame(id,urls,status,level,out,inn,httpstat,contenttype,encoding,Accuracy)
+  names(pkg.env$shema) <- c("Id","Url","Stats","Level","OUT","IN","Http Resp","Content Type","Encoding","Accuracy")
   #timev<<- vector()
   #timef<<-vector()
   shemav <- vector()
@@ -171,7 +189,7 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,
   posenv <- 1
   envi = as.environment(posenv)
   #cluster initialisation
-   cl <- makeCluster(no_cores)
+  cl <- makeCluster(no_cores)
   registerDoParallel(cl)
   clusterEvalQ(cl, library(xml2))
   clusterEvalQ(cl, library(httr))
@@ -182,19 +200,20 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,
   #tminsertion<<-vector()
   #tminsertionreq<<-vector()
   while (t<=length(shemav) && MaxDepth!=lev){
-    # extraire les liens sur la page
-    rest<-length(shemav)-t
-   #if(rest==0){ rest<-rest+1 }
-
-    if (no_conn<rest){
-      l<-t+no_conn-1
-    } else {
-      l<-t+rest
-    }
-    #cat("l:",l)
-    #get links & pageinfo
-    if (RequestsDelay!=0) {Sys.sleep(RequestsDelay)}
-    #ptm <- proc.time()
+        # extraire les liens sur la page
+        rest<-length(shemav)-t
+        #if(rest==0){ rest<-rest+1 }
+        if (no_conn<rest){
+            l<-t+no_conn-1
+        } else {
+            l<-t+rest
+        }
+          #cat("l:",l)
+          #get links & pageinfo
+        if (RequestsDelay!=0) {
+            Sys.sleep(RequestsDelay)
+        }
+        #ptm <- proc.time()
         allpaquet <- foreach(i=t:l,  .verbose=FALSE, .inorder=FALSE, .errorhandling='pass')  %dopar%
           {
           LinkExtractor(shemav[i],i,lev, IndexErrPages, Useragent, Timeout, URLlenlimit, urlExtfilter=urlExtfilter, statslinks=statslinks , encod = Encod, urlbotfiler = urlbotfiler, removeparams=ignoreUrlParams )
@@ -220,64 +239,100 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,
     for (s in 1:f){
       # pos :  Global positon (regarding to shemav)
       pos<-s+t-1
-      cat(pos,"..")
+      cat(pos,"..", sep = "")
       flush.console()
      # timev[pos]<<-Sys.time()
      # timef[pos]<<-format(Sys.time(), "%M,%S")
-      links<-c(links,allpaquet[[s]][2])
       # Les page null ne sont pas ajouter au shema
       #debugg<<-allpaquet
       #debugg2<<-shemav
-      if(!is.null(allpaquet[[s]][[2]])){
+      if(!is.null(allpaquet[[s]][2]) && !("call" %in% names(allpaquet[[s]][2]))) {
+        links<-c(links,allpaquet[[s]][2])
+        #debugg2<<-allpaquet[[s]][2]
+        #amdebugg3<<-allpaquet[[s]][1]
           if (allpaquet[[s]][[1]][[3]]!="NULL" && allpaquet[[s]][[1]][[10]]!="NULL" ){
-        #index filter
-          if (grepl(urlregexfilter,allpaquet[[s]][[1]][[2]])) {
-            #check for duplicate webpage & checksum calculation
-            contentx<-allpaquet[[s]][[1]][[10]]
-            if (duplicatedetect==TRUE){
-            hash<-getsimHash(contentx,128)
-            # Ajouter au shema uniqument les liens non-repete
-            if (!(hash %in% pkg.env$shema$hashcode)){
-              # posx, actual position of DF shema
-              posx<-posx+1
-              pkg.env$shema[posx,]<-c(posx,allpaquet[[s]][[1]][[2]],"finished",allpaquet[[s]][[1]][[4]],allpaquet[[s]][[1]][[5]],"",allpaquet[[s]][[1]][[7]],allpaquet[[s]][[1]][[8]],allpaquet[[s]][[1]][[9]],hash)
-              filename<-paste(posx,".html")
-              filepath<-paste(path,"/",filename, sep = "")
-              write(allpaquet[[s]][[1]][[10]],filepath) }
-            } else {
-              posx<-posx+1
-              pkg.env$shema[posx,]<-c(posx,allpaquet[[s]][[1]][[2]],"finished",allpaquet[[s]][[1]][[4]],allpaquet[[s]][[1]][[5]],"",allpaquet[[s]][[1]][[7]],allpaquet[[s]][[1]][[8]],allpaquet[[s]][[1]][[9]],'')
-              filename<-paste(posx,".html")
-              filepath<-paste(path,"/",filename, sep = "")
-              write(allpaquet[[s]][[1]][[10]],filepath)
-              if (!missing(ExtractPatterns)) {
-                if (missing(ExcludePatterns)){
-                excontent<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, encod=Encod )
-                excontent<-c(posx,excontent)
-                excontent2<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns,patnames = PatternsNames, astext = ExtractAsText, encod=Encod)
-                pkg.env$Exdata<-c(pkg.env$Exdata, list(excontent2))
-                write.table(excontent, file = Filecontent, sep = ";", qmethod="double" ,row.names = FALSE, col.names = FALSE, na = "NA" )
-                }
-                else {
-                  #x<<-allpaquet[[s]][[1]][[10]]
-                excontent<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, excludepat = ExcludePatterns ,encod=Encod )
-                excontent<-c(posx,excontent)
-                excontent2<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, astext = ExtractAsText, excludepat = ExcludePatterns, encod=Encod)
-                pkg.env$Exdata<-c(pkg.env$Exdata, list(excontent2))
-                write.table(excontent, file = Filecontent, sep = ";", qmethod="double" ,row.names = FALSE, col.names = FALSE, na = "NA" )
-                }
+            #index filter
+              if (grepl(urlregexfilter,allpaquet[[s]][[1]][[2]])) {
+                  if(keywordCheck){
+                    #check if page content contain some specific keywords
+                    contentx<-allpaquet[[s]][[1]][[10]]
+                    Notagcontentx<-gsub("^\\s+|\\s+$", "", gsub(pattern = "\n" ," ",gsub("<.*?>", "", contentx)))
+                    Accuracy<-sum(sapply(KeywordsFilter,function(x,y,z) Precifunc(x,length(KeywordsFilter),Notagcontentx) ,simplify = TRUE))
+                      if (Accuracy>=KeywordsAccuracy){
+                        #check for duplicate webpage & checksum calculation
+                        # if (duplicatedetect==TRUE){
+                        # hash<-getsimHash(contentx,128)
+                        # Ajouter au shema uniqument les liens non-repete
+                        # if (!(hash %in% pkg.env$shema$hashcode)){
+                        # posx, actual position of DF shema
+                        #  posx<-posx+1
+                        #  pkg.env$shema[posx,]<-c(posx,allpaquet[[s]][[1]][[2]],"finished",allpaquet[[s]][[1]][[4]],allpaquet[[s]][[1]][[5]],"",allpaquet[[s]][[1]][[7]],allpaquet[[s]][[1]][[8]],allpaquet[[s]][[1]][[9]],hash)
+                        #  filename<-paste(posx,".html")
+                        #  filepath<-paste(path,"/",filename, sep = "")
+                        #  write(allpaquet[[s]][[1]][[10]],filepath) }
+                        #  } else {
+                        posx<-posx+1
+                        pkg.env$shema[posx,]<-c(posx,allpaquet[[s]][[1]][[2]],"finished",allpaquet[[s]][[1]][[4]],allpaquet[[s]][[1]][[5]],"",allpaquet[[s]][[1]][[7]],allpaquet[[s]][[1]][[8]],allpaquet[[s]][[1]][[9]],paste0(Accuracy,"%"))
+                        filename<-paste(posx,".html")
+                        filepath<-paste(path,"/",filename, sep = "")
+                        write(allpaquet[[s]][[1]][[10]],filepath)
+                            if (!missing(ExtractPatterns)) {
+                                  if (missing(ExcludePatterns)){
+                                  excontent<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, encod=Encod )
+                                  excontent<-c(posx,excontent)
+                                  excontent2<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns,patnames = PatternsNames, astext = ExtractAsText, encod=Encod)
+                                  pkg.env$Exdata<-c(pkg.env$Exdata, list(excontent2))
+                                  write.table(excontent, file = Filecontent, sep = ";", qmethod="double" ,row.names = FALSE, col.names = FALSE, na = "NA" )
+                                  }
+                                  else {
+                                    #x<<-allpaquet[[s]][[1]][[10]]
+                                  excontent<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, excludepat = ExcludePatterns ,encod=Encod )
+                                  excontent<-c(posx,excontent)
+                                  excontent2<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, astext = ExtractAsText, excludepat = ExcludePatterns, encod=Encod)
+                                  pkg.env$Exdata<-c(pkg.env$Exdata, list(excontent2))
+                                  write.table(excontent, file = Filecontent, sep = ";", qmethod="double" ,row.names = FALSE, col.names = FALSE, na = "NA" )
+                                  }
 
-                assign("DATA", pkg.env$Exdata, envir = envi )
+                                  assign("DATA", pkg.env$Exdata, envir = envi )
+                            }
+                                    # }
+                      }
+                  } else {
+                        posx<-posx+1
+                        pkg.env$shema[posx,]<-c(posx,allpaquet[[s]][[1]][[2]],"finished",allpaquet[[s]][[1]][[4]],allpaquet[[s]][[1]][[5]],"",allpaquet[[s]][[1]][[7]],allpaquet[[s]][[1]][[8]],allpaquet[[s]][[1]][[9]],'')
+                        filename<-paste(posx,".html")
+                        filepath<-paste(path,"/",filename, sep = "")
+                        write(allpaquet[[s]][[1]][[10]],filepath)
+                        if (!missing(ExtractPatterns)) {
+                          if (missing(ExcludePatterns)){
+                            excontent<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, encod=Encod )
+                            excontent<-c(posx,excontent)
+                            excontent2<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns,patnames = PatternsNames, astext = ExtractAsText, encod=Encod)
+                            pkg.env$Exdata<-c(pkg.env$Exdata, list(excontent2))
+                            write.table(excontent, file = Filecontent, sep = ";", qmethod="double" ,row.names = FALSE, col.names = FALSE, na = "NA" )
+                          }
+                          else {
+                            #x<<-allpaquet[[s]][[1]][[10]]
+                            excontent<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, excludepat = ExcludePatterns ,encod=Encod )
+                            excontent<-c(posx,excontent)
+                            excontent2<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, astext = ExtractAsText, excludepat = ExcludePatterns, encod=Encod)
+                            pkg.env$Exdata<-c(pkg.env$Exdata, list(excontent2))
+                            write.table(excontent, file = Filecontent, sep = ";", qmethod="double" ,row.names = FALSE, col.names = FALSE, na = "NA" )
+                          }
+
+                          assign("DATA", pkg.env$Exdata, envir = envi )
+                        }
+
+                  }
+                    #calculate level
+                    #if(M==pos){
+                     # M=nrow(shema)
+                      #lev<-lev+1}
               }
-            }
           }
-      #calculate level
-      #if(M==pos){
-       # M=nrow(shema)
-        #lev<-lev+1}
-      }
       }
     }
+
     cat("\n")
     links <- unlist(links)
     links <- unique(links)
@@ -291,11 +346,10 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,
           #shema[length(shemav),]<<-c(length(shemav),links[i],"waiting","","","1","","","")
         #}}
       shemav<-c( shemav , links[ ! links %chin% shemav ] )
-      }
+    }
     #tminsertion<<-c(tminsertion,(proc.time() - ptm )[3])
     #tminsertionreq<<-c(tminsertionreq,format(Sys.time(), "%M,%S"))
-    cat(format(round(((t/length(shemav))*100), 2),nsmall = 2),"%  : ",t, " parssed from ",length(shemav),"\n")
-
+    cat("Progress:",format(round(((t/length(shemav))*100), 2),nsmall = 2),"%  : ",t, " parssed from ",length(shemav)," | ","Collected pages:",length(pkg.env$shema$Id),"\n")
     t<-l+1
     assign("INDEX", pkg.env$shema, envir = envi )
    #tmp<<-shemav
@@ -311,4 +365,5 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,
 
   return(pkg.env$shema)
 }
+
 
