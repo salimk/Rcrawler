@@ -30,9 +30,9 @@ This command allows downloading all HTML files of a website from the server to y
 At the end of crawling process this function will return :
 
 - A variable named "INDEX" in global environment: It's a data frame representing the generic URL index, which includes all crawled/scraped web pages with their details (content type, HTTP state, the number of out-links and in-links, encoding type, and level). 
-![INDEX variable](http://imgh.us/INDEX_34.png)
+![INDEX variable](https://user-images.githubusercontent.com/17308124/31500701-0a153c9c-af60-11e7-85ea-15d40f7fe6cf.PNG)
 - A directory named as the website's domain, in this case, "glofile.com" it's by default located in your working directory (R workspace). This directory contains all crawled and downloaded web pages (.html files). Files are named with the same numeric "id" they have in INDEX.
-![File repository](http://imgh.us/repository.png)
+![File repository](https://user-images.githubusercontent.com/17308124/31500728-1ff15e6a-af60-11e7-89c9-b1aa1c4448eb.PNG)
 
 NOTE: Make sure that the website you want to crawl is not so big, as it may take more computer resources and time to finish. Stay polite, avoid overloading the server, the chance to get banned from the host server is bigger when you use many parallel connections. 
 
@@ -54,7 +54,7 @@ Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, urlregex
 ```
 As result this function will return in addition to "INDEX" variable and file repository :
 - A variable named "DATA" in global environment: It's a list of extracted contents. 
-![DATA and INDEX variable](http://imgh.us/result-3-rcrawler.png)
+![DATA and INDEX variable](https://user-images.githubusercontent.com/17308124/31500758-3532af40-af60-11e7-9fed-0aab2eb0ff5b.PNG)
 
 ###### 4-Filter collected/ scraped web page by search terms/keywords
 If you want to crawl a website and collect/scrape only some web pages related to a specific topic, Rcrawler function has two useful parameters KeywordsFilter and KeywordsAccuracy
