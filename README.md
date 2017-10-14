@@ -61,7 +61,11 @@ If you want to crawl a website and collect/scrape only some web pages related to
 
 KeywordsFilter : a character vector, here you should provide keywords/temrs of the topic you are looking, Rcrawler will calculate an accuracy score based matched keywords and their occurence on the page, then by default it collects or scrape only webpage with at lease a score of 1% wich mean at least on keyword is founded one time on the page. This parameter must be a vector with at least one keyword like c("mykeyword").
 
-KeywordsAccuracy. integer value range bewteen 0 and 100, used only with KeywordsFilter parameter to determine the accuracy of web pages to collect. You can use one or more search terms, the accuracy will be calculated based on how many provided keywords exist on the page plus their occurrence rate.    
+KeywordsAccuracy. integer value range bewteen 0 and 100, used only with KeywordsFilter parameter to determine the accuracy of web pages to collect. You can use one or more search terms, the accuracy will be calculated based on how many provided keywords exist on the page plus their occurrence rate. For example if only one keyword is provided c("keyword")so ,
+50% means one occurrence of "keyword" in the page
+100% means 5 occurrences of "keyword" in the page 
+
+
 ```
 Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "keyword2"))`
 ```
@@ -72,6 +76,8 @@ Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "ke
 ```
 Crawl the website and collect only webpages that has an accuracy percentage higher than 50%
 of matching keyword1 and keyword2.
+
+
 
 
 ## Design and Implementation
