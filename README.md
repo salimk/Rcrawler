@@ -101,7 +101,7 @@ This command will parse only pages related to this link http://101greatgoals.com
 ```
 Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=4, urlregexfilter = "/betting/")
 ```
-In this example the crawler start from this http://101greatgoals.com/betting/ and conitinue crawling until it reach the 4th level , however it will only collect pages of "betting" section ( having /betting/ in their url)
+In this example the crawler start from this http://101greatgoals.com/betting/ and continue crawling until it reach the 4th level , however it will only collect pages of "betting" section ( having /betting/ in their url)
 
 ###### Other Examples
 Other example : 
