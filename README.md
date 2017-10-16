@@ -56,6 +56,13 @@ As result this function will return in addition to "INDEX" variable and file rep
 - A variable named "DATA" in global environment: It's a list of extracted contents. 
 ![DATA and INDEX variable](https://user-images.githubusercontent.com/17308124/31500758-3532af40-af60-11e7-9fed-0aab2eb0ff5b.PNG)
 
+**Note :** before using ExtractPatterns on RCrawler function, try first to test your Xpath patterns on a single webage to ensure that they are correct using :
+```
+pageinfo<-LinkExtractor("http://glofile.com/index.php/2017/06/08/athletisme-m-a-rome/")
+Data<-ContentScraper(pageinfo[[1]][[10]],c("//head/title","//*/article"))
+```
+Then check Data variable it should handle the extracted data, if it contain "NA", it means there are no data on the page matching the given xpath. 
+
 ###### 4-Filter collected/ scraped web page by search terms/keywords
 If you want to crawl a website and collect/scrape only some web pages related to a specific topic, Rcrawler function has two useful parameters KeywordsFilter and KeywordsAccuracy
 
@@ -77,7 +84,12 @@ Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "ke
 Crawl the website and collect only webpages that has an accuracy percentage higher than 50%
 of matching keyword1 and keyword2.
 
-
+###### Other Examples
+Other example : 
+```
+Rcrawler(Website = "http://www.master-maroc.com", KeywordsFilter = c("casablanca", "master"), KeywordsAccuracy = 50, ExtractPatterns = c("//*[@class='article-content']","//*[@class='contentheading clearfix']"))
+```
+This command will crawl  http://www.master-maroc.com website and look for pages containing  keywords "casablanca" or "master", then data matching given Xpaths patterns are extracted .
 
 
 ## Design and Implementation
@@ -103,6 +115,9 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
 }
 `
 ## Brief on Updates
+Upcoming UPDATEs :
+- when scraping a website with a given xpath patterns, the crawler should avoid scraping and extracting data from non-content pages ( webpages that does not matches any given pattern)
+
 UPDATE V 0.1.3 :
 
 - Support HTTPS protocole
