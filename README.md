@@ -47,7 +47,13 @@ This command collect all URLs matching this regular expression "/[0-9]{4}/[0-9]{
  http://www.glofile.com/2017/06/08/jcdecaux-reconduction-dun-cont
  http://www.glofile.com/2017/06/08/taux-nette-detente-en-italie-bc
 ```
-**Note :** filtering Urls by Regular expression, means the crawler will parse content (collect page) only from these specific Urls, It does not mean limiting the crawling process to only those specific urls. In fact if a website has 1000 urls and only 200 matching my regex, the crawler still need to crawl all 1000 to find out these 200.
+
+```
+Rcrawler(Website = "http://www.glofile.com/sport", urlregexfilter ="/sport/" )
+```
+This command crawl the whole website and collect only pages of section "sport" in url.
+
+**Note :** filtering Urls by Regular expression, means the crawler will parse content (collect page) only from these specific Urls, It does not mean limiting the crawling process to only those specific urls. In fact if a website has 1000 urls and only 200 matching the regex, then crawler still need to crawl all 1000 to find out these 200. if you want to limit the crawling process you can use MaxDepth parameter (refer to 5th section in this presentation)
 
 ###### 3-Scrape data while crawling a website
 In the example below , we will try to extract articles and titles from our demo blog. To do this we need to filter out blog post pages (see 2), also we need to specify xpath pattern of elements to extract.  
@@ -74,7 +80,6 @@ KeywordsAccuracy. integer value range bewteen 0 and 100, used only with Keywords
 50% means one occurrence of "keyword" in the page
 100% means 5 occurrences of "keyword" in the page 
 
-
 ```
 Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "keyword2"))`
 ```
@@ -85,6 +90,18 @@ Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "ke
 ```
 Crawl the website and collect only webpages that has an accuracy percentage higher than 50%
 of matching keyword1 and keyword2.
+
+###### 5-Liming the crawling process to a level
+Some popular websites are too big and you don't have time or dont want to crawl the whole website for a specific reason, or sometimes you may just need to crawl the top links in specific web page. For this purpose you could use Maxdepth parameter to limit the crawler from going so deep . 
+```
+Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=1)
+```
+This command will parse only pages related to this link http://101greatgoals.com/betting/ (only links on that page will be crawled)
+
+```
+Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=4, urlregexfilter = "/betting/")
+```
+In this example the crawler start from this http://101greatgoals.com/betting/ and conitinue crawling until it reach the 4th level , however it will only collect pages of "betting" section ( having /betting/ in their url)
 
 ###### Other Examples
 Other example : 
@@ -119,6 +136,7 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
 ## Brief on Updates
 Upcoming UPDATEs :
 - when scraping a website with a given xpath patterns, the crawler should avoid scraping and extracting data from non-content pages ( webpages that does not matches any given pattern)
+- MaxDeph params issue fixed
 
 UPDATE V 0.1.3 :
 
