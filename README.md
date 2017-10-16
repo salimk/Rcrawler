@@ -141,7 +141,7 @@ Upcoming UPDATEs :
 UPDATE V 0.1.3 :
 
 - Support HTTPS protocol
-- Scraping articles filtered by term search using keywords matching. 
+- Scraping articles by term search using keywords matching. 
 - Fixing the subscript out of band error 
 
 UPDATE V 0.1.2 :
