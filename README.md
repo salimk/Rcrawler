@@ -47,6 +47,8 @@ This command collect all URLs matching this regular expression "/[0-9]{4}/[0-9]{
  http://www.glofile.com/2017/06/08/jcdecaux-reconduction-dun-cont
  http://www.glofile.com/2017/06/08/taux-nette-detente-en-italie-bc
 ```
+**Note :** filtering Urls by Regular expression, means the crawler will parse content (collect page) only from these specific Urls, It does not mean limiting the crawling process to only those specific urls. In fact if a website has 1000 urls and only 200 matching my regex, the crawler still need to crawl all 1000 to find out these 200.
+
 ###### 3-Scrape data while crawling a website
 In the example below , we will try to extract articles and titles from our demo blog. To do this we need to filter out blog post pages (see 2), also we need to specify xpath pattern of elements to extract.  
 ```
