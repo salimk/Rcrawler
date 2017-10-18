@@ -137,7 +137,7 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
 Upcoming UPDATEs :
 - when scraping a website with a given xpath patterns, the crawler should avoid scraping and extracting data from non-content pages ( webpages that does not matches any given pattern)
 - MaxDeph params issue fixed
-- Map all internal hyperlink connections within a given website and then construct Edges & Nodes Dataframe, Useful for Web structure meaning.
+- Map all internal hyperlink connections within a given website and then construct Edges & Nodes Dataframe, Useful for Web structure mining.
 
 UPDATE V 0.1.3 :
 
