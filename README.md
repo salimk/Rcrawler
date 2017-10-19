@@ -15,7 +15,7 @@ Some websites are so big, you don't have sufficient time or ressources to crawl 
 
 - Filtering collected/scraped Urls by URLS having some keyword or matching a specific pattern (see 2) 
 
-- Control how deep the crawler will go, how many level are crawler from the start point.(see 5) 
+- Control how deep the crawler will go, how many levels Should be crawled from the start point.(see 5) 
 
 ...
 
