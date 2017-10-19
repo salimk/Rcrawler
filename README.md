@@ -1,7 +1,23 @@
 # An R web crawler and scraper 
 
-Rcrawler is an R package for web crawling websites and extracting structured data which can be used for a wide range of useful applications, like data mining, information processing or historical archival.
+Rcrawler is an R package for web crawling websites and extracting structured data which can be used for a wide range of useful applications, like data mining, information processing or historical archival. The difference between Rcrawler and rvest, is that rvest enable you to extract data from one specific page, However Rcrawler function automaticaly traverse and parse all web pages of website, and extrat all data you need from them at once. For example collect all published posts on a blog, or extract all products on a shopping website ..etc.
+
 ## RCrawler main features  
+With one single command Rcrawler function enable you to :
+
+- Download all website's HTML pages, (see 1)
+
+- Extract structured DATA from all pages: Titles, posts, Films, descriptions etc (see 3)
+
+- Scraping targeted contents using search terms, by providing desired keywords Rcrawler can traverse all wbesite links and collect/extract only web pages related to your topic. (see 4)
+
+Some websites are so big, you don't have sufficient time or ressources to crawl them, of you are only interested in a particular section of the website for these reason we provided some useful parameters to enable you control the crawling process such as : 
+
+- Filtering collected/scraped Urls by URLS having some keyword or matching a specific pattern (see 2) 
+
+- Control how deep the crawler will go, how many level are crawler from the start point.(see 5) 
+
+...
 
 ## Installation 
 
@@ -25,7 +41,7 @@ library(Rcrawler)
 ```
 Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4)
 ```
-This command allows downloading all HTML files of a website from the server to your computer. It can be useful if you want to analyze or apply something on the whole web page (HTML file). 
+This command allows downloading all HTML files of a website from the server to your computer. It can be useful if you want to analyze or apply something on the whole web page (HTML file).  
 
 At the end of crawling process this function will return :
 
@@ -37,21 +53,28 @@ At the end of crawling process this function will return :
 NOTE: Make sure that the website you want to crawl is not so big, as it may take more computer resources and time to finish. Stay polite, avoid overloading the server, the chance to get banned from the host server is bigger when you use many parallel connections. 
 
 ###### 2- Filtering collected/parsed Urls by Regular expression
-As you know a Web page might be a category page (list of elements,) or a detail page (like product/article page). For some reason, you may want to collect just the detail pages or you may want to collect just pages in a particular website section. In this case, you need to use Regular expressions as it's shown below:
+For some reason, you may want to collect just web pages having a specific urls pattern , like a website section, posts webpages. In this case, you need filter urls byuse Regular expressions . 
+
+In the example below we know that all blog post has dates like 2017/09/08  in their URLs so we can tell the crawler to collect only these pages by flitging only URLs matching this regular expression "/[0-9]{4}/[0-9]{2}/[0-9]{2}/". Ulrs having 4-digit/2-digit/2-digit/, which are blog post pages in our example .
 ```
 Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, urlregexfilter ="/[0-9]{4}/[0-9]{2}/[0-9]{2}/" )
 ```
-This command collect all URLs matching this regular expression "/[0-9]{4}/[0-9]{2}/[0-9]{2}/". Ulrs having 4-digit/2-digit/2-digit/, which are blog post pages in our example .
+Collected pages are like :
 ```
  http://www.glofile.com/2017/06/08/sondage-quel-budget-prevoyez-vous
  http://www.glofile.com/2017/06/08/jcdecaux-reconduction-dun-cont
  http://www.glofile.com/2017/06/08/taux-nette-detente-en-italie-bc
 ```
-
+In the following example we crawl the whole website but we collect only pages in section "sport" in url.
 ```
-Rcrawler(Website = "http://www.glofile.com/sport", urlregexfilter ="/sport/" )
+Rcrawler(Website = "http://www.glofile.com/sport/", urlregexfilter ="/sport/" )
 ```
-This command crawl the whole website and collect only pages of section "sport" in url.
+Downloded/Extracted Pages are like : 
+```
+http://www.glofile.com/sport/marseille-vitoria-guimaraes.html
+http://www.glofile.com/sport/balotelli-a-la-conclusion-d-une-belle.html
+http://www.glofile.com/sport/la-reprise-acrobatique-gagnante.html
+```
 
 **Note:** filtering URLs by a Regular expression, means the crawler will parse content (collect page) only from these specific URLs, It does not mean limiting the crawling process to only those particular URLs. In fact, if a website has 1000 links and just 200 matching the given regex, the crawler still need to crawl all 1000 link to find out these 200. if you want to limit the crawling process you can use MaxDepth parameter (refer to 5th section in this presentation)
 
@@ -91,8 +114,10 @@ Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "ke
 Crawl the website and collect only webpages that has an accuracy percentage higher than 50%
 of matching keyword1 and keyword2.
 
-###### 5-Liming the crawling process to a level
+###### 5-Liming the crawling process to a level (MaxDepth parameter) 
 Some popular websites are too big, and you don't have time or don't want to crawl the whole website for a specific reason, or sometimes you may just need to crawl the top links in the specific web page. For this purpose, you could use Maxdepth parameter to limit the crawler from going so deep. 
+Example to understand : A(B,C(E(H),F(G,k)),D) . Page A contain link B, C, D ; Page C contain E and F, page F contain G and K and page E contain H, In this example A is level 0 ,C represend Level 1 and E,F are both level 2 . 
+
 ```
 Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=1)
 ```
@@ -109,7 +134,6 @@ Other example :
 Rcrawler(Website = "http://www.master-maroc.com", KeywordsFilter = c("casablanca", "master"), KeywordsAccuracy = 50, ExtractPatterns = c("//*[@class='article-content']","//*[@class='contentheading clearfix']"))
 ```
 This command will crawl  http://www.master-maroc.com website and look for pages containing  keywords "casablanca" or "master", then data matching given Xpaths patterns are extracted .
-
 
 ## Design and Implementation
 If you want to learn more about web scraper/crawler architecture, functional properties and implementation using R language, you can download the published paper for free from this link :  [R web scraping](http://www.sciencedirect.com/science/article/pii/S2352711017300110)
