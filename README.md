@@ -11,7 +11,7 @@ With one single command Rcrawler function enable you to :
 
 - Scraping targeted contents using search terms, by providing desired keywords Rcrawler can traverse all wbesite links and collect/extract only web pages related to your topic. (see 4)
 
-Some websites are so big, you don't have sufficient time or ressources to crawl them, of you are only interested in a particular section of the website for these reason we provided some useful parameters to enable you control the crawling process such as : 
+Some websites are so big, you don't have sufficient time or ressources to crawl them, So you are only interested in a particular section of the website for these reason we provided some useful parameters to control the crawling process such as : 
 
 - Filtering collected/scraped Urls by URLS having some keyword or matching a specific pattern (see 2) 
 
