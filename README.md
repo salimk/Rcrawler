@@ -209,17 +209,21 @@ nodename | 	Selects all nodes with the name "nodename" might be div, table, span
 
 2-Start your browser Chrome or Firefox, then open your target web page sample to extarct, assume we want to extract this movie cast
 http://www.imdb.com/title/tt1490017/ 
-3- If you are using chrome, then right-click on one element you want then select "Inspect" you shoud have a view similar to this one  
+
+3- If you are using chrome, then right-click on one of the elements you want then select "Inspect" you shoud have a view similar to this one  
 ![xpath1](https://user-images.githubusercontent.com/17308124/31853011-908dbf7c-b679-11e7-9a7d-b1cde43f8933.PNG)4
+
 4- As you can see at the bottom we have a field , its there where you shoud write and test your xpath expression first,  Above the field, there an inmportant list of elements all started with #  all those node#class represents the way from the document root to the element you have selected. We picked up three of them to build our xpath (1 2 3 marked in yellow).
+
 5- Then we try to build and expression from those nodes : 
 ```
 //*/div[@id='titleCast']//span[@class='itemprop']
 ```
 This expression means : We look for any span with class='itemprop' no mather what they are BUT located under a div[@id='titleCast']  
+
 6- At the end after writing your expression on the xpath search field, you shoud see how many nodes are founded. If no one match your expression then try to fix it out until you get some result. 
 ![xpath2](https://user-images.githubusercontent.com/17308124/31853205-cfb00a04-b67c-11e7-8a8c-66f3e75f085b.PNG)
 
-###### Other examples :
+###### Other Xpath examples :
 
 
