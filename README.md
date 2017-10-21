@@ -1,21 +1,28 @@
 # An R web crawler and scraper 
 
 Rcrawler is an R package for web crawling websites and extracting structured data which can be used for a wide range of useful applications, like data mining, information processing or historical archival. The difference between Rcrawler and rvest, is that rvest enable you to extract data from one specific page, However Rcrawler function automaticaly traverse and parse all web pages of website, and extrat all data you need from them at once. For example collect all published posts on a blog, or extract all products on a shopping website ..etc.
+## Summary
+1- [RCrawler main features](https://github.com/salimk/Rcrawler#rcrawler-main-features)
+2- [Installation](https://github.com/salimk/Rcrawler#installation)
+3- [How to use Rcrawler (Tutorials)](https://github.com/salimk/Rcrawler#how-to-use-rcrawler)
+2- [Design and Implementation](https://github.com/salimk/Rcrawler#design-and-implementation)
+2- [How to cite Rcrawler](https://github.com/salimk/Rcrawler#how-to-cite-rcrawler)
+2- [Updates history](https://github.com/salimk/Rcrawler#brief-on-updates)
 
 ## RCrawler main features  
 With one single command Rcrawler function enable you to :
 
-- Download all website's HTML pages, (see 1)
+- Download all website's HTML pages, ([see 1](https://github.com/salimk/Rcrawler#1--collecting-web-pages-from-a-website))
 
-- Extract structured DATA from all pages: Titles, posts, Films, descriptions etc (see 3)
+- Extract structured DATA from all pages: Titles, posts, Films, descriptions etc ([see 3](https://github.com/salimk/Rcrawler#3-scrape-data-while-crawling-a-website))
 
-- Scraping targeted contents using search terms, by providing desired keywords Rcrawler can traverse all wbesite links and collect/extract only web pages related to your topic. (see 4)
+- Scraping targeted contents using search terms, by providing desired keywords Rcrawler can traverse all wbesite links and collect/extract only web pages related to your topic. ([see 4](https://github.com/salimk/Rcrawler#4-filter-collected-scraped-web-page-by-search-termskeywords))
 
 Some websites are so big, you don't have sufficient time or ressources to crawl them, So you are only interested in a particular section of the website for these reason we provided some useful parameters to control the crawling process such as : 
 
-- Filtering collected/scraped Urls by URLS having some keyword or matching a specific pattern (see 2) 
+- Filtering collected/scraped Urls by URLS having some keyword or matching a specific pattern ([see 2](https://github.com/salimk/Rcrawler#2--filtering-collectedparsed-urls-by-regular-expression)) 
 
-- Control how deep the crawler will go, how many levels Should be crawled from the start point.(see 5) 
+- Control how deep the crawler will go, how many levels Should be crawled from the start point.([see 5](https://github.com/salimk/Rcrawler#5-liming-the-crawling-process-to-a-level-maxdepth-parameter)) 
 
 ...
 
@@ -157,7 +164,7 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
   publisher={Elsevier}
 }
 `
-## Brief on Updates
+## Updates history
 Upcoming UPDATEs :
 - when scraping a website with a given xpath patterns, the crawler should avoid scraping and extracting data from non-content pages ( webpages that does not matches any given pattern)
 - MaxDeph params issue fixed
