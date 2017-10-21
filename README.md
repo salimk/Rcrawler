@@ -197,9 +197,10 @@ UPDATE V 0.1.1 :
 
 ## How to make your Xpath expression 
 1. First learn these expressions 
+
 Expressions	 |Description
 ------------ | -------------
-nodename 	Selects all nodes with the name "nodename" might be div, table, span,tr,td, h1 ..etc 
+nodename | 	Selects all nodes with the name "nodename" might be div, table, span,tr,td, h1 ..etc 
 / 	| Selects from the root node
 // |	Selects nodes in the document from the current node that match the selection no matter where they are
 .  |	Selects the current node
