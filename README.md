@@ -104,7 +104,7 @@ As result this function will return in addition to "INDEX" variable and file rep
 pageinfo<-LinkExtractor("http://glofile.com/index.php/2017/06/08/athletisme-m-a-rome/")
 Data<-ContentScraper(pageinfo[[1]][[10]],c("//head/title","//*/article"))
 ```
-Then check Data variable it should handle the extracted data, if it contain "NA", it means there are no data on the page matching the given xpath. 
+Then check Data variable it should handle the extracted data, if it contain "NA", This means no data matching the given xpath are founded on the page. 
 If you want to learn how to make your Xpath expression follow [this tutorial](https://www.w3schools.com/xml/xpath_syntax.asp)
 More examples (here)
 
