@@ -8,11 +8,11 @@ Rcrawler is an R package for web crawling websites and extracting structured dat
 
 3- [How to use Rcrawler (Tutorials)](https://github.com/salimk/Rcrawler#how-to-use-rcrawler)
 
-2- [Design and Implementation](https://github.com/salimk/Rcrawler#design-and-implementation)
+4- [Design and Implementation](https://github.com/salimk/Rcrawler#design-and-implementation)
 
-2- [How to cite Rcrawler](https://github.com/salimk/Rcrawler#how-to-cite-rcrawler)
+5- [How to cite Rcrawler](https://github.com/salimk/Rcrawler#how-to-cite-rcrawler)
 
-2- [Updates history](https://github.com/salimk/Rcrawler#brief-on-updates)
+6- [Updates history](https://github.com/salimk/Rcrawler#brief-on-updates)
 
 ## RCrawler main features  
 With one single command Rcrawler function enable you to :
@@ -99,12 +99,14 @@ As result this function will return in addition to "INDEX" variable and file rep
 - A variable named "DATA" in global environment: It's a list of extracted contents. 
 ![DATA and INDEX variable](https://user-images.githubusercontent.com/17308124/31500758-3532af40-af60-11e7-9fed-0aab2eb0ff5b.PNG)
 
-**Note :** before using ExtractPatterns on RCrawler function, try first to test your Xpath patterns on a single webage to ensure that they are correct using :
+**Note :** before using ExtractPatterns on RCrawler function, try first to test your Xpath patterns on a single webpage to ensure that they extract targeted data, by using :
 ```
 pageinfo<-LinkExtractor("http://glofile.com/index.php/2017/06/08/athletisme-m-a-rome/")
 Data<-ContentScraper(pageinfo[[1]][[10]],c("//head/title","//*/article"))
 ```
 Then check Data variable it should handle the extracted data, if it contain "NA", it means there are no data on the page matching the given xpath. 
+If you want to learn how to make your Xpath expression follow [this tutorial](https://www.w3schools.com/xml/xpath_syntax.asp)
+More examples (here)
 
 ###### 4-Filter collected/ scraped web page by search terms/keywords
 If you want to crawl a website and collect/scrape only some web pages related to a specific topic, Rcrawler function has two useful parameters KeywordsFilter and KeywordsAccuracy
@@ -191,3 +193,32 @@ UPDATE V 0.1.1 :
 - Fix an issue in some examples (ignore special character which affected generated PDF ) 
 - Add SystemRequirements field to Description with Java (>= 1.5)
 - Compile java classes with a lower JDK (1.5), to overcome this error (Unsupported major.minor version 52.0) encountered during package check with r-patched-solaris-x86 and r-oldrel-osx-x86_64 
+
+
+## How to make your Xpath expression 
+1. First learn these expressions 
+Expressions	 |Description
+------------ | -------------
+nodename 	Selects all nodes with the name "nodename" might be div, table, span,tr,td, h1 ..etc 
+/ 	| Selects from the root node
+// |	Selects nodes in the document from the current node that match the selection no matter where they are
+.  |	Selects the current node
+.. | Selects the parent of the current node
+@	 | Selects attributes
+
+2-Start your browser Chrome or Firefox, then open your target web page sample to extarct, assume we want to extract this movie cast
+http://www.imdb.com/title/tt1490017/ 
+3- If you are using chrome, then right-click on one element you want then select "Inspect" you shoud have a view similar to this one  
+![xpath1](https://user-images.githubusercontent.com/17308124/31853011-908dbf7c-b679-11e7-9a7d-b1cde43f8933.PNG)4
+4- As you can see at the bottom we have a field , its there where you shoud write and test your xpath expression first,  Above the field, there an inmportant list of elements all started with #  all those node#class represents the way from the document root to the element you have selected. We picked up three of them to build our xpath (1 2 3 marked in yellow).
+5- Then we try to build and expression from those nodes : 
+```
+//*/div[@id='titleCast']//span[@class='itemprop']
+```
+This expression means : We look for any span with class='itemprop' no mather what they are BUT located under a div[@id='titleCast']  
+6- At the end after writing your expression on the xpath search field, you shoud see how many nodes are founded. If no one match your expression then try to fix it out until you get some result. 
+![xpath2](https://user-images.githubusercontent.com/17308124/31853205-cfb00a04-b67c-11e7-8a8c-66f3e75f085b.PNG)
+
+###### Other examples :
+
+
