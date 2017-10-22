@@ -1,6 +1,6 @@
 # An R web crawler and scraper 
 
-Rcrawler is an R package for web crawling websites and extracting structured data which can be used for a wide range of useful applications, like web mining, text mining, web content mining, and web structure mining. The difference between Rcrawler and rvest, is that rvest enable you to extract data from one specific page, However Rcrawler automaticaly traverse and parse all web pages of a website, and extract all data you need from them at once with a single command. For example collect all published posts on a blog, or extract all products on a shopping website, or gathering comments, reviews for your opinion mining study. More then that Rcrawler enable you to create a network representation a website structure internal hyperlinks. 
+Rcrawler is an R package for web crawling websites and extracting structured data which can be used for a wide range of useful applications, like web mining, text mining, web content mining, and web structure mining. The difference between Rcrawler and rvest, is that rvest extract data from one specific page, However Rcrawler automaticaly traverse and parse all web pages of a website, and extract all data you need from them at once with a single command. For example collect all published posts on a blog, or extract all products on a shopping website, or gathering comments, reviews for your opinion mining study. More then that Rcrawler can create a network representation of a website internal hyperlinks. 
 ## Summary
 1. [RCrawler main features](https://github.com/salimk/Rcrawler#rcrawler-main-features)
 
@@ -15,7 +15,7 @@ Rcrawler is an R package for web crawling websites and extracting structured dat
 6. [Updates history](https://github.com/salimk/Rcrawler#brief-on-updates)
 
 ## RCrawler main features  
-With one single command Rcrawler function enable you to :
+With one single command Rcrawler function enables you to :
 
 - Download all website's HTML pages, ([see 1](https://github.com/salimk/Rcrawler#1--collecting-web-pages-from-a-website))
 
@@ -116,7 +116,7 @@ Rcrawler(Website = "http://www.imdb.com/chart/top", no_cores = 4, no_conn = 4, u
 ```
 This command allow you to downlaad all top movies titles, and cast (list of principal actors). we use urlregexfilter = "/title/" because we know that movie pages have "title" in Url. MaxDepth is set to 1 to follow only hyperlinks on the source page we provide. ManyPerPattern is set to TRUE to enable extracting all actors not only the first.
 ```
-Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4, ExtractPatterns= c("//*/a/@href"),PatternsNames=c("Links"), ManyPrPattern=TRUE)
+Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4, ExtractPatterns= c("//*/a/@href"),PatternsNames=c("Links"), ManyPerPattern=TRUE)
 ```
 Another example to scrape all href urls on each page of this website.
 
