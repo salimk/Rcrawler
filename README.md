@@ -207,7 +207,7 @@ nodename | 	Selects all nodes with the name "nodename" might be div, table, span
 .. | Selects the parent of the current node
 @	 | Selects attributes
 
-2-Start your browser Chrome or Firefox, then open your target web page sample to extarct, assume we want to extract this movie cast
+2. Start your browser Chrome or Firefox, then open your target web page sample to extarct, assume we want to extract this movie cast
 http://www.imdb.com/title/tt1490017/ 
 
 3. If you are using chrome, then right-click on one of the elements you want then select "Inspect" you shoud have a view similar to this one  
