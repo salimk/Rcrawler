@@ -19,9 +19,11 @@ With one single command Rcrawler function enable you to :
 
 - Download all website's HTML pages, ([see 1](https://github.com/salimk/Rcrawler#1--collecting-web-pages-from-a-website))
 
-- Extract structured DATA from all pages: Titles, posts, Films, descriptions etc ([see 3](https://github.com/salimk/Rcrawler#3-scrape-data-while-crawling-a-website))
+- Extract structured DATA from all website pages: Titles, posts, Films, descriptions etc ([see 3](https://github.com/salimk/Rcrawler#3-scrape-data-while-crawling-a-website))
 
 - Scraping targeted contents using search terms, by providing desired keywords Rcrawler can traverse all wbesite links and collect/extract only web pages related to your topic. ([see 4](https://github.com/salimk/Rcrawler#4-filter-collected-scraped-web-page-by-search-termskeywords))
+
+- Represent a website Netwok by mapping all its internal hyperlink connections (Edges & nodes) ([see 6]())
 
 Some websites are so big, you don't have sufficient time or ressources to crawl them, So you are only interested in a particular section of the website for these reason we provided some useful parameters to control the crawling process such as : 
 
@@ -29,7 +31,7 @@ Some websites are so big, you don't have sufficient time or ressources to crawl 
 
 - Control how deep the crawler will go, how many levels Should be crawled from the start point.([see 5](https://github.com/salimk/Rcrawler#5-liming-the-crawling-process-to-a-level-maxdepth-parameter)) 
 
-...
+
 
 ## Installation 
 
@@ -65,7 +67,7 @@ At the end of crawling process this function will return :
 NOTE: Make sure that the website you want to crawl is not so big, as it may take more computer resources and time to finish. Stay polite, avoid overloading the server, the chance to get banned from the host server is bigger when you use many parallel connections. 
 
 ###### 2- Filtering collected/parsed Urls by Regular expression
-For some reason, you may want to collect just web pages having a specific urls pattern , like a website section, posts webpages. In this case, you need filter urls byuse Regular expressions . 
+For some reason, you may want to collect just web pages having a specific urls pattern , like a website section, posts webpages. In this case, you need filter urls by Regular expressions . 
 
 In the example below we know that all blog post has dates like 2017/09/08  in their URLs so we can tell the crawler to collect only these pages by flitging only URLs matching this regular expression "/[0-9]{4}/[0-9]{2}/[0-9]{2}/". Ulrs having 4-digit/2-digit/2-digit/, which are blog post pages in our example .
 ```
@@ -130,7 +132,7 @@ of matching keyword1 and keyword2.
 
 ###### 5-Liming the crawling process to a level (MaxDepth parameter) 
 Some popular websites are too big, and you don't have time or don't want to crawl the whole website for a specific reason, or sometimes you may just need to crawl the top links in the specific web page. For this purpose, you could use Maxdepth parameter to limit the crawler from going so deep. 
-Example to understand : A(B,C(E(H),F(G,k)),D) . Page A contain link B, C, D ; Page C contain E and F, page F contain G and K and page E contain H, In this example A is level 0 ,C represend Level 1 and E,F are both level 2 . 
+Example to understand : A(B,C(E(H),F(G,k)),D) . Page A contain links B, C, D ; Page C contain E and F, page F contain G and K and page E contain H, In this example A is level 0 ,C represend Level 1 and E,F are both level 2 . 
 
 ```
 Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=1)
@@ -141,6 +143,22 @@ This command will parse only pages related to this link http://101greatgoals.com
 Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=4, urlregexfilter = "/betting/")
 ```
 In this example the crawler start from this http://101greatgoals.com/betting/ and continue crawling until it reach the 4th level , however it will only collect pages of "betting" section ( having /betting/ in their url)
+
+###### 6-Creating a website Network graph
+This option allow you to easly create a network representation graph of a website. Useful for Web structure mining.  
+If NetworkData parameter is set to TRUE then Rcrawler will create two additional gloabl variables handling Edges & Nodes, wich are :  
+- NetwIndex : Vector maps alls hyperlinks (nodes) with a unique integer ID (element postion in the vector)
+- NetwEdges : data.frame representing edges of the network, with these columns : From, To, Weight (the Depth level where the link connection has been discovered) and Type which actualy has a fixed value.
+```
+Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4 , NetworkData = TRUE)
+```
+This command crawl our demo website, and create network edges data of internal links. Using Igraph library you can plot the network by  the following commands (you can use any other library):
+```
+library(igraph)
+network<-graph.data.frame(NetwEdges, directed=T)
+plot(network)
+```
+![networkdata](https://user-images.githubusercontent.com/17308124/31865735-71de0288-b76b-11e7-8d65-1ae66c2b3805.PNG)
 
 ###### Other Examples
 Other example : 
@@ -172,10 +190,12 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
 }
 `
 ## Updates history
-Upcoming UPDATEs :
-- when scraping a website with a given xpath patterns, the crawler should avoid scraping and extracting data from non-content pages ( webpages that does not matches any given pattern)
+UPDATE V 0.1.4  :
+
+- NetworkData parameter: Map all internal hyperlink connections within a given website and then construct Edges & Nodes Dataframe, Useful for Web structure mining.
+- When scraping a website with a given xpath patterns, the crawler avoid scraping and extracting data from non-content pages ( webpages that does not matches any given pattern)
+- ManyPerPattern: Extract All nodes matching a specific pattern from every scraped page useful for scraping reviews, comments,  product listing etc..) 
 - MaxDeph params issue fixed
-- Map all internal hyperlink connections within a given website and then construct Edges & Nodes Dataframe, Useful for Web structure mining.
 
 UPDATE V 0.1.3 :
 
