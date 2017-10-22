@@ -23,14 +23,13 @@ With one single command Rcrawler function enable you to :
 
 - Scraping targeted contents using search terms, by providing desired keywords Rcrawler can traverse all wbesite links and collect/extract only web pages related to your topic. ([see 4](https://github.com/salimk/Rcrawler#4-filter-collected-scraped-web-page-by-search-termskeywords))
 
-- Represent a website Netwok by mapping all its internal hyperlink connections (Edges & nodes) ([see 6]())
-
 Some websites are so big, you don't have sufficient time or ressources to crawl them, So you are only interested in a particular section of the website for these reason we provided some useful parameters to control the crawling process such as : 
 
 - Filtering collected/scraped Urls by URLS having some keyword or matching a specific pattern ([see 2](https://github.com/salimk/Rcrawler#2--filtering-collectedparsed-urls-by-regular-expression)) 
 
 - Control how deep the crawler will go, how many levels Should be crawled from the start point.([see 5](https://github.com/salimk/Rcrawler#5-liming-the-crawling-process-to-a-level-maxdepth-parameter)) 
 
+- Represent a website Netwok by mapping all its internal hyperlink connections (Edges & nodes) ([see 6](https://github.com/salimk/Rcrawler/blob/master/README.md#6-creating-a-website-network-graph))
 
 
 ## Installation 
@@ -107,8 +106,7 @@ pageinfo<-LinkExtractor("http://glofile.com/index.php/2017/06/08/athletisme-m-a-
 Data<-ContentScraper(pageinfo[[1]][[10]],c("//head/title","//*/article"))
 ```
 Then check Data variable it should handle the extracted data, if it contain "NA", This means no data matching the given xpath are founded on the page. 
-If you want to learn how to make your Xpath expression follow [this tutorial](https://www.w3schools.com/xml/xpath_syntax.asp)
-More examples (here)
+If you want to learn how to make your Xpath expression follow [this tutorial](https://github.com/salimk/Rcrawler#how-to-make-your-xpath-expression)
 
 ###### 4-Filter collected/ scraped web page by search terms/keywords
 If you want to crawl a website and collect/scrape only some web pages related to a specific topic, Rcrawler function has two useful parameters KeywordsFilter and KeywordsAccuracy
@@ -129,6 +127,11 @@ Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "ke
 ```
 Crawl the website and collect only webpages that has an accuracy percentage higher than 50%
 of matching keyword1 and keyword2.
+
+```
+Rcrawler(Website = "http://www.master-maroc.com", KeywordsFilter = c("casablanca", "master"), KeywordsAccuracy = 50, ExtractPatterns = c("//*[@class='article-content']","//*[@class='contentheading clearfix']"))
+```
+This command will crawl  http://www.master-maroc.com website and look for pages containing  keywords "casablanca" or "master" , then extracted data matching the given Xpaths ( title , article)  .
 
 ###### 5-Liming the crawling process to a level (MaxDepth parameter) 
 Some popular websites are too big, and you don't have time or don't want to crawl the whole website for a specific reason, or sometimes you may just need to crawl the top links in the specific web page. For this purpose, you could use Maxdepth parameter to limit the crawler from going so deep. 
@@ -159,13 +162,6 @@ network<-graph.data.frame(NetwEdges, directed=T)
 plot(network)
 ```
 ![networkdata](https://user-images.githubusercontent.com/17308124/31865735-71de0288-b76b-11e7-8d65-1ae66c2b3805.PNG)
-
-###### Other Examples
-Other example : 
-```
-Rcrawler(Website = "http://www.master-maroc.com", KeywordsFilter = c("casablanca", "master"), KeywordsAccuracy = 50, ExtractPatterns = c("//*[@class='article-content']","//*[@class='contentheading clearfix']"))
-```
-This command will crawl  http://www.master-maroc.com website and look for pages containing  keywords "casablanca" or "master", then data matching given Xpaths patterns are extracted .
 
 ## Design and Implementation
 If you want to learn more about web scraper/crawler architecture, functional properties and implementation using R language, you can download the published paper for free from this link :  [R web scraping](http://www.sciencedirect.com/science/article/pii/S2352711017300110)
@@ -233,7 +229,7 @@ http://www.imdb.com/title/tt1490017/
 3. If you are using chrome, then right-click on one of the elements you want then select "Inspect" you shoud have a view similar to this one  
 ![xpath1](https://user-images.githubusercontent.com/17308124/31853011-908dbf7c-b679-11e7-9a7d-b1cde43f8933.PNG)
 
-4- As you can see at the bottom we have a field , its there where you shoud write and test your xpath expression first,  Above the field, there an inmportant list of elements all started with #  all those node#class represents the way from the document root to the element you have selected. We picked up three of them to build our xpath (1 2 3 marked in yellow).
+4- Hit Ctrl+F you shoud a search field the bottom of the page, its where you shoud first write and test your xpath expression,  Above the field, there is an important list of elements all started with #  all those node#class represents the way from the document root to the element you have selected. We picked up three of them to build our xpath (1 2 3 marked in yellow).
 
 5. Then we try to build and expression from those nodes : 
 ```
@@ -243,7 +239,4 @@ This expression means : We look for any span with class='itemprop' no mather wha
 
 6. At the end after writing your expression on the xpath search field, you shoud see how many nodes are founded. If no one match your expression then try to fix it out until you get some result. 
 ![xpath2](https://user-images.githubusercontent.com/17308124/31853205-cfb00a04-b67c-11e7-8a8c-66f3e75f085b.PNG)
-
-###### Other Xpath examples :
-
 
