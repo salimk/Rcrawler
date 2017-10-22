@@ -2,17 +2,17 @@
 
 Rcrawler is an R package for web crawling websites and extracting structured data which can be used for a wide range of useful applications, like data mining, information processing or historical archival. The difference between Rcrawler and rvest, is that rvest enable you to extract data from one specific page, However Rcrawler function automaticaly traverse and parse all web pages of website, and extrat all data you need from them at once. For example collect all published posts on a blog, or extract all products on a shopping website ..etc.
 ## Summary
-1- [RCrawler main features](https://github.com/salimk/Rcrawler#rcrawler-main-features)
+1. [RCrawler main features](https://github.com/salimk/Rcrawler#rcrawler-main-features)
 
-2- [Installation](https://github.com/salimk/Rcrawler#installation)
+2. [Installation](https://github.com/salimk/Rcrawler#installation)
 
-3- [How to use Rcrawler (Tutorials)](https://github.com/salimk/Rcrawler#how-to-use-rcrawler)
+3. [How to use Rcrawler (Tutorials)](https://github.com/salimk/Rcrawler#how-to-use-rcrawler)
 
-4- [Design and Implementation](https://github.com/salimk/Rcrawler#design-and-implementation)
+4. [Design and Implementation](https://github.com/salimk/Rcrawler#design-and-implementation)
 
-5- [How to cite Rcrawler](https://github.com/salimk/Rcrawler#how-to-cite-rcrawler)
+5. [How to cite Rcrawler](https://github.com/salimk/Rcrawler#how-to-cite-rcrawler)
 
-6- [Updates history](https://github.com/salimk/Rcrawler#brief-on-updates)
+6. [Updates history](https://github.com/salimk/Rcrawler#brief-on-updates)
 
 ## RCrawler main features  
 With one single command Rcrawler function enable you to :
@@ -210,18 +210,18 @@ nodename | 	Selects all nodes with the name "nodename" might be div, table, span
 2-Start your browser Chrome or Firefox, then open your target web page sample to extarct, assume we want to extract this movie cast
 http://www.imdb.com/title/tt1490017/ 
 
-3- If you are using chrome, then right-click on one of the elements you want then select "Inspect" you shoud have a view similar to this one  
-![xpath1](https://user-images.githubusercontent.com/17308124/31853011-908dbf7c-b679-11e7-9a7d-b1cde43f8933.PNG)4
+3. If you are using chrome, then right-click on one of the elements you want then select "Inspect" you shoud have a view similar to this one  
+![xpath1](https://user-images.githubusercontent.com/17308124/31853011-908dbf7c-b679-11e7-9a7d-b1cde43f8933.PNG)
 
 4- As you can see at the bottom we have a field , its there where you shoud write and test your xpath expression first,  Above the field, there an inmportant list of elements all started with #  all those node#class represents the way from the document root to the element you have selected. We picked up three of them to build our xpath (1 2 3 marked in yellow).
 
-5- Then we try to build and expression from those nodes : 
+5. Then we try to build and expression from those nodes : 
 ```
 //*/div[@id='titleCast']//span[@class='itemprop']
 ```
 This expression means : We look for any span with class='itemprop' no mather what they are BUT located under a div[@id='titleCast']  
 
-6- At the end after writing your expression on the xpath search field, you shoud see how many nodes are founded. If no one match your expression then try to fix it out until you get some result. 
+6. At the end after writing your expression on the xpath search field, you shoud see how many nodes are founded. If no one match your expression then try to fix it out until you get some result. 
 ![xpath2](https://user-images.githubusercontent.com/17308124/31853205-cfb00a04-b67c-11e7-8a8c-66f3e75f085b.PNG)
 
 ###### Other Xpath examples :
