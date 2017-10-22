@@ -1,6 +1,6 @@
 # An R web crawler and scraper 
 
-Rcrawler is an R package for web crawling websites and extracting structured data which can be used for a wide range of useful applications, like data mining, information processing or historical archival. The difference between Rcrawler and rvest, is that rvest enable you to extract data from one specific page, However Rcrawler function automaticaly traverse and parse all web pages of website, and extrat all data you need from them at once. For example collect all published posts on a blog, or extract all products on a shopping website ..etc.
+Rcrawler is an R package for web crawling websites and extracting structured data which can be used for a wide range of useful applications, like web mining, text mining, web content mining, and web structure mining. The difference between Rcrawler and rvest, is that rvest enable you to extract data from one specific page, However Rcrawler automaticaly traverse and parse all web pages of a website, and extract all data you need from them at once with a single command. For example collect all published posts on a blog, or extract all products on a shopping website, or gathering comments, reviews for your opinion mining study. More then that Rcrawler enable you to create a network representation a website structure internal hyperlinks. 
 ## Summary
 1. [RCrawler main features](https://github.com/salimk/Rcrawler#rcrawler-main-features)
 
@@ -100,7 +100,7 @@ As result this function will return in addition to "INDEX" variable and file rep
 - A variable named "DATA" in global environment: It's a list of extracted contents. 
 ![DATA and INDEX variable](https://user-images.githubusercontent.com/17308124/31500758-3532af40-af60-11e7-9fed-0aab2eb0ff5b.PNG)
 
-**Note :** before using ExtractPatterns on RCrawler function, try first to test your Xpath patterns on a single webpage to ensure that they extract targeted data, by using :
+**Note :** before using ExtractPatterns on RCrawler function, try first to test your Xpath expression on a single webpage to ensure that they extract targeted data, by using :
 ```
 pageinfo<-LinkExtractor("http://glofile.com/index.php/2017/06/08/athletisme-m-a-rome/")
 Data<-ContentScraper(pageinfo[[1]][[10]],c("//head/title","//*/article"))
@@ -108,12 +108,24 @@ Data<-ContentScraper(pageinfo[[1]][[10]],c("//head/title","//*/article"))
 Then check Data variable it should handle the extracted data, if it contain "NA", This means no data matching the given xpath are founded on the page. 
 If you want to learn how to make your Xpath expression follow [this tutorial](https://github.com/salimk/Rcrawler#how-to-make-your-xpath-expression)
 
+**Extract multiple node having the same pattern from every page**
+List of elements with same pattern found on one page, like post comments, product reviews, movie cast. 
+
+```
+Rcrawler(Website = "http://www.imdb.com/chart/top", no_cores = 4, no_conn = 4, urlregexfilter = "/title/", ExtractPatterns = c("//head/title","//*/div[@id='titleCast']//span[@class='itemprop']"),PatternsNames = c("title", "Cast"), ManyPerPattern = TRUE, MaxDepth=1 )
+```
+This command allow you to downlaad all top movies titles, and cast (list of principal actors). we use urlregexfilter = "/title/" because we know that movie pages have "title" in Url. MaxDepth is set to 1 to follow only hyperlinks on the source page we provide. ManyPerPattern is set to TRUE to enable extracting all actors not only the first.
+```
+Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4, ExtractPatterns= c("//*/a/@href"),PatternsNames=c("Links"), ManyPrPattern=TRUE)
+```
+Another example to scrape all href urls on each page of this website.
+
 ###### 4-Filter collected/ scraped web page by search terms/keywords
-If you want to crawl a website and collect/scrape only some web pages related to a specific topic, Rcrawler function has two useful parameters KeywordsFilter and KeywordsAccuracy
+If you want to crawl a website and collect/scrape only some web pages related to a specific topic, like gathering posts related to trump donald from a news website. Rcrawler function has two useful parameters KeywordsFilter and KeywordsAccuracy
 
 KeywordsFilter: a character vector, here you should provide keywords/terms of the topic you are looking. Rcrawler will calculate an accuracy score based matched keywords and their occurrence on the page, then by default, it collects or scrapes only web pages with at least a score of 1% wich mean at least one keyword is founded one time on the page. This parameter must be a vector with at least one keyword like c("mykeyword").
 
-KeywordsAccuracy. Integer value range between 0 and 100, used only with the KeywordsFilter parameter to determine the accuracy of web pages to collect. You can use one or more search terms; the accuracy will be calculated based on how many provided keywords exist on the page plus their occurrence rate. For example, if only one keyword is provided c("keyword") so ,
+KeywordsAccuracy. Integer value range between 0 and 100, used only with the KeywordsFilter parameter to determine the accuracy of web pages to collect. You can use one or more search terms; the accuracy will be calculated based on how many provided keywords are found on on the page plus their occurrence rate. For example, if only one keyword is provided c("keyword") so ,
 50% means one occurrence of "keyword" in the page
 100% means five occurrences of "keyword" in the page 
 
