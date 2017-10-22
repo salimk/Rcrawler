@@ -162,8 +162,8 @@ In this example the crawler start from this http://101greatgoals.com/betting/ an
 ###### 6-Creating a website Network graph
 This option allow you to easly create a network representation graph of a website. Useful for Web structure mining.  
 If NetworkData parameter is set to TRUE then Rcrawler will create two additional gloabl variables handling Edges & Nodes, wich are :  
-- NetwIndex : Vector maps alls hyperlinks (nodes) with a unique integer ID (element postion in the vector)
-- NetwEdges : data.frame representing edges of the network, with these columns : From, To, Weight (the Depth level where the link connection has been discovered) and Type which actualy has a fixed value.
+- NetwIndex : Vector maps alls hyperlinks (nodes) to  unique integer ID (element position in the vector)
+- NetwEdges : data.frame representing edges of the network, with these columns: From, To, Weight (the Depth level where the link connection has been discovered) and Type which actually has a fixed value.
 ```
 Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4 , NetworkData = TRUE)
 ```
