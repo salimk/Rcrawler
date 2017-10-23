@@ -241,7 +241,7 @@ http://www.imdb.com/title/tt1490017/
 3. If you are using chrome, then right-click on one of the elements you want then select "Inspect" you shoud have a view similar to this one  
 ![xpath1](https://user-images.githubusercontent.com/17308124/31853011-908dbf7c-b679-11e7-9a7d-b1cde43f8933.PNG)
 
-4- Hit Ctrl+F you shoud a search field the bottom of the page, its where you shoud first write and test your xpath expression,  Above the field, there is an important list of elements all started with #  all those node#class represents the way from the document root to the element you have selected. We picked up three of them to build our xpath (1 2 3 marked in yellow).
+4- Hit Ctrl+F you shoud see a search field appear at the bottom of the page, its where you shoud first write and test your xpath expression,  Above the field, there is an important list of elements all started with #  all those node#class represents the way from the document root to the element you have selected. We picked up three of them to build our xpath (1 2 3 marked in yellow).
 
 5. Then we try to build and expression from those nodes : 
 ```
