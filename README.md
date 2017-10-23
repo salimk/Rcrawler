@@ -1,5 +1,6 @@
 # An R web crawler and scraper 
-[![Cran version](http://www.r-pkg.org/badges/version/Rcrawler)](https://CRAN.R-project.org/package=Rcrawler)
+[![CRAN version](http://www.r-pkg.org/badges/version/Rcrawler)](https://CRAN.R-project.org/package=Rcrawler)
+![CRAN downloads](http://cranlogs.r-pkg.org/badges/Rcrawler)
 
 Rcrawler is an R package for web crawling websites and extracting structured data which can be used for a wide range of useful applications, like web mining, text mining, web content mining, and web structure mining. So what is the difference between Rcrawler and rvest : rvest extracts data from one specific page by navigating through selectors. However, Rcrawler automatically traverses and parse all web pages of a website, and extract all data you need from them at once with a single command. For example collect all published posts on a blog, or extract all products on a shopping website, or gathering comments, reviews for your opinion mining study. More than that,  Rcrawler can create a network representation of a website internal hyperlinks. 
 
