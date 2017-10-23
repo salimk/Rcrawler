@@ -3,6 +3,7 @@
 [![Build Test](https://api.travis-ci.org/salimk/Rcrawler.svg?branch=master)](https://travis-ci.org/salimk/Rcrawler)
 ![Downloads Stats](http://cranlogs.r-pkg.org/badges/Rcrawler)
 [![MIT Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/salimk/Rcrawler/blob/master/LICENSE)
+[![DOI Paper](https://user-images.githubusercontent.com/17308124/31905328-b455938c-b825-11e7-9189-8669abc09781.png)](https://doi.org/10.1016/j.softx.2017.04.004)
 
 Rcrawler is an R package for web crawling websites and extracting structured data which can be used for a wide range of useful applications, like web mining, text mining, web content mining, and web structure mining. So what is the difference between Rcrawler and rvest : rvest extracts data from one specific page by navigating through selectors. However, Rcrawler automatically traverses and parse all web pages of a website, and extract all data you need from them at once with a single command. For example collect all published posts on a blog, or extract all products on a shopping website, or gathering comments, reviews for your opinion mining study. More than that,  Rcrawler can create a network representation of a website internal hyperlinks. 
 
