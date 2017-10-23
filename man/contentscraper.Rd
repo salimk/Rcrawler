@@ -4,7 +4,8 @@
 \alias{ContentScraper}
 \title{ContentScraper}
 \usage{
-ContentScraper(webpage, patterns, patnames, excludepat, astext = TRUE, encod)
+ContentScraper(webpage, patterns, patnames, excludepat,
+  ManyPerPattern = FALSE, astext = TRUE, encod)
 }
 \arguments{
 \item{webpage}{character, a web page as text.}
@@ -14,6 +15,8 @@ ContentScraper(webpage, patterns, patnames, excludepat, astext = TRUE, encod)
 \item{patnames}{character vector, given names for each xpath pattern to extract.}
 
 \item{excludepat}{character vector, one o more Xpath to exclude from the extracted content.}
+
+\item{ManyPerPattern}{boolean, If False only the first matched element by the pattern is extracted (like in Blogs one page has one article/post and one title). Otherwise if set to True  all nodes matching the pattern are extracted (Like in galleries, listing or comments, one page has many elements with the same pattern )}
 
 \item{astext}{boolean, default is TRUE, HTML and PHP tags is stripped from the extracted piece.}
 
@@ -26,13 +29,13 @@ return a named list of extracted content
 From a given web page as text _character_ and a set of named XPath patterns, this function extracts selected parts of the HTML document then it returns a list of extracted contents.
 }
 \examples{
-
+\dontrun{
 pageinfo<-LinkExtractor("http://glofile.com/index.php/2017/06/08/athletisme-m-a-rome/")
 #Retreive the webpge header and data
 
 Data<-ContentScraper(pageinfo[[1]][[10]],c("//head/title","//*/article"),c("title", "article"))
 #Extract the title and the article from webpage content using Xpaths
-
+}
 }
 \author{
 salim khalil

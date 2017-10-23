@@ -42,6 +42,9 @@ A function that take a _charachter_ url as input, fetches its html document, and
 \examples{
 
 pageinfo<-LinkExtractor(url="http://www.glofile.com")
+#Pageinfo handle page header detail, as well as content, and internal links.
+#pageinfo[[1]][[10]] : page content
+#pageinfo[[2]] : Internal urls
 
 }
 \author{

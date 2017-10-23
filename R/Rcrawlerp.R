@@ -28,7 +28,8 @@
 #' @param PatternsNames character vector, given names for each xpath pattern to extract.
 #' @param ExcludePatterns character's vector, vector of xpath patterns to exclude from selected ExtractPatterns.
 #' @param ExtractAsText boolean, default is TRUE, HTML and PHP tags is stripped from the extracted piece.
-#'
+#' @param ManyPerPattern boolean, ManyPerPattern boolean, If False only the first matched element by the pattern is extracted (like in Blogs one page has one article/post and one title). Otherwise if set to True  all nodes matching the pattern are extracted (Like in galleries, listing or comments, one page has many elements with the same pattern )
+#' @param NetworkData boolean, If set to TRUE, then the crawler map all the internal hyperlink connections within the given website and return DATA for Network construction using igraph or other tools.(two global variables is returned see details)
 #'
 #' @return
 #'
@@ -39,11 +40,17 @@
 #'
 #' - A repository in workspace that contains all downloaded pages (.html files)
 #'
-#' In addition, if data scraping is enabled :
+#' If data scraping is enabled by setting ExtractPatterns parameter:
 #'
-#' - DATA: A vector in global environement contains scraped contents.
+#' - DATA: A list of lists in global environement holding scraped contents.
 #'
 #' - A csv file 'extracted_contents.csv' holding all extracted data.
+#'
+#' If NetworkData is set to TRUE two additional global variables returned by the function are:
+#'
+#' - NetwIndex : Vector maps alls hyperlinks (nodes) with a unique integer ID
+#'
+#' - NetwEdges : data.frame representing edges of the network, with these column : From, To, Weight (the Depth level where the link connection has been discovered) and Type which actualy has a fixed value.
 #'
 #' @details
 #'
@@ -85,7 +92,8 @@
 #'
 #'  # Crawl the website using  4 cores and 4 parallel requests. However, this will only
 #'   index URLs matching the regular expression pattern (/[0-9]{4}/[0-9]{2}/), and stores pages
-#'   in a custom directory "myrepo". The crawler stops when it reaches the third level.
+#'   in a custom directory "myrepo".
+#'   The crawler stops After reaching the third level of website depth.
 #'
 #'   Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "keyword2"))
 #'  # Crawl the website and collect only webpages containing keyword1 or keyword2 or both.
@@ -94,6 +102,13 @@
 #'    KeywordsAccuracy = 50)
 #'  # Crawl the website and collect only webpages that has an accuracy percentage higher than 50%
 #'   of matching keyword1 and keyword2.
+#'
+#'   Rcrawler(Website = "http://glofile.com/" , no_cores = 4, no_conn = 4, GraphData = TRUE)
+#'   # Crawl the entire website, and create network edges DATA of internal links.
+#'   # Using Igraph for exmaple you can plot the network by the following commands
+#'   # library(igraph)
+#'   # network<-graph.data.frame(NetwEdges, directed=T)
+#'   # plot(network)
 #' }
 #'
 #'
@@ -102,14 +117,14 @@
 #' @export
 #' @importFrom utils write.table
 #' @importFrom utils flush.console
-
 #'
 
 
 Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,Obeyrobots=FALSE,
                      Useragent, Timeout=5, URLlenlimit=255, urlExtfilter,
                      urlregexfilter, ignoreUrlParams, KeywordsFilter,KeywordsAccuracy,statslinks=FALSE, Encod,
-                     ExtractPatterns,PatternsNames,ExcludePatterns,ExtractAsText=TRUE) {
+                     ExtractPatterns,PatternsNames,ExcludePatterns,ExtractAsText=TRUE, ManyPerPattern=FALSE,
+                     NetworkData=FALSE) {
 
   if (missing(DIR)) DIR<-getwd()
   if (missing(KeywordsAccuracy)) KeywordsAccuracy<-1
@@ -123,7 +138,9 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,O
   if(missing(Useragent)) {Useragent="Mozilla/5.0 (Windows NT 6.3; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0"}
   if(missing(Encod)) {
     Encod<- Getencoding(Website)
-    if (Encod=="NULL") { Encod="UTF-8" }
+    if (length(Encod)!=0){
+      if(Encod=="NULL") Encod="UTF-8" ;
+      } else Encod="UTF-8";
     }
   if(missing(urlExtfilter)){ urlExtfilter<-c("flv","mov","swf","txt","xml","js","css","zip","gz","rar","7z","tgz","tar","z","gzip","bzip","tar","mp3","mp4","aac","wav","au","wmv","avi","mpg","mpeg","pdf","doc","docx","xls","xlsx","ppt","pptx","jpg","jpeg","png","gif","psd","ico","bmp","odt","ods","odp","odb","odg","odf") }
   keywordCheck<-FALSE
@@ -177,13 +194,23 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,O
   if (!missing(ExtractPatterns)) { pkg.env$Exdata<-list() }
   pkg.env$shema<-data.frame(id,urls,status,level,out,inn,httpstat,contenttype,encoding,Accuracy)
   names(pkg.env$shema) <- c("Id","Url","Stats","Level","OUT","IN","Http Resp","Content Type","Encoding","Accuracy")
+  if(NetworkData){
+    FromNode<-vector()
+    ToNode<-vector()
+    Weight<-vector()
+    Type<-vector()
+    pkg.env$GraphINDEX<-vector()
+    pkg.env$GraphINDEX<-c(pkg.env$GraphINDEX,Website)
+    pkg.env$GraphEgdes<-data.frame(FromNode,ToNode,Weight,Type)
+    names(pkg.env$GraphEgdes) <- c("From","To","Weight","Type")
+  }
   #timev<<- vector()
   #timef<<-vector()
   shemav <- vector()
   shemav<-c(shemav,Website)
-  t<-1
-  M<-1
+  M=length(shemav)
   lev<-0
+  t<-1
   posx<-0
   i<-0
   posenv <- 1
@@ -193,22 +220,23 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,O
   registerDoParallel(cl)
   clusterEvalQ(cl, library(xml2))
   clusterEvalQ(cl, library(httr))
+  clusterEvalQ(cl, library(data.table))
   clusterExport(cl, c("LinkExtractor","LinkNormalization"))
-  clusterExport(cl, c("shema"),envir = pkg.env)
+  clusterExport(cl, c("shema"), envir = pkg.env)
   #tmparallelreq<<-vector()
   #tmparallel<<-vector()
   #tminsertion<<-vector()
   #tminsertionreq<<-vector()
-  while (t<=length(shemav) && MaxDepth!=lev){
+  while (t<=length(shemav) && MaxDepth>=lev){
         # extraire les liens sur la page
         rest<-length(shemav)-t
         #if(rest==0){ rest<-rest+1 }
-        if (no_conn<rest){
+        if (no_conn<=rest){
             l<-t+no_conn-1
         } else {
             l<-t+rest
         }
-          #cat("l:",l)
+          #cat(t,"to",l,"size:",length(shemav))
           #get links & pageinfo
         if (RequestsDelay!=0) {
             Sys.sleep(RequestsDelay)
@@ -216,27 +244,27 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,O
         #ptm <- proc.time()
         allpaquet <- foreach(i=t:l,  .verbose=FALSE, .inorder=FALSE, .errorhandling='pass')  %dopar%
           {
-          LinkExtractor(shemav[i],i,lev, IndexErrPages, Useragent, Timeout, URLlenlimit, urlExtfilter=urlExtfilter, statslinks=statslinks , encod = Encod, urlbotfiler = urlbotfiler, removeparams=ignoreUrlParams )
+          LinkExtractor(shemav[i],i,lev, IndexErrPages, Useragent, Timeout, URLlenlimit, urlExtfilter=urlExtfilter, encod = Encod, urlbotfiler = urlbotfiler, removeparams=ignoreUrlParams )
           }
-    # deb<<-allpaquet
+   # deb<<-allpaquet
     #for (j in t:l){
     #    cat(shemav[i]);
     #}
     #tmparallelreq<<-c(tmparallelreq,(proc.time() - ptm )[3])
     #tmparallel<<-c(tmparallel,format(Sys.time(), "%M,%S"))
     cat("In process : ")
-    if (no_conn<rest){
-      f<-no_conn
-    } else if (no_conn>rest) {
-      f<-rest
-    }
-    if(0==rest) {
-      f<-l-t+1
-    }
+    #if (no_conn<=rest){
+    #  f<-no_conn
+    #} else if (no_conn>rest) {
+    #  f<-rest
+    #}
+    #if(0==rest) {
+    #  f<-l-t+1
+    #}
     #cat("f:",f,"t:",t,"conn",no_conn,"r:",rest)
     #if(f==0){f<-f+1}
     # combine all links.package in one list & insert pageinfo in shema one-by-one
-    for (s in 1:f){
+    for (s in 1:length(allpaquet)){
       # pos :  Global positon (regarding to shemav)
       pos<-s+t-1
       cat(pos,"..", sep = "")
@@ -247,11 +275,35 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,O
       #debugg<<-allpaquet
       #debugg2<<-shemav
       if(!is.null(allpaquet[[s]][2]) && !("call" %in% names(allpaquet[[s]][2]))) {
+        if (NetworkData) {
+          tmplinks<-vector()
+          tmplinks<-c(tmplinks,unlist(allpaquet[[s]][2]))
+          #tmplinks<-c(tmplinks,debugg[[s]][[1]][[2]])
+          if(length(tmplinks) > 0){
+            pkg.env$GraphINDEX<-c( pkg.env$GraphINDEX , tmplinks[ ! tmplinks %chin% pkg.env$GraphINDEX ] )
+            for(NodeElm in tmplinks){
+              posNodeFrom<-chmatch(c(allpaquet[[s]][[1]][[2]]),pkg.env$GraphINDEX)
+              pkg.env$GraphEgdes[nrow(pkg.env$GraphEgdes) + 1,]<-c(posNodeFrom,chmatch(c(NodeElm),pkg.env$GraphINDEX),lev,1)
+            }
+          }
+        }
+        if (statslinks){
+          tmplinks<-vector()
+          tmplinks<-c(tmplinks,unlist(allpaquet[[s]][[2]]))
+          if(length(tmplinks) > 0 && length(pkg.env$shema[[2]])>0){
+            for(NodeElm in tmplinks){
+            index<-chmatch(c(NodeElm),pkg.env$shema[[2]])
+             if(!is.na(index)){
+              pkg.env$shema[[6]][index]<-as.numeric(pkg.env$shema[[6]][index])+1
+              }
+            }
+          }
+        }
         links<-c(links,allpaquet[[s]][2])
         #debugg2<<-allpaquet[[s]][2]
         #amdebugg3<<-allpaquet[[s]][1]
           if (allpaquet[[s]][[1]][[3]]!="NULL" && allpaquet[[s]][[1]][[10]]!="NULL" ){
-            #index filter
+            #index URL filter
               if (grepl(urlregexfilter,allpaquet[[s]][[1]][[2]])) {
                   if(keywordCheck){
                     #check if page content contain some specific keywords
@@ -259,6 +311,7 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,O
                     Notagcontentx<-gsub("^\\s+|\\s+$", "", gsub(pattern = "\n" ," ",gsub("<.*?>", "", contentx)))
                     Accuracy<-sum(sapply(KeywordsFilter,function(x,y,z) Precifunc(x,length(KeywordsFilter),Notagcontentx) ,simplify = TRUE))
                       if (Accuracy>=KeywordsAccuracy){
+                        #if(containtag) {
                         #check for duplicate webpage & checksum calculation
                         # if (duplicatedetect==TRUE){
                         # hash<-getsimHash(contentx,128)
@@ -271,65 +324,81 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,O
                         #  filepath<-paste(path,"/",filename, sep = "")
                         #  write(allpaquet[[s]][[1]][[10]],filepath) }
                         #  } else {
-                        posx<-posx+1
-                        pkg.env$shema[posx,]<-c(posx,allpaquet[[s]][[1]][[2]],"finished",allpaquet[[s]][[1]][[4]],allpaquet[[s]][[1]][[5]],"",allpaquet[[s]][[1]][[7]],allpaquet[[s]][[1]][[8]],allpaquet[[s]][[1]][[9]],paste0(Accuracy,"%"))
-                        filename<-paste(posx,".html")
-                        filepath<-paste(path,"/",filename, sep = "")
-                        write(allpaquet[[s]][[1]][[10]],filepath)
-                            if (!missing(ExtractPatterns)) {
+                        if (!missing(ExtractPatterns)) {
+                          excontent<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, ManyPerPattern = ManyPerPattern, patnames = PatternsNames, encod=Encod )
+                          if(isTarget(excontent)){
+                                  posx<-posx+1
+                                  pkg.env$shema[posx,]<-c(posx,allpaquet[[s]][[1]][[2]],"finished",allpaquet[[s]][[1]][[4]],allpaquet[[s]][[1]][[5]],"",allpaquet[[s]][[1]][[7]],allpaquet[[s]][[1]][[8]],allpaquet[[s]][[1]][[9]],paste0(Accuracy,"%"))
+                                  filename<-paste(posx,".html")
+                                  filepath<-paste(path,"/",filename, sep = "")
+                                  write(allpaquet[[s]][[1]][[10]],filepath)
+
                                   if (missing(ExcludePatterns)){
-                                  excontent<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, encod=Encod )
                                   excontent<-c(posx,excontent)
-                                  excontent2<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns,patnames = PatternsNames, astext = ExtractAsText, encod=Encod)
+                                  excontent2<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns,patnames = PatternsNames, ManyPerPattern=ManyPerPattern, astext = ExtractAsText, encod=Encod)
                                   pkg.env$Exdata<-c(pkg.env$Exdata, list(excontent2))
                                   write.table(excontent, file = Filecontent, sep = ";", qmethod="double" ,row.names = FALSE, col.names = FALSE, na = "NA" )
                                   }
                                   else {
                                     #x<<-allpaquet[[s]][[1]][[10]]
-                                  excontent<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, excludepat = ExcludePatterns ,encod=Encod )
+                                  excontent<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, ManyPerPattern=ManyPerPattern, excludepat = ExcludePatterns ,encod=Encod )
                                   excontent<-c(posx,excontent)
-                                  excontent2<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, astext = ExtractAsText, excludepat = ExcludePatterns, encod=Encod)
+                                  excontent2<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, astext = ExtractAsText, ManyPerPattern=ManyPerPattern, excludepat = ExcludePatterns, encod=Encod)
                                   pkg.env$Exdata<-c(pkg.env$Exdata, list(excontent2))
                                   write.table(excontent, file = Filecontent, sep = ";", qmethod="double" ,row.names = FALSE, col.names = FALSE, na = "NA" )
                                   }
-
                                   assign("DATA", pkg.env$Exdata, envir = envi )
                             }
                                     # }
+                        } else {
+                          posx<-posx+1
+                          pkg.env$shema[posx,]<-c(posx,allpaquet[[s]][[1]][[2]],"finished",allpaquet[[s]][[1]][[4]],allpaquet[[s]][[1]][[5]],"",allpaquet[[s]][[1]][[7]],allpaquet[[s]][[1]][[8]],allpaquet[[s]][[1]][[9]],paste0(Accuracy,"%"))
+                          filename<-paste(posx,".html")
+                          filepath<-paste(path,"/",filename, sep = "")
+                          write(allpaquet[[s]][[1]][[10]],filepath)
+                        }
                       }
                   } else {
-                        posx<-posx+1
-                        pkg.env$shema[posx,]<-c(posx,allpaquet[[s]][[1]][[2]],"finished",allpaquet[[s]][[1]][[4]],allpaquet[[s]][[1]][[5]],"",allpaquet[[s]][[1]][[7]],allpaquet[[s]][[1]][[8]],allpaquet[[s]][[1]][[9]],'')
-                        filename<-paste(posx,".html")
-                        filepath<-paste(path,"/",filename, sep = "")
-                        write(allpaquet[[s]][[1]][[10]],filepath)
-                        if (!missing(ExtractPatterns)) {
+                      if (!missing(ExtractPatterns)) {
+                        excontent<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, ManyPerPattern = ManyPerPattern, patnames = PatternsNames, encod=Encod )
+                        if(isTarget(excontent)){
+                          posx<-posx+1
+                          pkg.env$shema[posx,]<-c(posx,allpaquet[[s]][[1]][[2]],"finished",allpaquet[[s]][[1]][[4]],allpaquet[[s]][[1]][[5]],"",allpaquet[[s]][[1]][[7]],allpaquet[[s]][[1]][[8]],allpaquet[[s]][[1]][[9]],'')
+                          filename<-paste(posx,".html")
+                          filepath<-paste(path,"/",filename, sep = "")
+                          write(allpaquet[[s]][[1]][[10]],filepath)
                           if (missing(ExcludePatterns)){
-                            excontent<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, encod=Encod )
                             excontent<-c(posx,excontent)
-                            excontent2<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns,patnames = PatternsNames, astext = ExtractAsText, encod=Encod)
+                            excontent2<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, ManyPerPattern = ManyPerPattern, patnames = PatternsNames, astext = ExtractAsText, encod=Encod)
                             pkg.env$Exdata<-c(pkg.env$Exdata, list(excontent2))
                             write.table(excontent, file = Filecontent, sep = ";", qmethod="double" ,row.names = FALSE, col.names = FALSE, na = "NA" )
                           }
                           else {
                             #x<<-allpaquet[[s]][[1]][[10]]
-                            excontent<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, excludepat = ExcludePatterns ,encod=Encod )
+                            excontent<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames,ManyPerPattern = ManyPerPattern, excludepat = ExcludePatterns ,encod=Encod )
                             excontent<-c(posx,excontent)
-                            excontent2<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, astext = ExtractAsText, excludepat = ExcludePatterns, encod=Encod)
+                            excontent2<-ContentScraper(webpage = allpaquet[[s]][[1]][[10]],patterns = ExtractPatterns, patnames = PatternsNames, ManyPerPattern = ManyPerPattern, astext = ExtractAsText, excludepat = ExcludePatterns, encod=Encod)
                             pkg.env$Exdata<-c(pkg.env$Exdata, list(excontent2))
                             write.table(excontent, file = Filecontent, sep = ";", qmethod="double" ,row.names = FALSE, col.names = FALSE, na = "NA" )
                           }
-
                           assign("DATA", pkg.env$Exdata, envir = envi )
                         }
-
+                      } else {
+                        posx<-posx+1
+                        pkg.env$shema[posx,]<-c(posx,allpaquet[[s]][[1]][[2]],"finished",allpaquet[[s]][[1]][[4]],allpaquet[[s]][[1]][[5]],1,allpaquet[[s]][[1]][[7]],allpaquet[[s]][[1]][[8]],allpaquet[[s]][[1]][[9]],'')
+                        filename<-paste(posx,".html")
+                        filepath<-paste(path,"/",filename, sep = "")
+                        write(allpaquet[[s]][[1]][[10]],filepath)
+                      }
                   }
-                    #calculate level
-                    #if(M==pos){
-                     # M=nrow(shema)
-                      #lev<-lev+1}
+
               }
           }
+      }
+
+      if(pos==M){
+        lev<-lev+1;
+        getNewM<-TRUE
       }
     }
 
@@ -346,11 +415,20 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,O
           #shema[length(shemav),]<<-c(length(shemav),links[i],"waiting","","","1","","","")
         #}}
       shemav<-c( shemav , links[ ! links %chin% shemav ] )
+      #calculate level
+      if(getNewM){
+       M=length(shemav)
+       getNewM<-FALSE
+      }
     }
     #tminsertion<<-c(tminsertion,(proc.time() - ptm )[3])
     #tminsertionreq<<-c(tminsertionreq,format(Sys.time(), "%M,%S"))
-    cat("Progress:",format(round(((t/length(shemav))*100), 2),nsmall = 2),"%  : ",t, " parssed from ",length(shemav)," | ","Collected pages:",length(pkg.env$shema$Id),"\n")
+    cat("Progress:",format(round(((t/length(shemav))*100), 2),nsmall = 2),"%  : ",t, " parssed from ",length(shemav)," | Collected pages:",length(pkg.env$shema$Id)," | Level:",lev,"\n")
     t<-l+1
+    if(NetworkData){
+    assign("NetwEdges", pkg.env$GraphEgdes, envir = envi )
+    assign("NetwIndex", pkg.env$GraphINDEX, envir = envi )
+    }
     assign("INDEX", pkg.env$shema, envir = envi )
    #tmp<<-shemav
   }

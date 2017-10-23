@@ -8,7 +8,8 @@ Rcrawler(Website, no_cores, no_conn, MaxDepth, DIR, RequestsDelay = 0,
   Obeyrobots = FALSE, Useragent, Timeout = 5, URLlenlimit = 255,
   urlExtfilter, urlregexfilter, ignoreUrlParams, KeywordsFilter,
   KeywordsAccuracy, statslinks = FALSE, Encod, ExtractPatterns, PatternsNames,
-  ExcludePatterns, ExtractAsText = TRUE)
+  ExcludePatterns, ExtractAsText = TRUE, ManyPerPattern = FALSE,
+  NetworkData = FALSE)
 }
 \arguments{
 \item{Website}{character, the root URL of the website to crawl and scrape.}
@@ -52,6 +53,10 @@ Rcrawler(Website, no_cores, no_conn, MaxDepth, DIR, RequestsDelay = 0,
 \item{ExcludePatterns}{character's vector, vector of xpath patterns to exclude from selected ExtractPatterns.}
 
 \item{ExtractAsText}{boolean, default is TRUE, HTML and PHP tags is stripped from the extracted piece.}
+
+\item{ManyPerPattern}{boolean, ManyPerPattern boolean, If False only the first matched element by the pattern is extracted (like in Blogs one page has one article/post and one title). Otherwise if set to True  all nodes matching the pattern are extracted (Like in galleries, listing or comments, one page has many elements with the same pattern )}
+
+\item{NetworkData}{boolean, If set to TRUE, then the crawler map all the internal hyperlink connections within the given website and return DATA for Network construction using igraph or other tools.(two global variables is returned see details)}
 }
 \value{
 The crawling and scraping process may take a long time to finish, therefore, to avoid data loss in the case that a function crashes or stopped in the middle of action, some important data are exported at every iteration to R global environement:
@@ -61,11 +66,17 @@ The crawling and scraping process may take a long time to finish, therefore, to 
 
 - A repository in workspace that contains all downloaded pages (.html files)
 
-In addition, if data scraping is enabled :
+If data scraping is enabled by setting ExtractPatterns parameter:
 
-- DATA: A vector in global environement contains scraped contents.
+- DATA: A list of lists in global environement holding scraped contents.
 
 - A csv file 'extracted_contents.csv' holding all extracted data.
+
+If NetworkData is set to TRUE two additional global variables returned by the function are:
+
+- NetwIndex : Vector maps alls hyperlinks (nodes) with a unique integer ID
+
+- NetwEdges : data.frame representing edges of the network, with these column : From, To, Weight (the Depth level where the link connection has been discovered) and Type which actualy has a fixed value.
 }
 \description{
 The crawler's main function, by providing only the website URL and the Xpath patterns to extract
@@ -113,7 +124,8 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
 
  # Crawl the website using  4 cores and 4 parallel requests. However, this will only
   index URLs matching the regular expression pattern (/[0-9]{4}/[0-9]{2}/), and stores pages
-  in a custom directory "myrepo". The crawler stops when it reaches the third level.
+  in a custom directory "myrepo".
+  The crawler stops After reaching the third level of website depth.
 
   Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "keyword2"))
  # Crawl the website and collect only webpages containing keyword1 or keyword2 or both.
@@ -122,6 +134,13 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
    KeywordsAccuracy = 50)
  # Crawl the website and collect only webpages that has an accuracy percentage higher than 50\%
   of matching keyword1 and keyword2.
+
+  Rcrawler(Website = "http://glofile.com/" , no_cores = 4, no_conn = 4, GraphData = TRUE)
+  # Crawl the entire website, and create network edges DATA of internal links.
+  # Using Igraph for exmaple you can plot the network by the following commands
+  # library(igraph)
+  # network<-graph.data.frame(NetwEdges, directed=T)
+  # plot(network)
 }
 
 

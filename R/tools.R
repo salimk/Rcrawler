@@ -8,3 +8,18 @@ Precifunc<-function(keyword,sizekey,text) {
   t<-t/2
   return(t)
 }
+
+isTarget<-function(Data) {
+  x<-0;
+  for (i in Data) {
+    if(length(i)>0){
+      if (!is.vector(i)){
+        if(i=="NA"){x<-bitwOr(0,x)} else {x<-bitwOr(x,1)}
+      } else {
+        x<-bitwOr(x,1)
+      }
+    }
+  }
+  if(x==0) return(FALSE)
+  else return(TRUE)
+}
