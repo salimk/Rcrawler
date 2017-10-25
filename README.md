@@ -204,7 +204,16 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
 }
 `
 ## Updates history
-UPDATE V 0.1.4  :
+
+Next Updates:
+
+- Improve encoding detection
+- Extract data using CSS selector / XPatch
+- Folder name with a Random ID  for each crawling operation to avoid overriding previous crawling session. 
+- Include external links in network edges presentation
+- The ability to filter out pages to collect using your custom function (prediction, calssification model)
+
+UPDATE V 0.1.5  :
 
 - NetworkData parameter: Map all internal hyperlink connections within a given website and then construct Edges & Nodes Dataframe, Useful for Web structure mining.
 - When scraping a website with a given xpath patterns, the crawler avoid scraping and extracting data from non-content pages ( webpages that does not matches any given pattern)
@@ -228,6 +237,10 @@ UPDATE V 0.1.1 :
 - Add SystemRequirements field to Description with Java (>= 1.5)
 - Compile java classes with a lower JDK (1.5), to overcome this error (Unsupported major.minor version 52.0) encountered during package check with r-patched-solaris-x86 and r-oldrel-osx-x86_64 
 
+
+## How to make your CSS Selectors expression 
+To extract needed data , we start with selectorgadget to figure out which css selector matches the data we want (If you haven’t heard of selectorgadget, it’s the easiest way to determine which selector extracts the data that you’re interested in) .
+You can use it either by installing the [Chrome Extension](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb) or drag the [bookmarklet] to your bookmark bar, then go to any page and launch it. Make sur you see this [tutorial video](http://selectorgadget.com) on how to get css seletor using selectorgadget . 
 
 ## How to make your Xpath expression 
 1. First learn these expressions 
