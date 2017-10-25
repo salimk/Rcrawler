@@ -238,11 +238,11 @@ UPDATE V 0.1.1 :
 - Compile java classes with a lower JDK (1.5), to overcome this error (Unsupported major.minor version 52.0) encountered during package check with r-patched-solaris-x86 and r-oldrel-osx-x86_64 
 
 
-## How to make your CSS Selectors expression 
+###### How to detect CSS Selectors expression 
 To extract needed data , we start with selectorgadget to figure out which css selector matches the data we want (If you haven’t heard of selectorgadget, it’s the easiest way to determine which selector extracts the data that you’re interested in) .
 You can use it either by installing the [Chrome Extension](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb) or drag the [bookmarklet] to your bookmark bar, then go to any page and launch it. Make sur you see this [tutorial video](http://selectorgadget.com) on how to get css seletor using selectorgadget . 
 
-## How to make your Xpath expression 
+###### How to make your Xpath expression 
 1. First learn these expressions 
 
 Expressions	 |Description
