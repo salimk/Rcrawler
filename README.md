@@ -2,7 +2,7 @@
 [![CRAN version](http://www.r-pkg.org/badges/version/Rcrawler)](https://CRAN.R-project.org/package=Rcrawler)
 [![Build Test](https://api.travis-ci.org/salimk/Rcrawler.svg?branch=master)](https://travis-ci.org/salimk/Rcrawler)
 ![Downloads Stats](http://cranlogs.r-pkg.org/badges/Rcrawler)
-[![MIT Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/salimk/Rcrawler/blob/master/LICENSE)
+[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 [![DOI Paper](https://user-images.githubusercontent.com/17308124/31905494-44039a56-b826-11e7-9ace-01db4904176d.png)](https://doi.org/10.1016/j.softx.2017.04.004)
 
 Rcrawler is an R package for web crawling websites and extracting structured data which can be used for a wide range of useful applications, like web mining, text mining, web content mining, and web structure mining. So what is the difference between Rcrawler and rvest : rvest extracts data from one specific page by navigating through selectors. However, Rcrawler automatically traverses and parse all web pages of a website, and extract all data you need from them at once with a single command. For example collect all published posts on a blog, or extract all products on a shopping website, or gathering comments, reviews for your opinion mining study. More than that,  Rcrawler can create a network representation of a website internal hyperlinks. 
@@ -24,6 +24,8 @@ Rcrawler is an R package for web crawling websites and extracting structured dat
 With one single command Rcrawler function enables you to :
 
 - Download all website's HTML pages, ([see 1](https://github.com/salimk/Rcrawler#1--collecting-web-pages-from-a-website))
+
+- Load collected HTML Files to R environement (memory)    ([see 1](https://github.com/salimk/Rcrawler));
 
 - Extract structured DATA from all website pages: Titles, posts, Films, descriptions etc ([see 3](https://github.com/salimk/Rcrawler#3-scrape-data-while-crawling-a-website))
 
@@ -66,10 +68,10 @@ At the end of crawling process this function will return :
 
 - A variable named "INDEX" in the global environment: It's a data frame representing the general URL index, which includes all crawled/scraped web pages with their details (content type, HTTP state, the number of out-links and in-links, encoding type, and level). 
 ![INDEX variable](https://user-images.githubusercontent.com/17308124/31500701-0a153c9c-af60-11e7-85ea-15d40f7fe6cf.PNG)
-- A directory named as the website's domain, in this case, "glofile.com" it's by default located in your working directory (R workspace). This directory contains all crawled and downloaded web pages (.html files). Files are named with the same numeric "id" they have in INDEX.
+- A directory named as the website's domain plus current date and time, in this case, "glofile.com-101012" it's by default located in your working directory (R workspace). This directory contains all crawled and downloaded web pages (.html files). Files are named with the same numeric "id" they have in INDEX.
 ![File repository](https://user-images.githubusercontent.com/17308124/31500728-1ff15e6a-af60-11e7-89c9-b1aa1c4448eb.PNG)
 
-NOTE: Make sure that the website you want to crawl is not so big, as it may take more computer resources and time to finish. Stay polite, avoid overloading the server, the chance to get banned from the host server is bigger when you use many parallel connections. 
+NOTE: Make sure that the website you want to crawl is not so big, as it may take more computer resources and time to finish. Stay polite, avoid overloading the server, the chance to get banned from the host server is higher when you are using many parallel connections. 
 
 ###### 2- Filtering collected/parsed Urls by Regular expression
 For some reason, you may want to collect just web pages having a specific urls pattern , like a website section, posts webpages. In this case, you need filter urls by Regular expressions . 
