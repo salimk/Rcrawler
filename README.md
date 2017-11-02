@@ -265,15 +265,18 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
 `
 ## Updates history
 
-Next Updates:
+UPDATE V 0.1.7 :
 
 - Improve encoding detection
-- Extract data using CSS selector / XPatch
-- Folder name with a Random ID  for each crawling operation to avoid overriding previous crawling session. 
-- Include external links in network edges presentation
+- Extract data using CSS selector  
+- Project folder name contain domain,day,time to avoid overriding previous crawling session.
+- Include external links to network edges presentation
 - The ability to filter out pages to collect using your custom function (prediction, calssification model)
+- Scrape a list of URLs at once using contentscraper function 
+- Ability to Exlude some node from extracted content (like excluding quotes from forum post replies or excluding middle ads from Blog post)
+- Add function to List projects folders and Other to Import collected Html from folder to environement
 
-UPDATE V 0.1.5  :
+UPDATE V 0.1.5 - 0.1.6 :
 
 - NetworkData parameter: Map all internal hyperlink connections within a given website and then construct Edges & Nodes Dataframe, Useful for Web structure mining.
 - When scraping a website with a given xpath patterns, the crawler avoid scraping and extracting data from non-content pages ( webpages that does not matches any given pattern)
