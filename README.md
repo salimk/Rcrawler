@@ -25,7 +25,7 @@ With one single command Rcrawler function enables you to :
 
 - Download all website's HTML pages, ([see 1](https://github.com/salimk/Rcrawler#1--collecting-web-pages-from-a-website))
 
-- Load collected HTML Files to R environement (memory)    ([see 1](https://github.com/salimk/Rcrawler));
+- Load collected HTML Files to R environement (memory) ([see 2](https://github.com/salimk/Rcrawler#2--loading-collected-html-files-to-memory-r-environment))
 
 - Extract structured DATA from all website pages: Titles, posts, Films, descriptions etc ([see 3](https://github.com/salimk/Rcrawler#3-scrape-data-while-crawling-a-website))
 
@@ -58,7 +58,7 @@ Start by loading the library
 library(Rcrawler)
 ```
 
-###### 1- Collecting web pages from a website
+#### 1- Collecting web pages from a website
 ```
 Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4)
 ```
@@ -76,7 +76,7 @@ At the end of crawling process this function will return :
 
 **Note :** Make sure that the website you want to crawl is not so big, as it may take more computer resources and time to finish. Stay polite, avoid overloading the server by using fewer connections, the chance of getting banned by the host server is higher when you are using many parallel connections. 
 
-###### 2- Loading collected HTML files to memory R environment 
+#### 2- Loading collected HTML files to memory R environment 
 
 After running Rcrawler command, Collected HTML web pages are supposed to be stored on your hard drive, In fact putting downloaded files directly into variables will consume the RAM, So, the crawler creates a folder for each crawling sessions with a name similar this pattern "website-DateTime" . To load collected files into a variable for processing or analysis, you will need to run these two functions: **ListProjects** and **LoadHTMLFiles**.    
 ```
@@ -89,7 +89,8 @@ MyDATA<-LoadHTMLFiles("forum.zebulon.fr-011925", type = "vector")
 You can specify "list" as a type of returned variable. Also, this function has a parameter called (max) useful to limit the number of imported files.  
 
 ###### 3-Crawl and Scrape data from a website pages
-In the example below , we will try to extract articles and titles from our demo blog. To do this we need to specify the XPath or the CSS selector pattern of the elements to extract.  
+In the example below , we will try to extract articles and titles from our demo blog. To do this we need to specify the XPath or the CSS selector pattern of the elements to extract. 
+
 **Using XPath :**
 ```
 Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, ExtractXpathPat = c("//h1","//article"), PatternsNames = c("Title","Content"))
@@ -117,8 +118,10 @@ Data<-ContentScraper(Url = "http://glofile.com/index.php/2017/06/08/athletisme-m
 ```
 **Note 3:**
 - To learn how to make your Xpath expression follow [this tutorial](https://github.com/salimk/Rcrawler#how-to-make-your-xpath-expression)
-
 - To easily identify your CSS expression follow[this tutorial](https://github.com/salimk/Rcrawler#how-to-detect-css-selectors-expression)
+
+
+
 
 **Extract multiple node having the same pattern from every page**
 List of elements with same pattern found on one page, like post comments, product reviews, movie cast. 
