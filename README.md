@@ -46,9 +46,9 @@ In Web structure mining field Rcrawler provide some starter kit to analyze the n
 
 In addtition, Rcrawler package provide a set of tools that enables that makes your R web mining life easier:
 
-- Scrape data from a list of URLs you provide ([see 9-1](https://github.com/salimk/Rcrawler#9-creating-a-website-network-graph))
+- Scrape data from a list of URLs you provide ([see 9-1](https://github.com/salimk/Rcrawler/#9-1--scrape-you-list-of-urls))
 
-- Exclude an inner element (node) from scraped data ([see 9-2](https://github.com/salimk/Rcrawler#9-creating-a-website-network-graph))
+- Exclude an inner element (node) from scraped data ([see 9-2](https://github.com/salimk/Rcrawler#9-2--exclude-an-inner-element-node-from-scraped-data))
  
 ## Installation 
 
