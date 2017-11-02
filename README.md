@@ -38,18 +38,18 @@ Some websites are so big, you don't have sufficient time or ressources to crawl 
 
 - Control how many levels Should be crawled from the start point .([see 6](https://github.com/salimk/Rcrawler#6-liming-the-crawling-process-to-a-level-maxdepth-parameter)) 
 
-- Choose to ignore some URL parameters during crawling process ([see 7](https://github.com/salimk/Rcrawler#7-liming-the-crawling-process-to-a-level-maxdepth-parameter))  
+- Choose to ignore some URL parameters during crawling process ([see 7](https://github.com/salimk/Rcrawler#7-ignore-some-url-parameters-ignoreurlparams))  
 
 In Web structure mining field Rcrawler provide some starter kit to analyze the node and connection structure of a web site.
 
 - Represent a website Netwok by mapping all its internal and external hyperlink connections (Edges & nodes) ([see 8](https://github.com/salimk/Rcrawler#8-creating-a-website-network-graph))
 
+In addtition, Rcrawler package provide a set of tools that enables that makes your R web mining life easier:
 
+- Scrape data from a list of URLs you provide ([see 9-1](https://github.com/salimk/Rcrawler#9-creating-a-website-network-graph))
 
-In addtition, Rcrawler package provide a set of tools that enables you :
-
-- Scrape data from a list of URLs you provide 
-
+- Exclude an inner element (node) from scraped data ([see 9-2](https://github.com/salimk/Rcrawler#9-creating-a-website-network-graph))
+ 
 ## Installation 
 
 Install the release version from CRAN:
@@ -220,7 +220,7 @@ Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=4, urlregexfilter
 ```
 In this example the crawler start from this http://101greatgoals.com/betting/ and continue crawling until it reach the 4th level , however it will only collect pages of "betting" section ( having /betting/ in their url)
 
-#### 7-ignore some URL parameters (ignoreUrlParams) 
+#### 7-Ignore some URL parameters (ignoreUrlParams) 
 URL parameters are made of a key and a value separated by an equals sign (=) and joined by an ampersand (&). The first parameter always comes after a question mark in a URL. For example, http://example.com?product=1234&utm_source=google
 
 There are many URL parameters that produce the same content, such as *view=*, *display=*, *template=* which change de display, the style of a web page but not the content. Another example is *orderby=*  which change the order of a list but not the list itself. The crawler takes these pages as unique because they have different URLs which may lead to much duplicate content. 
@@ -229,6 +229,7 @@ To ignore one or more URL parameters use **ignoreUrlParams** argument .
 ```
 Rcrawler(Website = "http://forum.zebulon.fr/forums-de-zebulonfr-f30.html",no_cores = 2, no_conn = 2,  ExtractCSSPat = c(".ipsType_pagetitle",".entry-content"), ManyPerPattern = TRUE,  ignoreUrlParams =c("view","orderby"))
 ```
+
 #### 8-Creating a website Network graph
 ###### Network of internal links
 This option allows you to create a network representation graph of a website. This feature can be useful for Web structure mining.  
@@ -255,6 +256,25 @@ Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4 , NetworkDat
 ```
 After plotting we get this representation 
 ![Website network graph with External links](https://user-images.githubusercontent.com/17308124/32306062-31d6c4e6-bf71-11e7-8cdf-8d0ba3adf3db.PNG)
+
+#### 9- Other useful functionalities 
+
+###### 9-1- Scrape you list of URLs
+If you have already a list of links from same website and you want to scrape them all at once, not one by one as you used to do with rvest. Use **ContentScraper** it can process on or more urls. In the example bellow we collect reviews of 3 cosmetic product.
+
+```
+ listURLs<-c("http://www.thedermreview.com/la-prairie-reviews/",
+  "http://www.thedermreview.com/arbonne-reviews/",
+  "http://www.thedermreview.com/murad-reviews/")
+
+    Reviews<-ContentScraper(Url = listURLs, CssPatterns =c(".entry-title","#comments p"), ManyPerPattern = TRUE)
+```
+###### 9-2- Exclude an inner element (node) from scraped data 
+**ExcludeXpathPat** or **ExcludeCSSPat** are two arguments that let you exclude some part from extracted contents. In fact in some cases Css or Xpath patterns extract some data that you don't want, which you can't exclude by pattern, such as excluding quotes from forum replies or excluding middle ads or links from Blog posts. These two parmaters are also implemented in Rcrawler function.  
+```
+DATA<-ContentScraper(Url = "https://bitcointalk.org/index.php?topic=2334331.0", CssPatterns = c(".post"), ExcludeCSSPat = c(".quote",".quoteheader"), PatternsName = c("posts"), ManyPerPattern = TRUE)
+```
+From this Forum post Url we want to extract post title and all replies using CSS selectors c(".post"), However, we notice that each reply contain the previous reply as quote so we to exclude all quotes and quotes header (published by,date and time) from each extracted posts we use ExcludeCSSPat c(".quote",".quoteheader a") 
 
 ## Design and Implementation
 If you want to learn more about web scraper/crawler architecture, functional properties and implementation using R language, you can download the published paper for free from this link :  [R web scraping](http://www.sciencedirect.com/science/article/pii/S2352711017300110)
