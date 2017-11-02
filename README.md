@@ -64,6 +64,9 @@ Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4)
 ```
 This command allows downloading all HTML files of a website from the server to your computer. It can be useful if you want to analyze or apply something on the whole web page (HTML file).  
 
+- *no_cores* specify how many processes will execute the task
+- *no_conn* specify how many HTTP requests will be sent simultaneously (in parallel).
+
 At the end of crawling process this function will return :
 
 - A variable named "INDEX" in the global environment: It's a data frame representing the general URL index, which includes all crawled/scraped web pages with their details (content type, HTTP state, the number of out-links and in-links, encoding type, and level). 
@@ -71,50 +74,51 @@ At the end of crawling process this function will return :
 - A directory named as the website's domain plus current date and time, in this case, "glofile.com-101012" it's by default located in your working directory (R workspace). This directory contains all crawled and downloaded web pages (.html files). Files are named with the same numeric "id" they have in INDEX.
 ![File repository](https://user-images.githubusercontent.com/17308124/31500728-1ff15e6a-af60-11e7-89c9-b1aa1c4448eb.PNG)
 
-NOTE: Make sure that the website you want to crawl is not so big, as it may take more computer resources and time to finish. Stay polite, avoid overloading the server, the chance to get banned from the host server is higher when you are using many parallel connections. 
+**Note :** Make sure that the website you want to crawl is not so big, as it may take more computer resources and time to finish. Stay polite, avoid overloading the server by using fewer connections, the chance of getting banned by the host server is higher when you are using many parallel connections. 
 
-###### 2- Filtering collected/parsed Urls by Regular expression
-For some reason, you may want to collect just web pages having a specific urls pattern , like a website section, posts webpages. In this case, you need filter urls by Regular expressions . 
+###### 2- Loading collected HTML files to memory R environment 
 
-In the example below we know that all blog post has dates like 2017/09/08  in their URLs so we can tell the crawler to collect only these pages by flitging only URLs matching this regular expression "/[0-9]{4}/[0-9]{2}/[0-9]{2}/". Ulrs having 4-digit/2-digit/2-digit/, which are blog post pages in our example .
+After running Rcrawler command, Collected HTML web pages are supposed to be stored on your hard drive, In fact putting downloaded files directly into variables will consume the RAM, So, the crawler creates a folder for each crawling sessions with a name similar this pattern "website-DateTime" . To load collected files into a variable for processing or analysis, you will need to run these two functions: **ListProjects** and **LoadHTMLFiles**.    
 ```
-Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, urlregexfilter ="/[0-9]{4}/[0-9]{2}/[0-9]{2}/" )
+ListProjects()
 ```
-Collected pages are like :
+Run this command to list all your crawling project folders. Then you just need to pick-up (copy) the project name you want. Then run the following command which will load all HTML into a vector.
 ```
- http://www.glofile.com/2017/06/08/sondage-quel-budget-prevoyez-vous
- http://www.glofile.com/2017/06/08/jcdecaux-reconduction-dun-cont
- http://www.glofile.com/2017/06/08/taux-nette-detente-en-italie-bc
+MyDATA<-LoadHTMLFiles("forum.zebulon.fr-011925", type = "vector")
 ```
-In the following example we crawl the whole website but we collect only pages in section "sport" in url.
-```
-Rcrawler(Website = "http://www.glofile.com/sport/", urlregexfilter ="/sport/" )
-```
-Downloded/Extracted Pages are like : 
-```
-http://www.glofile.com/sport/marseille-vitoria-guimaraes.html
-http://www.glofile.com/sport/balotelli-a-la-conclusion-d-une-belle.html
-http://www.glofile.com/sport/la-reprise-acrobatique-gagnante.html
-```
+You can specify "list" as a type of returned variable. Also, this function has a parameter called (max) useful to limit the number of imported files.  
 
-**Note:** filtering URLs by a Regular expression, means the crawler will parse content (collect page) only from these specific URLs, It does not mean limiting the crawling process to only those particular URLs. In fact, if a website has 1000 links and just 200 matching the given regex, the crawler still need to crawl all 1000 link to find out these 200. if you want to limit the crawling process you can use MaxDepth parameter (refer to 5th section in this presentation)
-
-###### 3-Scrape data while crawling a website
-In the example below , we will try to extract articles and titles from our demo blog. To do this we need to filter out blog post pages (see 2), also we need to specify xpath pattern of elements to extract.  
+###### 3-Crawl and Scrape data from a website pages
+In the example below , we will try to extract articles and titles from our demo blog. To do this we need to specify the XPath or the CSS selector pattern of the elements to extract.  
+**Using XPath :**
 ```
-Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, urlregexfilter ="/[0-9]{4}/[0-9]{2}/[0-9]{2}/", ExtractPatterns = c("//h1","//article"))
+Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, ExtractXpathPat = c("//h1","//article"), PatternsNames = c("Title","Content"))
+```
+*PatternsNames*: No necessery but helps users identify extracted elements by checking the name of the object names(x).
+
+**Using CSS selectors :**
+```
+Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, ExtractCSSPat = c(".entry-title",".entry-content"), PatternsNames = c("Title","Content"))
 ```
 As result this function will return in addition to "INDEX" variable and file repository :
 - A variable named "DATA" in global environment: It's a list of extracted contents. 
 ![DATA and INDEX variable](https://user-images.githubusercontent.com/17308124/31500758-3532af40-af60-11e7-9fed-0aab2eb0ff5b.PNG)
 
-**Note :** before using ExtractPatterns on RCrawler function, try first to test your Xpath expression on a single webpage to ensure that they extract targeted data, by using :
+**Note 1:**
+By default Rcrawler will not collect nor scrape pages that do not contain any element matching the CSS or XPath pattern, As a result in the example below only article pages will be scrapped, categories or menu pages will be escaped. 
+
+**Note 2:** before using *ExtractXpathPat* or *ExtractCSSPator* on RCrawler function, try first to test your Xpath or CSS expression on a single webpage to ensure that they are correct, by using the **ContentScraper** function. Then check Data variable it should handle the extracted data, if it's empty or "NA", then no data founded matching the given patterns 
 ```
-pageinfo<-LinkExtractor("http://glofile.com/index.php/2017/06/08/athletisme-m-a-rome/")
-Data<-ContentScraper(pageinfo[[1]][[10]],c("//head/title","//*/article"))
+Data<-ContentScraper(Url = "http://glofile.com/index.php/2017/06/08/athletisme-m-a-rome/", XpathPatterns =c("//h1","//article")) 
 ```
-Then check Data variable it should handle the extracted data, if it contain "NA", This means no data matching the given xpath are founded on the page. 
-If you want to learn how to make your Xpath expression follow [this tutorial](https://github.com/salimk/Rcrawler#how-to-make-your-xpath-expression)
+OR using CSS selectors
+```
+Data<-ContentScraper(Url = "http://glofile.com/index.php/2017/06/08/athletisme-m-a-rome/", CssPatterns = c(".entry-title",".entry-content"))
+```
+**Note 3:**
+- To learn how to make your Xpath expression follow [this tutorial](https://github.com/salimk/Rcrawler#how-to-make-your-xpath-expression)
+
+- To easily identify your CSS expression follow[this tutorial](https://github.com/salimk/Rcrawler#how-to-detect-css-selectors-expression)
 
 **Extract multiple node having the same pattern from every page**
 List of elements with same pattern found on one page, like post comments, product reviews, movie cast. 
@@ -152,6 +156,33 @@ of matching keyword1 and keyword2.
 Rcrawler(Website = "http://www.master-maroc.com", KeywordsFilter = c("casablanca", "master"), KeywordsAccuracy = 50, ExtractPatterns = c("//*[@class='article-content']","//*[@class='contentheading clearfix']"))
 ```
 This command will crawl  http://www.master-maroc.com website and look for pages containing  keywords "casablanca" or "master" , then extracted data matching the given Xpaths ( title , article)  .
+
+###### 2- Filtering collected/parsed Urls by Regular expression
+
+For some reason, you may want to collect just web pages having a specific urls pattern , like a website section, posts webpages. In this case, you need filter urls by Regular expressions . 
+
+In the example below we know that all blog post has dates like 2017/09/08  in their URLs so we can tell the crawler to collect only these pages by flitging only URLs matching this regular expression "/[0-9]{4}/[0-9]{2}/[0-9]{2}/". Ulrs having 4-digit/2-digit/2-digit/, which are blog post pages in our example .
+```
+Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, urlregexfilter ="/[0-9]{4}/[0-9]{2}/[0-9]{2}/" )
+```
+Collected pages are like :
+```
+ http://www.glofile.com/2017/06/08/sondage-quel-budget-prevoyez-vous
+ http://www.glofile.com/2017/06/08/jcdecaux-reconduction-dun-cont
+ http://www.glofile.com/2017/06/08/taux-nette-detente-en-italie-bc
+```
+In the following example we crawl the whole website but we collect only pages in section "sport" in url.
+```
+Rcrawler(Website = "http://www.glofile.com/sport/", urlregexfilter ="/sport/" )
+```
+Downloded/Extracted Pages are like : 
+```
+http://www.glofile.com/sport/marseille-vitoria-guimaraes.html
+http://www.glofile.com/sport/balotelli-a-la-conclusion-d-une-belle.html
+http://www.glofile.com/sport/la-reprise-acrobatique-gagnante.html
+```
+
+**Note:** filtering URLs by a Regular expression, means the crawler will parse content (collect page) only from these specific URLs, It does not mean limiting the crawling process to only those particular URLs. In fact, if a website has 1000 links and just 200 matching the given regex, the crawler still need to crawl all 1000 link to find out these 200. if you want to limit the crawling process you can use MaxDepth parameter (refer to 5th section in this presentation)
 
 ###### 5-Liming the crawling process to a level (MaxDepth parameter) 
 Some popular websites are too big, and you don't have time or don't want to crawl the whole website for a specific reason, or sometimes you may just need to crawl the top links in the specific web page. For this purpose, you could use Maxdepth parameter to limit the crawler from going so deep. 
