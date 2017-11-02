@@ -88,8 +88,9 @@ MyDATA<-LoadHTMLFiles("forum.zebulon.fr-011925", type = "vector")
 ```
 You can specify "list" as a type of returned variable. Also, this function has a parameter called (max) useful to limit the number of imported files.  
 
-###### 3-Crawl and Scrape data from a website pages
-In the example below , we will try to extract articles and titles from our demo blog. To do this we need to specify the XPath or the CSS selector pattern of the elements to extract. 
+#### 3-Crawl and Scrape data from a website pages
+###### 3-1- One element per pattern for every page
+In the example below, we will try to extract articles and titles from our demo blog. So each blog post normally has one title and one article. To do this we need to specify the XPath or the CSS selector pattern of the elements to extract. 
 
 **Using XPath :**
 ```
@@ -121,21 +122,28 @@ Data<-ContentScraper(Url = "http://glofile.com/index.php/2017/06/08/athletisme-m
 - To easily identify your CSS expression follow[this tutorial](https://github.com/salimk/Rcrawler#how-to-detect-css-selectors-expression)
 
 
-
-
-**Extract multiple node having the same pattern from every page**
-List of elements with same pattern found on one page, like post comments, product reviews, movie cast. 
-
+###### 3-1- Multiple elements per pattern for every page
+Useful for extracting many elements having the same pattern from each page, like retrieving post comments, product reviews, movie cast, forums replies, the listing of something or even pages hyperlinks.. etc. To enable this option, we need to set **ManyPerPattern** parameter to TRUE.    
+In the example below we will retreive top movies titles, and cast (list of principal actors).
+**Using XPath :**
+ ```
+Rcrawler(Website = "http://www.imdb.com/chart/top", no_cores = 4, no_conn = 4, urlregexfilter = "/title/", ExtractXpathPat = c("//head/title","//*/div[@id='titleCast']//span[@class='itemprop']"),PatternsNames = c("title", "Cast"), ManyPerPattern = TRUE, MaxDepth=1 )
 ```
-Rcrawler(Website = "http://www.imdb.com/chart/top", no_cores = 4, no_conn = 4, urlregexfilter = "/title/", ExtractPatterns = c("//head/title","//*/div[@id='titleCast']//span[@class='itemprop']"),PatternsNames = c("title", "Cast"), ManyPerPattern = TRUE, MaxDepth=1 )
-```
-This command allow you to downlaad all top movies titles, and cast (list of principal actors). we use urlregexfilter = "/title/" because we know that movie pages have "title" in Url. MaxDepth is set to 1 to follow only hyperlinks on the source page we provide. ManyPerPattern is set to TRUE to enable extracting all actors not only the first.
+**Using CSS Selector :**
+ ```
+Rcrawler(Website = "http://www.imdb.com/chart/top", no_cores = 4, no_conn = 4, urlregexfilter = "/title/", ExtractCSSPat = c(".originalTitle","#titleCast .itemprop"),PatternsNames = c("title", "Cast"), ManyPerPattern = TRUE, MaxDepth=1 )
+ ```
+- *urlregexfilter* : Movie pages have the word "title" in its Url. http://www.imdb.com/**title**/tt0111161/, so we tell the crawler to retrieve only those pages.
+- *MaxDepth* is set to 1 to follow only hyperlinks on the source page we provide (not going deep). 
+- *ManyPerPattern* is set to TRUE to enable extracting all actors in each film.
+
+**Retreive all hyperlinks :**
+Another example to scrape all href urls on each page of this website.
 ```
 Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4, ExtractPatterns= c("//*/a/@href"),PatternsNames=c("Links"), ManyPerPattern=TRUE)
 ```
-Another example to scrape all href urls on each page of this website.
 
-###### 4-Filter collected/ scraped web page by search terms/keywords
+#### 4-Filter collected/ scraped web page by search terms/keywords
 If you want to crawl a website and collect/scrape only some web pages related to a specific topic, like gathering posts related to trump donald from a news website. Rcrawler function has two useful parameters KeywordsFilter and KeywordsAccuracy
 
 KeywordsFilter: a character vector, here you should provide keywords/terms of the topic you are looking. Rcrawler will calculate an accuracy score based matched keywords and their occurrence on the page, then by default, it collects or scrapes only web pages with at least a score of 1% wich mean at least one keyword is founded one time on the page. This parameter must be a vector with at least one keyword like c("mykeyword").
@@ -160,7 +168,7 @@ Rcrawler(Website = "http://www.master-maroc.com", KeywordsFilter = c("casablanca
 ```
 This command will crawl  http://www.master-maroc.com website and look for pages containing  keywords "casablanca" or "master" , then extracted data matching the given Xpaths ( title , article)  .
 
-###### 2- Filtering collected/parsed Urls by Regular expression
+#### 2- Filtering collected/parsed Urls by Regular expression
 
 For some reason, you may want to collect just web pages having a specific urls pattern , like a website section, posts webpages. In this case, you need filter urls by Regular expressions . 
 
@@ -187,7 +195,7 @@ http://www.glofile.com/sport/la-reprise-acrobatique-gagnante.html
 
 **Note:** filtering URLs by a Regular expression, means the crawler will parse content (collect page) only from these specific URLs, It does not mean limiting the crawling process to only those particular URLs. In fact, if a website has 1000 links and just 200 matching the given regex, the crawler still need to crawl all 1000 link to find out these 200. if you want to limit the crawling process you can use MaxDepth parameter (refer to 5th section in this presentation)
 
-###### 5-Liming the crawling process to a level (MaxDepth parameter) 
+#### 5-Liming the crawling process to a level (MaxDepth parameter) 
 Some popular websites are too big, and you don't have time or don't want to crawl the whole website for a specific reason, or sometimes you may just need to crawl the top links in the specific web page. For this purpose, you could use Maxdepth parameter to limit the crawler from going so deep. 
 Example to understand : A(B,C(E(H),F(G,k)),D) . Page A contain links B, C, D ; Page C contain E and F, page F contain G and K and page E contain H, In this example A is level 0 ,C represend Level 1 and E,F are both level 2 . 
 
@@ -201,7 +209,7 @@ Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=4, urlregexfilter
 ```
 In this example the crawler start from this http://101greatgoals.com/betting/ and continue crawling until it reach the 4th level , however it will only collect pages of "betting" section ( having /betting/ in their url)
 
-###### 6-Creating a website Network graph
+#### 6-Creating a website Network graph
 This option allow you to easly create a network representation graph of a website. Useful for Web structure mining.  
 If NetworkData parameter is set to TRUE then Rcrawler will create two additional gloabl variables handling Edges & Nodes, wich are :  
 - NetwIndex : Vector maps alls hyperlinks (nodes) to  unique integer ID (element position in the vector)
@@ -274,11 +282,11 @@ UPDATE V 0.1.1 :
 - Compile java classes with a lower JDK (1.5), to overcome this error (Unsupported major.minor version 52.0) encountered during package check with r-patched-solaris-x86 and r-oldrel-osx-x86_64 
 
 
-###### How to detect CSS Selectors expression 
+#### How to detect CSS Selectors expression 
 To extract needed data , we start with selectorgadget to figure out which css selector matches the data we want (If you haven’t heard of selectorgadget, it’s the easiest way to determine which selector extracts the data that you’re interested in) .
 You can use it either by installing the [Chrome Extension](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb) or drag the [bookmarklet] to your bookmark bar, then go to any page and launch it. Make sur you see this [tutorial video](http://selectorgadget.com) on how to get css seletor using selectorgadget . 
 
-###### How to make your Xpath expression 
+#### How to make your Xpath expression 
 1. First learn these expressions 
 
 Expressions	 |Description
