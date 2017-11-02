@@ -27,17 +27,17 @@ With one single command Rcrawler function enables you to :
 
 - Load collected HTML Files to R environement (memory) ([see 2](https://github.com/salimk/Rcrawler#2--loading-collected-html-files-to-memory-r-environment))
 
-- Extract structured DATA from all website pages: Titles, posts, Films, descriptions etc ([see 3](https://github.com/salimk/Rcrawler#3-scrape-data-while-crawling-a-website))
+- Extract structured DATA from all website pages: Titles, posts, Films, descriptions etc ([see 3](https://github.com/salimk/Rcrawler#3-crawl-and-scrape-data-from-a-website-pages))
 
 - Scraping targeted contents using search terms, by providing desired keywords Rcrawler can traverse all wbesite links and collect/extract only web pages related to your topic. ([see 4](https://github.com/salimk/Rcrawler#4-filter-collected-scraped-web-page-by-search-termskeywords))
 
 Some websites are so big, you don't have sufficient time or ressources to crawl them, So you are only interested in a particular section of the website for these reason we provided some useful parameters to control the crawling process such as : 
 
-- Filtering collected/scraped Urls by URLS having some keywords or matching a specific pattern ([see 2](https://github.com/salimk/Rcrawler#2--filtering-collectedparsed-urls-by-regular-expression)) 
+- Filtering collected/scraped Urls by URLS having some keywords or matching a specific pattern ([see 5](https://github.com/salimk/Rcrawler#2--filtering-collectedparsed-urls-by-regular-expression)) 
 
-- Control how deep the crawler will go, how many levels Should be crawled from the start point.([see 5](https://github.com/salimk/Rcrawler#5-liming-the-crawling-process-to-a-level-maxdepth-parameter)) 
+- Control how deep the crawler will go, how many levels Should be crawled from the start point.([see 6](https://github.com/salimk/Rcrawler#5-liming-the-crawling-process-to-a-level-maxdepth-parameter)) 
 
-- Represent a website Netwok by mapping all its internal hyperlink connections (Edges & nodes) ([see 6](https://github.com/salimk/Rcrawler/blob/master/README.md#6-creating-a-website-network-graph))
+- Represent a website Netwok by mapping all its internal and external hyperlink connections (Edges & nodes) ([see 7](https://github.com/salimk/Rcrawler/blob/master/README.md#6-creating-a-website-network-graph))
 
 
 ## Installation 
@@ -168,7 +168,7 @@ Rcrawler(Website = "http://www.master-maroc.com", KeywordsFilter = c("casablanca
 ```
 This command will crawl  http://www.master-maroc.com website and look for pages containing  keywords "casablanca" or "master" , then extracted data matching the given Xpaths ( title , article)  .
 
-#### 2- Filtering collected/parsed Urls by Regular expression
+#### 5- Filtering collected/parsed Urls by Regular expression
 
 For some reason, you may want to collect just web pages having a specific urls pattern , like a website section, posts webpages. In this case, you need filter urls by Regular expressions . 
 
@@ -195,7 +195,7 @@ http://www.glofile.com/sport/la-reprise-acrobatique-gagnante.html
 
 **Note:** filtering URLs by a Regular expression, means the crawler will parse content (collect page) only from these specific URLs, It does not mean limiting the crawling process to only those particular URLs. In fact, if a website has 1000 links and just 200 matching the given regex, the crawler still need to crawl all 1000 link to find out these 200. if you want to limit the crawling process you can use MaxDepth parameter (refer to 5th section in this presentation)
 
-#### 5-Liming the crawling process to a level (MaxDepth parameter) 
+#### 6-Liming the crawling process to a level (MaxDepth parameter) 
 Some popular websites are too big, and you don't have time or don't want to crawl the whole website for a specific reason, or sometimes you may just need to crawl the top links in the specific web page. For this purpose, you could use Maxdepth parameter to limit the crawler from going so deep. 
 Example to understand : A(B,C(E(H),F(G,k)),D) . Page A contain links B, C, D ; Page C contain E and F, page F contain G and K and page E contain H, In this example A is level 0 ,C represend Level 1 and E,F are both level 2 . 
 
@@ -209,11 +209,12 @@ Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=4, urlregexfilter
 ```
 In this example the crawler start from this http://101greatgoals.com/betting/ and continue crawling until it reach the 4th level , however it will only collect pages of "betting" section ( having /betting/ in their url)
 
-#### 6-Creating a website Network graph
+#### 7-Creating a website Network graph
 This option allow you to easly create a network representation graph of a website. Useful for Web structure mining.  
 If NetworkData parameter is set to TRUE then Rcrawler will create two additional gloabl variables handling Edges & Nodes, wich are :  
-- NetwIndex : Vector maps alls hyperlinks (nodes) to  unique integer ID (element position in the vector)
-- NetwEdges : data.frame representing edges of the network, with these columns: From, To, Weight (the Depth level where the link connection has been discovered) and Type which actually has a fixed value.
+- **NetwIndex** : Vector maps alls hyperlinks (nodes) to unique integer ID (element position in the vector)
+- **NetwEdges** : data.frame representing edges of the network, with these columns: From, To, Weight (the Depth level where the link connection has been discovered) and Type (number 1 for internal links, number 2 for external links).
+
 ```
 Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4 , NetworkData = TRUE)
 ```
@@ -224,6 +225,7 @@ network<-graph.data.frame(NetwEdges, directed=T)
 plot(network)
 ```
 ![networkdata](https://user-images.githubusercontent.com/17308124/31865735-71de0288-b76b-11e7-8d65-1ae66c2b3805.PNG)
+
 
 ## Design and Implementation
 If you want to learn more about web scraper/crawler architecture, functional properties and implementation using R language, you can download the published paper for free from this link :  [R web scraping](http://www.sciencedirect.com/science/article/pii/S2352711017300110)
