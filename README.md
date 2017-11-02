@@ -21,6 +21,7 @@ Rcrawler is an R package for web crawling websites and extracting structured dat
 6. [Updates history](https://github.com/salimk/Rcrawler#brief-on-updates)
 
 ## RCrawler main features  
+
 With one single command Rcrawler function enables you to :
 
 - Download all website's HTML pages, ([see 1](https://github.com/salimk/Rcrawler#1--collecting-web-pages-from-a-website))
@@ -30,15 +31,18 @@ With one single command Rcrawler function enables you to :
 - Extract structured DATA from all website pages: Titles, posts, Films, descriptions etc ([see 3](https://github.com/salimk/Rcrawler#3-crawl-and-scrape-data-from-a-website-pages))
 
 - Scraping targeted contents using search terms, by providing desired keywords Rcrawler can traverse all wbesite links and collect/extract only web pages related to your topic. ([see 4](https://github.com/salimk/Rcrawler#4-filter-collected-scraped-web-page-by-search-termskeywords))
-
+ 
 Some websites are so big, you don't have sufficient time or ressources to crawl them, So you are only interested in a particular section of the website for these reason we provided some useful parameters to control the crawling process such as : 
 
 - Filtering collected/scraped Urls by URLS having some keywords or matching a specific pattern ([see 5](https://github.com/salimk/Rcrawler#2--filtering-collectedparsed-urls-by-regular-expression)) 
 
-- Control how deep the crawler will go, how many levels Should be crawled from the start point.([see 6](https://github.com/salimk/Rcrawler#5-liming-the-crawling-process-to-a-level-maxdepth-parameter)) 
+- Control how many levels Should be crawled from the start point .([see 6](https://github.com/salimk/Rcrawler#5-liming-the-crawling-process-to-a-level-maxdepth-parameter)) 
 
 - Represent a website Netwok by mapping all its internal and external hyperlink connections (Edges & nodes) ([see 7](https://github.com/salimk/Rcrawler/blob/master/README.md#6-creating-a-website-network-graph))
 
+In addtition, Rcrawler package provide a set of tools that enables you :
+
+- Scrape data from a list of URLs you provide 
 
 ## Installation 
 
@@ -144,11 +148,12 @@ Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4, ExtractPatt
 ```
 
 #### 4-Filter collected/ scraped web page by search terms/keywords
-If you want to crawl a website and collect/scrape only some web pages related to a specific topic, like gathering posts related to trump donald from a news website. Rcrawler function has two useful parameters KeywordsFilter and KeywordsAccuracy
 
-KeywordsFilter: a character vector, here you should provide keywords/terms of the topic you are looking. Rcrawler will calculate an accuracy score based matched keywords and their occurrence on the page, then by default, it collects or scrapes only web pages with at least a score of 1% wich mean at least one keyword is founded one time on the page. This parameter must be a vector with at least one keyword like c("mykeyword").
+To crawl a website and collect/scrape only some web pages related to a specific topic, like gathering posts related to *Donald trump*  from a news website. Rcrawler function has two useful parameters **KeywordsFilter** and **KeywordsAccuracy**.
 
-KeywordsAccuracy. Integer value range between 0 and 100, used only with the KeywordsFilter parameter to determine the accuracy of web pages to collect. You can use one or more search terms; the accuracy will be calculated based on how many provided keywords are found on on the page plus their occurrence rate. For example, if only one keyword is provided c("keyword") so ,
+**KeywordsFilter** : a character vector, here you should provide keywords/terms of the topic you are looking for. Rcrawler will calculate an accuracy score based on matched keywords and their occurrence on the page, then it collects or scrapes only web pages with at least a score of 1% wich mean at least one keyword is founded one time on the page. This parameter must be a vector with at least one keyword like c("mykeyword").
+
+**KeywordsAccuracy**: Integer value range between 0 and 100, used only in combination the *KeywordsFilter* parameter to determine the minimum accuracy of web pages to be collected/scraped. You can use one or more search terms; the accuracy will be calculated based on how many provided keywords are found on on the page plus their occurrence rate. For example, if only one keyword is provided c("keyword"),
 50% means one occurrence of "keyword" in the page
 100% means five occurrences of "keyword" in the page 
 
@@ -166,7 +171,7 @@ of matching keyword1 and keyword2.
 ```
 Rcrawler(Website = "http://www.master-maroc.com", KeywordsFilter = c("casablanca", "master"), KeywordsAccuracy = 50, ExtractPatterns = c("//*[@class='article-content']","//*[@class='contentheading clearfix']"))
 ```
-This command will crawl  http://www.master-maroc.com website and look for pages containing  keywords "casablanca" or "master" , then extracted data matching the given Xpaths ( title , article)  .
+This command will crawl  http://www.master-maroc.com website and looks for pages containing  keywords "casablanca" or "master" , then extract data matching the given XPaths ( title , article)  .
 
 #### 5- Filtering collected/parsed Urls by Regular expression
 
@@ -193,16 +198,16 @@ http://www.glofile.com/sport/balotelli-a-la-conclusion-d-une-belle.html
 http://www.glofile.com/sport/la-reprise-acrobatique-gagnante.html
 ```
 
-**Note:** filtering URLs by a Regular expression, means the crawler will parse content (collect page) only from these specific URLs, It does not mean limiting the crawling process to only those particular URLs. In fact, if a website has 1000 links and just 200 matching the given regex, the crawler still need to crawl all 1000 link to find out these 200. if you want to limit the crawling process you can use MaxDepth parameter (refer to 5th section in this presentation)
+**Note:** filtering URLs by a Regular expression, means the crawler will parse content (collect page) only from these specific URLs, It does not mean limiting the crawling process to only those particular URLs. In fact, if a website has 1000 links and just 200 matching the given regex, the crawler still need to crawl all 1000 links to find out those 200. if you want to limit the crawling process you can use MaxDepth parameter (refer to the next section)
 
 #### 6-Liming the crawling process to a level (MaxDepth parameter) 
-Some popular websites are too big, and you don't have time or don't want to crawl the whole website for a specific reason, or sometimes you may just need to crawl the top links in the specific web page. For this purpose, you could use Maxdepth parameter to limit the crawler from going so deep. 
-Example to understand : A(B,C(E(H),F(G,k)),D) . Page A contain links B, C, D ; Page C contain E and F, page F contain G and K and page E contain H, In this example A is level 0 ,C represend Level 1 and E,F are both level 2 . 
+Some popular websites are so big, and you don't have time or dedicated ressources to crawl the whole website, or for some specific reason you may just need to crawl the top links of a given web page. For this purpose, you could use Maxdepth parameter to limit the crawler from going so deep. 
+Example: A(B,C(E(H),F(G,k)),D) . Page A links to B, C, D ; Page C links to E and F, page F links to G and K and page E links to H, In this example A is level 0 ,C represend Level 1 and E,F are both level 2 . 
 
 ```
 Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=1)
 ```
-This command will parse only pages related to this link http://101greatgoals.com/betting/ (only links on that page will be crawled)
+This command will parse only pages related to this link http://101greatgoals.com/betting/ (only links on that page)
 
 ```
 Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=4, urlregexfilter = "/betting/")
@@ -210,22 +215,31 @@ Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=4, urlregexfilter
 In this example the crawler start from this http://101greatgoals.com/betting/ and continue crawling until it reach the 4th level , however it will only collect pages of "betting" section ( having /betting/ in their url)
 
 #### 7-Creating a website Network graph
-This option allow you to easly create a network representation graph of a website. Useful for Web structure mining.  
-If NetworkData parameter is set to TRUE then Rcrawler will create two additional gloabl variables handling Edges & Nodes, wich are :  
+###### Network of internal links
+This option allows you to create a network representation graph of a website. This feature can be useful for Web structure mining.  
+Set *NetworkData* parameter  to TRUE then Crawler will create two additional global variables handling Edges & Nodes of the website:
 - **NetwIndex** : Vector maps alls hyperlinks (nodes) to unique integer ID (element position in the vector)
 - **NetwEdges** : data.frame representing edges of the network, with these columns: From, To, Weight (the Depth level where the link connection has been discovered) and Type (number 1 for internal links, number 2 for external links).
 
 ```
-Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4 , NetworkData = TRUE)
+Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4 , NetworkData = TRUE, statslinks = TRUE)
 ```
+*statslinks* argument is optional, it counts for each page the number of inbound links.
 This command crawl our demo website, and create network edges data of internal links. Using Igraph library you can plot the network by  the following commands (you can use any other library):
 ```
 library(igraph)
 network<-graph.data.frame(NetwEdges, directed=T)
 plot(network)
 ```
-![networkdata](https://user-images.githubusercontent.com/17308124/31865735-71de0288-b76b-11e7-8d65-1ae66c2b3805.PNG)
+![Website network graph only internal links](https://user-images.githubusercontent.com/17308124/31865735-71de0288-b76b-11e7-8d65-1ae66c2b3805.PNG)
 
+###### Network of internal and external links
+To include external links in network representation , set *NetwExtLinks* parameter to TRUE
+```
+Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4 , NetworkData = TRUE, statslinks = TRUE)
+```
+After plotting we get this representation 
+![Website network graph with External links](https://user-images.githubusercontent.com/17308124/32306062-31d6c4e6-bf71-11e7-8cdf-8d0ba3adf3db.PNG)
 
 ## Design and Implementation
 If you want to learn more about web scraper/crawler architecture, functional properties and implementation using R language, you can download the published paper for free from this link :  [R web scraping](http://www.sciencedirect.com/science/article/pii/S2352711017300110)
