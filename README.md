@@ -22,7 +22,7 @@ Rcrawler is an R package for web crawling websites and extracting structured dat
 
 ## RCrawler main features  
 
-With one single command Rcrawler function enables you to :
+With one single command **Rcrawler function** enables you to :
 
 - Download all website's HTML pages, ([see 1](https://github.com/salimk/Rcrawler#1--collecting-web-pages-from-a-website))
 
@@ -34,11 +34,17 @@ With one single command Rcrawler function enables you to :
  
 Some websites are so big, you don't have sufficient time or ressources to crawl them, So you are only interested in a particular section of the website for these reason we provided some useful parameters to control the crawling process such as : 
 
-- Filtering collected/scraped Urls by URLS having some keywords or matching a specific pattern ([see 5](https://github.com/salimk/Rcrawler#2--filtering-collectedparsed-urls-by-regular-expression)) 
+- Filtering collected/scraped Urls by URLS having some keywords or matching a specific pattern ([see 5](https://github.com/salimk/Rcrawler#5--filtering-collectedparsed-urls-by-regular-expression)) 
 
-- Control how many levels Should be crawled from the start point .([see 6](https://github.com/salimk/Rcrawler#5-liming-the-crawling-process-to-a-level-maxdepth-parameter)) 
+- Control how many levels Should be crawled from the start point .([see 6](https://github.com/salimk/Rcrawler#6-liming-the-crawling-process-to-a-level-maxdepth-parameter)) 
 
-- Represent a website Netwok by mapping all its internal and external hyperlink connections (Edges & nodes) ([see 7](https://github.com/salimk/Rcrawler/blob/master/README.md#6-creating-a-website-network-graph))
+- Choose to ignore some URL parameters during crawling process ([see 7](https://github.com/salimk/Rcrawler#5-liming-the-crawling-process-to-a-level-maxdepth-parameter))  
+
+In Web structure mining field Rcrawler provide some starter kit to analyze the node and connection structure of a web site.
+
+- Represent a website Netwok by mapping all its internal and external hyperlink connections (Edges & nodes) ([see 8](https://github.com/salimk/Rcrawler#6-creating-a-website-network-graph))
+
+
 
 In addtition, Rcrawler package provide a set of tools that enables you :
 
