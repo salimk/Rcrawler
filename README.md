@@ -9,7 +9,7 @@ Rcrawler is an R package for web crawling websites and extracting structured dat
 
 > Help us improve Rcrawler by **asking questions**, **revealing issues**, **suggesting new features**.
 > If you have a blog **write** about, or just **share** it with your collegues. 
-> -Thank you :pray:
+> -Thank you :thumbsup: :relaxed:
 
 ## Summary
 1. [RCrawler main features](https://github.com/salimk/Rcrawler#rcrawler-main-features)
