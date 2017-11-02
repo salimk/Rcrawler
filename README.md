@@ -38,11 +38,11 @@ Some websites are so big, you don't have sufficient time or ressources to crawl 
 
 - Control how many levels Should be crawled from the start point .([see 6](https://github.com/salimk/Rcrawler#6-liming-the-crawling-process-to-a-level-maxdepth-parameter)) 
 
-- Choose to ignore some URL parameters during crawling process ([see 7](https://github.com/salimk/Rcrawler#5-liming-the-crawling-process-to-a-level-maxdepth-parameter))  
+- Choose to ignore some URL parameters during crawling process ([see 7](https://github.com/salimk/Rcrawler#7-liming-the-crawling-process-to-a-level-maxdepth-parameter))  
 
 In Web structure mining field Rcrawler provide some starter kit to analyze the node and connection structure of a web site.
 
-- Represent a website Netwok by mapping all its internal and external hyperlink connections (Edges & nodes) ([see 8](https://github.com/salimk/Rcrawler#6-creating-a-website-network-graph))
+- Represent a website Netwok by mapping all its internal and external hyperlink connections (Edges & nodes) ([see 8](https://github.com/salimk/Rcrawler#8-creating-a-website-network-graph))
 
 
 
@@ -220,7 +220,16 @@ Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=4, urlregexfilter
 ```
 In this example the crawler start from this http://101greatgoals.com/betting/ and continue crawling until it reach the 4th level , however it will only collect pages of "betting" section ( having /betting/ in their url)
 
-#### 7-Creating a website Network graph
+#### 7-ignore some URL parameters (ignoreUrlParams) 
+URL parameters are made of a key and a value separated by an equals sign (=) and joined by an ampersand (&). The first parameter always comes after a question mark in a URL. For example, http://example.com?product=1234&utm_source=google
+
+There are many URL parameters that produce the same content, such as *view=*, *display=*, *template=* which change de display, the style of a web page but not the content. Another example is *orderby=*  which change the order of a list but not the list itself. The crawler takes these pages as unique because they have different URLs which may lead to much duplicate content. 
+
+To ignore one or more URL parameters use **ignoreUrlParams** argument . 
+```
+Rcrawler(Website = "http://forum.zebulon.fr/forums-de-zebulonfr-f30.html",no_cores = 2, no_conn = 2,  ExtractCSSPat = c(".ipsType_pagetitle",".entry-content"), ManyPerPattern = TRUE,  ignoreUrlParams =c("view","orderby"))
+```
+#### 8-Creating a website Network graph
 ###### Network of internal links
 This option allows you to create a network representation graph of a website. This feature can be useful for Web structure mining.  
 Set *NetworkData* parameter  to TRUE then Crawler will create two additional global variables handling Edges & Nodes of the website:
