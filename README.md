@@ -8,8 +8,8 @@
 Rcrawler is an R package for web crawling websites and extracting structured data which can be used for a wide range of useful applications, like web mining, text mining, web content mining, and web structure mining. So what is the difference between Rcrawler and rvest : rvest extracts data from one specific page by navigating through selectors. However, Rcrawler automatically traverses and parse all web pages of a website, and extract all data you need from them at once with a single command. For example collect all published posts on a blog, or extract all products on a shopping website, or gathering comments, reviews for your opinion mining studies. More than that,  Rcrawler can help you studies web site structure by building a network representation of a website internal and external hyperlinks (nodes & edges). 
 
 > Help us improve Rcrawler by **asking questions**, **revealing issues**, **suggesting new features**.
-> If you have a blog **write** about Rcrawler, or just **share** it with your collegues. 
-> Thank you 
+> If you have a blog **write** about, or just **share** it with your collegues. 
+> -Thank you :pray:
 
 ## Summary
 1. [RCrawler main features](https://github.com/salimk/Rcrawler#rcrawler-main-features)
