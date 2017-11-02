@@ -118,9 +118,17 @@ Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, ExtractX
 Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, ExtractCSSPat = c(".entry-title",".entry-content"), PatternsNames = c("Title","Content"))
 ```
 As result this function will return in addition to "INDEX" variable and file repository :
-- A variable named "DATA" in global environment: It's a list of extracted contents. 
+- A variable named "DATA" in global environment: It's a list of extracted contents. List of sublists, each sublist represent a web page and contain its extracted elements (title, content). 
 ![DATA and INDEX variable](https://user-images.githubusercontent.com/17308124/31500758-3532af40-af60-11e7-9fed-0aab2eb0ff5b.PNG)
-
+**List manipulation**
+To get all titles in one vector use : 
+```
+VecTitle<-unlist(lapply(DATA, `[[`, 1))
+```
+To get all content in one vector use :
+```
+VecContent<-unlist(lapply(DATA, `[[`, 2))
+```
 **Note 1:**
 By default Rcrawler will not collect nor scrape pages that do not contain any element matching the CSS or XPath pattern, As a result in the example below only article pages will be scrapped, categories or menu pages will be escaped. 
 
@@ -135,7 +143,6 @@ Data<-ContentScraper(Url = "http://glofile.com/index.php/2017/06/08/athletisme-m
 **Note 3:**
 - To learn how to make your Xpath expression follow [this tutorial](https://github.com/salimk/Rcrawler#how-to-make-your-xpath-expression)
 - To easily identify your CSS expression follow[this tutorial](https://github.com/salimk/Rcrawler#how-to-detect-css-selectors-expression)
-
 
 ###### 3-1- Multiple elements per pattern for every page
 Useful for extracting many elements having the same pattern from each page, like retrieving post comments, product reviews, movie cast, forums replies, the listing of something or even pages hyperlinks.. etc. To enable this option, we need to set **ManyPerPattern** parameter to TRUE.    
@@ -182,7 +189,15 @@ of matching keyword1 and keyword2.
 ```
 Rcrawler(Website = "http://www.master-maroc.com", KeywordsFilter = c("casablanca", "master"), KeywordsAccuracy = 50, ExtractPatterns = c("//*[@class='article-content']","//*[@class='contentheading clearfix']"))
 ```
-This command will crawl  http://www.master-maroc.com website and looks for pages containing  keywords "casablanca" or "master" , then extract data matching the given XPaths ( title , article)  .
+This command will crawl  http://www.master-maroc.com website and looks for pages containing  keywords "casablanca" or "master" , then extract data matching the given XPaths ( title , article) .
+###### Some good scraping strategies
+You have a huge website (over 50000 pages) and you are looking for some specific information to extract. 
+- First, try to limit your crawling by looking if your desired content is located under a specific section of the website.
+- The second strategy is to use the website search field to look for what you need then, instead of providing the home page, use this search result page a start point for your crawling.
+- If search option is not provided by the website, then you will make the half work manually. Start by looking for your target pages using google search :  
+```"my Keywords"+ site:https://targetwebsite.org
+```
+Then collect manually URLs from google result pages. Finally, use *ContentScraper*  function to scrape all URLs at once ([see 9-1](https://github.com/salimk/Rcrawler/#9-1--scrape-you-list-of-urls)).
 
 #### 5- Filtering collected/parsed Urls by Regular expression
 
@@ -233,8 +248,7 @@ There are many URL parameters that produce the same content, such as *view=*, *d
 To ignore one or more URL parameters use **ignoreUrlParams** argument . 
 ```
 Rcrawler(Website = "http://forum.zebulon.fr/forums-de-zebulonfr-f30.html",no_cores = 2, no_conn = 2,  ExtractCSSPat = c(".ipsType_pagetitle",".entry-content"), ManyPerPattern = TRUE,  ignoreUrlParams =c("view","orderby"))
-```
-
+``` 
 #### 8-Creating a website Network graph
 ###### Network of internal links
 This option allows you to create a network representation graph of a website. This feature can be useful for Web structure mining.  
