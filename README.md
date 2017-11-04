@@ -243,7 +243,7 @@ In this example the crawler start from this http://101greatgoals.com/betting/ an
 #### 7-Ignore some URL parameters (ignoreUrlParams) 
 URL parameters are made of a key and a value separated by an equals sign (=) and joined by an ampersand (&). The first parameter always comes after a question mark in a URL. For example, http://example.com?product=1234&utm_source=google
 
-There are many URL parameters that produce the same content, such as *view=*, *display=*, *template=* which change de display, the style of a web page but not the content. Another example is *orderby=*  which change the order of a list but not the list itself. The crawler takes these pages as unique because they have different URLs which may lead to much duplicate content. 
+There are many URL parameters that produce the same content, such as *view=*, *display=*, *template=* which change de display, the style of a web page but not the content. Another example is *orderby=*  which change the order of a list but not the list itself, also *replytocom* for replaying to post comments . The crawler takes these pages as unique because they have different URLs which may lead to much duplicate content. 
 
 To ignore one or more URL parameters use **ignoreUrlParams** argument . 
 ```
