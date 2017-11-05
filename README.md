@@ -319,6 +319,9 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
 `
 ## Updates history
 
+Upcoming  updates :
+- Enhance the crawling algorithm to overcome the slowness over 30000 URLs
+
 UPDATE V 0.1.7 :
 
 - Improve encoding detection
