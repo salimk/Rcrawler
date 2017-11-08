@@ -120,15 +120,7 @@ Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, ExtractC
 As result this function will return in addition to "INDEX" variable and file repository :
 - A variable named "DATA" in global environment: It's a list of extracted contents. List of sublists, each sublist represent a web page and contain its extracted elements (title, content). 
 ![DATA and INDEX variable](https://user-images.githubusercontent.com/17308124/31500758-3532af40-af60-11e7-9fed-0aab2eb0ff5b.PNG)
-**List manipulation**
-To get all titles in one vector use : 
-```
-VecTitle<-unlist(lapply(DATA, `[[`, 1))
-```
-To get all content in one vector use :
-```
-VecContent<-unlist(lapply(DATA, `[[`, 2))
-```
+
 **Note 1:**
 By default Rcrawler will not collect nor scrape pages that do not contain any element matching the CSS or XPath pattern, As a result in the example below only article pages will be scrapped, categories or menu pages will be escaped. 
 
@@ -144,7 +136,7 @@ Data<-ContentScraper(Url = "http://glofile.com/index.php/2017/06/08/athletisme-m
 - To learn how to make your Xpath expression follow [this tutorial](https://github.com/salimk/Rcrawler#how-to-make-your-xpath-expression)
 - To easily identify your CSS expression follow[this tutorial](https://github.com/salimk/Rcrawler#how-to-detect-css-selectors-expression)
 
-###### 3-1- Multiple elements per pattern for every page
+###### 3-2- Multiple elements per pattern for every page
 Useful for extracting many elements having the same pattern from each page, like retrieving post comments, product reviews, movie cast, forums replies, the listing of something or even pages hyperlinks.. etc. To enable this option, we need to set **ManyPerPattern** parameter to TRUE.    
 In the example below we will retreive top movies titles, and cast (list of principal actors).
 **Using XPath :**
@@ -163,6 +155,21 @@ Rcrawler(Website = "http://www.imdb.com/chart/top", no_cores = 4, no_conn = 4, u
 Another example to scrape all href urls on each page of this website.
 ```
 Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4, ExtractPatterns= c("//*/a/@href"),PatternsNames=c("Links"), ManyPerPattern=TRUE)
+```
+###### 3-3- Manipuation of Extracted DATA
+By default, extracted data are sotred in a List variable named DATA
+
+- To get all titles in one vector use : 
+```
+VecTitle<-unlist(lapply(DATA, `[[`, 1))
+```
+- To get all content in one vector use :
+```
+VecContent<-unlist(lapply(DATA, `[[`, 2))
+```
+- To tranform the DATA list into Dataframe 
+```
+df<-data.frame(t(do.call("rbind", DATA)))
 ```
 
 #### 4-Filter collected/ scraped web page by search terms/keywords
