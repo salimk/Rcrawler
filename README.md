@@ -203,7 +203,7 @@ You have a huge website (over 50000 pages) and you are looking for some specific
 - The second strategy is to use the website search field to look for what you need then, instead of providing the home page, use this search result page a start point for your crawling.
 - If search option is not provided by the website, then you will make the half work manually. Start by looking for your target pages using google search :  
 ```
-my Keywords+ site:https://targetwebsite.org
+Keywords+ site:https://targetwebsite.org
 ```
 Then collect manually URLs from google result pages. Finally, use *ContentScraper*  function to scrape all URLs at once ([see 9-1](https://github.com/salimk/Rcrawler/#9-1--scrape-you-list-of-urls)).
 
@@ -351,7 +351,7 @@ UPDATE V 0.1.5 - 0.1.6 :
 UPDATE V 0.1.3 :
 
 - Support HTTPS protocol
-- Scraping articles by term search using keywords matching. 
+- Scraping web pages by term search using keywords matching. 
 - Fixing the subscript out of band error 
 
 UPDATE V 0.1.2 :
