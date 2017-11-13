@@ -157,21 +157,20 @@ Another example to scrape all href urls on each page of this website.
 Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4, ExtractPatterns= c("//*/a/@href"),PatternsNames=c("Links"), ManyPerPattern=TRUE)
 ```
 ###### 3-3- Manipuation of Extracted DATA
-By default, extracted data are sotred in a List variable named DATA
+By default, extracted data are sotred in a List variable named DATA, It's a list of sublists where each sublist handles extracted elements from one page.   
 
-- To get all titles in one vector use : 
+- To get all first elements of the lists in one vector (example all titles) : 
 ```
 VecTitle<-unlist(lapply(DATA, `[[`, 1))
 ```
-- To get all content in one vector use :
+- To get all second elements of the lists in one vector (example all content)
 ```
 VecContent<-unlist(lapply(DATA, `[[`, 2))
 ```
-- To tranform the DATA list into Dataframe 
+- Tranform DATA list into Dataframe 
 ```
 df<-data.frame(t(do.call("rbind", DATA)))
 ```
-
 #### 4-Filter collected/ scraped web page by search terms/keywords
 
 To crawl a website and collect/scrape only some web pages related to a specific topic, like gathering posts related to *Donald trump*  from a news website. Rcrawler function has two useful parameters **KeywordsFilter** and **KeywordsAccuracy**.
