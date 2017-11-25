@@ -33,7 +33,7 @@ With one single command **Rcrawler function** enables you to :
 
 - Load collected HTML Files to R environement (memory) ([see 2](https://github.com/salimk/Rcrawler#2--loading-collected-html-files-to-memory-r-environment))
 
-- Extract structured DATA from all website pages: Titles, posts, Films, descriptions etc ([see 3](https://github.com/salimk/Rcrawler#3-crawl-and-scrape-data-from-a-website-pages))
+- Extract structured DATA from all website pages: Titles, posts, Films, descriptions, products...etc ([see 3](https://github.com/salimk/Rcrawler#3-crawl-and-scrape-data-from-a-website-pages))
 
 - Scraping targeted contents using search terms, by providing desired keywords Rcrawler can traverse all wbesite links and collect/extract only web pages related to your topic. ([see 4](https://github.com/salimk/Rcrawler#4-filter-collected-scraped-web-page-by-search-termskeywords))
  
@@ -45,11 +45,11 @@ Some websites are so big, you don't have sufficient time or ressources to crawl 
 
 - Choose to ignore some URL parameters during crawling process ([see 7](https://github.com/salimk/Rcrawler#7-ignore-some-url-parameters-ignoreurlparams))  
 
-In Web structure mining field Rcrawler provide some starter kit to analyze the node and connection structure of a web site.
+In Web structure mining field Rcrawler provide some starter kit to analyze the web site network.
 
 - Represent a website Netwok by mapping all its internal and external hyperlink connections (Edges & nodes) ([see 8](https://github.com/salimk/Rcrawler#8-creating-a-website-network-graph))
 
-In addtition, Rcrawler package provide a set of tools that enables that makes your R web mining life easier:
+In addtition, Rcrawler package provide a set of tools that makes your R web mining life easier:
 
 - Scrape data from a list of URLs you provide ([see 9-1](https://github.com/salimk/Rcrawler/#9-1--scrape-you-list-of-urls))
 
