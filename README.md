@@ -12,6 +12,7 @@ Rcrawler is an R package for web crawling websites and extracting structured dat
 
 > :thumbsup: Thank you  :relaxed:
 
+Comparison of some popular R packages for data collection.
 ![compare-rcrawler](https://user-images.githubusercontent.com/17308124/33799263-178f2e80-dd20-11e7-85d8-f89053ca3a94.PNG)
 
 ## Summary
