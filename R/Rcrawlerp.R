@@ -29,14 +29,14 @@
 #' @param ExcludePatterns character's vector, vector of xpath patterns to exclude from selected ExtractPatterns.
 #' @param ExtractAsText boolean, default is TRUE, HTML and PHP tags is stripped from the extracted piece.
 #' @param ManyPerPattern boolean, ManyPerPattern boolean, If False only the first matched element by the pattern is extracted (like in Blogs one page has one article/post and one title). Otherwise if set to True  all nodes matching the pattern are extracted (Like in galleries, listing or comments, one page has many elements with the same pattern )
-#' @param NetworkData boolean, If set to TRUE, then the crawler map all the internal hyperlink connections within the given website and return DATA for Network construction using igraph or other tools.(two global variables is returned see details)
+#' @param NetworkData boolean, If set to TRUE, then the crawler map all the internal hyperlink connections within the given website and return DATA for Network construction using igraph or other tools. (two global variables is returned see details)
 #'
 #' @return
 #'
 #' The crawling and scraping process may take a long time to finish, therefore, to avoid data loss in the case that a function crashes or stopped in the middle of action, some important data are exported at every iteration to R global environement:
 #'
-#' - INDEX: A data frame in global environement representing the generic URL index,including the list of fetched URLs and page details
-#'   (contenttype,HTTP state, number of out-links and in-links, encoding type, and level).
+#' - INDEX: A data frame in global environement representing the generic URL index, including the list of fetched URLs and page details
+#'   (contenttype, HTTP state, number of out-links and in-links, encoding type, and level).
 #'
 #' - A repository in workspace that contains all downloaded pages (.html files)
 #'
