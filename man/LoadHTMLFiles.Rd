@@ -12,8 +12,6 @@ LoadHTMLFiles(ProjectName, type = "vector", max, DIR)
 \item{type}{character, the type of returned variable, either vector or list.}
 
 \item{max}{Integer, maximum number of files to load.}
-
-\item{DIR}{character, By default it's your local R workspace, if you set a custom folder for your crawling project then use DIR param to access this folder.}
 }
 \value{
 \code{LoadHTMLFiles}, a character vector or a list;
