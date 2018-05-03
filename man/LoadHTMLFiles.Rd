@@ -2,9 +2,10 @@
 % Please edit documentation in R/LoadHTMLFiles.R
 \name{LoadHTMLFiles}
 \alias{LoadHTMLFiles}
-\title{LoadHTMLFiles}
+\title{LoadHTMLFiles
+ @rdname LoadHTMLFiles}
 \usage{
-LoadHTMLFiles(ProjectName, type = "vector", max, DIR)
+LoadHTMLFiles(ProjectName, type = "vector", max)
 }
 \arguments{
 \item{ProjectName}{character, the name of the folder holding collected HTML files, use \code{ListProjects} fnuction to see all projects.}
@@ -18,6 +19,7 @@ LoadHTMLFiles(ProjectName, type = "vector", max, DIR)
 }
 \description{
 LoadHTMLFiles
+ @rdname LoadHTMLFiles
 }
 \examples{
 \dontrun{
