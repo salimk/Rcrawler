@@ -40,7 +40,7 @@ With one single command **Rcrawler function** enables you to :
 
 - Scraping targeted contents using search terms, by providing desired keywords Rcrawler can traverse all website links and collect/extract only web pages related to your topic. ([see 4](https://github.com/salimk/Rcrawler#4-filter-collected-scraped-web-page-by-search-termskeywords))
  
-Some websites are so big, you don't have sufficient time or ressources to crawl them, So you are only interested in a particular section of the website for these reason we provided some useful parameters to control the crawling process such as : 
+Some websites are so big, you don't have sufficient time or resources to crawl them, So you are only interested in a particular section of the website for these reason we provided some useful parameters to control the crawling process such as : 
 
 - Filtering collected/scraped Urls by URLS having some keywords or matching a specific pattern ([see 5](https://github.com/salimk/Rcrawler#5--filtering-collectedparsed-urls-by-regular-expression)) 
 
@@ -237,7 +237,7 @@ http://www.glofile.com/sport/la-reprise-acrobatique-gagnante.html
 **Note:** filtering URLs by a Regular expression, means the crawler will parse content (collect page) only from these specific URLs, It does not mean limiting the crawling process to only those particular URLs. In fact, if a website has 1000 links and just 200 matching the given regex, the crawler still need to crawl all 1000 links to find out those 200. if you want to limit the crawling process you can use MaxDepth parameter (refer to the next section)
 
 #### 6-Liming the crawling process to a level (MaxDepth parameter) 
-Some popular websites are so big, and you don't have time or dedicated ressources to crawl the whole website, or for some specific reason you may just need to crawl the top links of a given web page. For this purpose, you could use Maxdepth parameter to limit the crawler from going so deep. 
+Some popular websites are so big, and you don't have time or dedicated resources to crawl the whole website, or for some specific reason you may just need to crawl the top links of a given web page. For this purpose, you could use Maxdepth parameter to limit the crawler from going so deep. 
 Example: A(B,C(E(H),F(G,k)),D) . Page A links to B, C, D ; Page C links to E and F, page F links to G and K and page E links to H, In this example A is level 0 ,C represend Level 1 and E,F are both level 2 . 
 
 ```
