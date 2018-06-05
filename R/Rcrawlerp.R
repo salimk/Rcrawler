@@ -423,7 +423,7 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,O
     }
     #tminsertion<<-c(tminsertion,(proc.time() - ptm )[3])
     #tminsertionreq<<-c(tminsertionreq,format(Sys.time(), "%M,%S"))
-    cat("Progress:",format(round(((t/length(shemav))*100), 2),nsmall = 2),"%  : ",t, " parssed from ",length(shemav)," | Collected pages:",length(pkg.env$shema$Id)," | Level:",lev,"\n")
+    cat("Progress:",format(round(((t/length(shemav))*100), 2),nsmall = 2),"%  : ",t, " parsed from ",length(shemav)," | Collected pages:",length(pkg.env$shema$Id)," | Level:",lev,"\n")
     t<-l+1
     if(NetworkData){
     assign("NetwEdges", pkg.env$GraphEgdes, envir = envi )
