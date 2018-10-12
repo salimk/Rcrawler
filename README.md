@@ -76,7 +76,7 @@ Start by loading the library
 library(Rcrawler)
 ```
 
-#### 1- Collecting web pages from a website
+#### 1- Collect a website pages 
 ```
 Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4)
 ```
@@ -330,7 +330,10 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
 ## Updates history
 
 Upcoming  updates :
-- Enhance the crawling algorithm to overcome the slowness over 30000 URLs
+- Crawl and scrape dynamically generated webpages (javascript)
+
+UPDATE V 0.1.8 :
+- Improve crawling algorithm to overcome the slowness over 30000 crawled URLs
 
 UPDATE V 0.1.7 :
 
