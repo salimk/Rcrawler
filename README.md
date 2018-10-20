@@ -329,11 +329,13 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
 `
 ## Updates history
 
-Upcoming  updates :
-- Crawl and scrape dynamically generated webpages (javascript)
+Upcoming updates :
+- Crawl and scrape dynamic javascript rendred webpages using phantomjs web driver
+- Fix character encoding in saved HTML files
 
 UPDATE V 0.1.8 :
 - Improve crawling algorithm to overcome the slowness over 30000 crawled URLs
+- Fix some reported errors 
 
 UPDATE V 0.1.7 :
 
