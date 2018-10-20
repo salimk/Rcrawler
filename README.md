@@ -330,12 +330,6 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
 ## Updates history
 
 Upcoming updates :
---Not Done yet--
-- Process xml files during crawling
-- Gather links from google search result 
-- Crawl a list of website at once (websites network) 
-- Crawl a website using web driver interactivity (search forms, dynamic lists, multiple page having the same URL)
-
 --Done--
 - Crawl and scrape dynamic javascript rendred webpages using phantomjs web driver
 - Fix character encoding in saved HTML files
