@@ -333,7 +333,8 @@ Upcoming updates :
 --Done--
 - Crawl and scrape dynamic javascript rendred webpages using phantomjs web driver
 - Fix character encoding in saved HTML files
-- Extend LinkNormalization function
+- Enhance LinkNormalization function
+- Crawl and retreive pages behind authentification pages (Requiring logged-in pages)
 
 UPDATE V 0.1.8 :
 - Improve crawling algorithm to overcome the slowness over 30000 crawled URLs
