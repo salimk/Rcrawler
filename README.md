@@ -187,6 +187,19 @@ To crawl a website and collect/scrape only some web pages related to a specific 
 50% means one occurrence of "keyword" in the page
 100% means five occurrences of "keyword" in the page 
 
+Given the text : 
+
+D<- " key2 text text text text text text  text text text text key1 key1 key1 key1 key1"
+
+- If KeywordsFilter="key1" result is 100% 
+
+- If KeywordsFilter="key2" result is 50% 
+
+- If KeywordsFilter=c( "key1","key2")  result is  75% from 100/2+50/2
+
+- If KeywordsFilter=c( "key1","key2", "key3") result is  50% from 100/3+50/3+0
+
+
 ```
 Rcrawler(Website = "http://www.example.com/", KeywordsFilter = c("keyword1", "keyword2"))`
 ```
