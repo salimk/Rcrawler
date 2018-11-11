@@ -410,10 +410,10 @@ ratingcondition<- function(x){
   rat<<-rating
   if(!is.null(rating) && !is.na(rating)) {
     if((as.double(rating))>7) decision<-TRUE
-  }
-  
+  }  
   decision
 }
+
 Rcrawler(Website = "https://www.imdb.com/list/ls027433291/" , no_cores = 4, no_conn = 4, 
          MaxDepth = 1, dataUrlfilter = "/title/", crawlUrlfilter ="/title/", 
          ExtractCSSPat =c("div.title_wrapper>h1", "div.summary_text",
@@ -450,11 +450,32 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
 ## Updates history
 
 Upcoming updates :
---Done--
-- Crawl and scrape dynamic javascript rendred webpages using phantomjs web driver
-- Fix character encoding in saved HTML files
+- json + rss parser 
+- automatic extraction of article, table, lists 
+- crawl a list of websites
+- content detection 
+
+UPDATE V 0.1.9 :
 - Enhance LinkNormalization function
-- Crawl and retreive pages behind authentification pages (Requiring logged-in pages)
+- Crawl and scrape javascript rendered web pages using phantoms js web driver
+- Crawl and scrape password protected web pages 
+- Detect consecutive 304 errors and throw a warning message
+- add saveonDisk paremeter to Rcrawler 
+- auto-loging if singout
+- Improved documentation
+- improve package code 
+- ignore all url parameters during crawling 
+
+Arguments added to Rcrawler
+- use_proxy using proxy in crawling
+- crawlUrlfilter filter urls to be crawled 
+- dataUrlfilter filter urls to be collected 
+- crawlZoneCSSPat and crawlZoneXPath Pattern of sections from where the crawler should gather links to be crawled
+- Vbrowser use a webdriver to crawl website
+- LoggedSession use a logged in session to crawl password protected pages
+
+Fixed error :
+- Fix character encoding in saved HTML files
 
 UPDATE V 0.1.8 :
 - Improve crawling algorithm to overcome the slowness over 30000 crawled URLs
