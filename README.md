@@ -22,7 +22,23 @@ To receive updates, tutorials ans annoucements, fill out [this form](http://eepu
 #### Comparison of some popular R packages for data collection.
 ![compare-rcrawler](https://user-images.githubusercontent.com/17308124/33799263-178f2e80-dd20-11e7-85d8-f89053ca3a94.PNG)
 
+#### Scraping case studies
+Goal	 | Function to use | Useful arguments
+------------ | -------------| -------------
+Retreive a web page | LinkExtractor |
+Retreive a web page using a proxy | LinkExtractor | use_proxy
+Retreive a web page and extract external links | LinkExtractor | ExternalLInks
+Retreive a web page using a web driver, for javascript rendered web pages | run_browser, LinkExtractor | Browser
+Retreive a web page requiring authentication | run_browser, LoginSession, LinkExtractor | Browser
+------------ | -------------| -------------
+Scrape one or many elements from a web page by XPath or CSS pattern (each element has one occurence in the page) | ContentScraper | XpathPatterns, CssPatterns, PatternsName
+Scrape one or many elements from a web page by XPath or CSS pattern *(each element can have many occurence in the page)* | ContentScraper |  XpathPatterns, CssPatterns, PatternsName, *ManyPerPattern*
+Scrape data from a multiple web pages/multiple URLs having a commun extraction patterns (pages from the same website) | ContentScraper | *Url= c("url1","url2")* vector of URLs, XpathPatterns, CssPatterns, PatternsName. 
+Scrape data from pages using webdriver (for javascript rendered pages)|run_browser, ContentScraper | browser 
+Scrape data from password protected pages using webdriver | run_browser, LoginSession, ContentScraper | browser
+------------ | -------------| -------------
 ## Summary
+
 1. [RCrawler main features](https://github.com/salimk/Rcrawler#rcrawler-main-features)
 
 2. [Installation](https://github.com/salimk/Rcrawler#installation)
@@ -34,6 +50,7 @@ To receive updates, tutorials ans annoucements, fill out [this form](http://eepu
 5. [How to cite Rcrawler](https://github.com/salimk/Rcrawler#how-to-cite-rcrawler)
 
 6. [Updates history](https://github.com/salimk/Rcrawler#brief-on-updates)
+
 
 ## RCrawler main features  
 
