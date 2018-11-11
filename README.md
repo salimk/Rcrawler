@@ -427,165 +427,151 @@ This expression means : We look for any span with class='itemprop' no mather wha
 
 
 #### Keywords
-web crawler r, 
-web scraper r
-web scraping r
+
+ web crawler r
+ web scraper r
+ web scraping r
 web crawling r
-web crawler r
-web crawler r studio
-web crawler in r language
-web crawling r tutorial
-web crawling through r
-web crawling in r pdf
-web crawling example r
-web crawler package in r
-r web crawler tutorial
-create web crawler in r
-web crawler in r
-web crawling in r
-web crawling in r tutorial
-web crawling code in r
-web crawler using r
-web crawler with r
-web crawling with r
-web scraping r course
-web scraping r cran
-web scraping r code
-web scraping com r
-web scraping crawler
-web scraping curso r
-web scraping r datacamp
+ r
+ r studio
+ language
+ r tutorial
+ through r
+ pdf
+ example r
+ package in r
+r  tutorial
+create  in r
+ in r
+ tutorial
+ code in r
+ using r
+ with r
+ r course
+ r cran
+ r code
+ com r
+ crawler
+ curso r
+ r datacamp
 scraping web data r
 scrape web data r
-web scraping r dropdown
-web scraping en r
-web scraping examples r
-web scraping using r examples
-web scraper in r
+ r dropdown
+ en r
+ examples r
+ using r examples
 web scrape table in r
-web scraping json r
-web scraping r javascript
+ json r
+ r javascript
 web scrape r javascript
-web scraping using r javascript
-web scraping r language
-web scraping loop r
-web scraper library r
-web scraping multiple links r
-r web scraper library
+ using r javascript
+ r language
+ loop r
+ library r
+ multiple links r
+r  library
 web scrape r link
-web scraping on r
+ on r
 scrape web page r
-web scraping r studio
-web scraping sous r
-web scraping sur r
-web scraping using r studio
-web scraper tutorial
-web scraping using r
-web scraping in r using rvest
-simple web scraping using r
-web scraping using r pdf
-web scraping tripadvisor using r
+ sous r
+ sur r
+ using r studio
+ tutorial
+ using rvest
+simple  using r
+ using r pdf
+ tripadvisor using r
 web page scraping using r
-web scraping with r studio
-web scraping with r and phantomjs
-web scraping facebook fr
-web scraping r wikipedia
-web scraper with r
-web scraping with r examples
-web scraping with r selenium
-web scraping with r datacamp
-web scraping with r analytics vidhya
-web scraping twitter with r
-web scraping linkedin with r
-amazon web scraping with r
-javascript web scraping with r
-web scraping with r tutorial pdf
-web scraping r multiple web pages
-web scraping rss
-web scraping research papers
-web scraping ruby on rails
-web scraping avec r
-web scraping in r analytics vidhya
-r web scraping amazon
-advanced web scraping r
-web scraping a table r
-r and web scraping
-web scraping api r
-automated web scraping r
-r web scraping append
-web scraping a web page in r
-web scraping r bloggers
-web scraping r book
-web scraping by r
-r web scraping basics
-r web scraping click button
-r web scraping click
-r web scraping cookies
-web scraping rapidminer
-web scraping r example
-web scraping en español
-web scraping r fill form
-web scraping en français
-web scraping for r
-web scraping yahoo finance r
-web scraping code for r
-r web scraping download files
-web scraping r github
-r web scraping google
-web scraping r html
-web scraping r httr
-web scraping en html
-r web scraping https
-web scraping html in r
-web scraping r imdb
-web scraping in r studio
-web scraping in r password
-beginners guide on web scraping in r
-web scraping in r
-web scraping in r pdf
-web scraping in r rvest
-web scraping in r book
-web scraping in r datacamp
-web scraping in r vs python
-web scraping in r multiple pages
-web scraping in r code
-web scraping in r package
-web scraping in r programming
-web scraping in r tables
-web scraper
+ with r studio
+ with r and phantomjs
+ facebook fr
+ r wikipedia
+ with r examples
+ with r selenium
+ with r datacamp
+ with r analytics vidhya
+ twitter with r
+ linkedin with r
+amazon  with r
+javascript  with r
+ with r tutorial pdf
+ r multiple web pages
+ rss
+ research papers
+ ruby on rails
+ avec r
+ analytics vidhya
+r  amazon
+advanced  r
+ a table r
+r and 
+ api r
+automated  r
+r  append
+ a web page in r
+ r bloggers
+ r book
+ by r
+r  basics
+r  click button
+r  click
+r  cookies
+ rapidminer
+ r example
+ en español
+ r fill form
+ en français
+ for r
+ yahoo finance r
+ code for r
+r  download files
+ r github
+r  google
+ r html
+ r httr
+ en html
+r  https
+ html in r
+ r imdb
+ studio
+ password
+beginners guide on  in r
+ rvest
+ book
+ datacamp
+ vs python
+ multiple pages
+ code
+ package
+ programming
+ tables
+
 web page scraping in r
-web scraping en java
-r web scraping java
-web scraping r multiple pages
-web scraping with selenium
-web scraping mit r
-web scraping r packages
-web scraping r phantomjs
-web scraping r pdf
-web scraping r programming
-web scraping r proxy
-web scraping dynamic pages with r
-r project web scraping
-web scraping en python
-web scraping en php
+ en java
+r  java
+ r multiple pages
+ with selenium
+ mit r
+ r packages
+ r phantomjs
+ r pdf
+ r programming
+ r proxy
+ dynamic pages with r
+r project 
+ en python
+ en php
 web page scraping r
-web scraping parallel r
-web scraping using r programming
-web scraping password protected r
-simple web scraping in r
-web scraping r tutorial
-web scraping r table
-web scraping with r
+ parallel r
+ using r programming
+ password protected r
+simple  in r
+ r table
 scraping web data with r
-rvest easy web scraping with r
-web scraping r xml
-r web scraping xpath
-web crawling en español
-web crawling en français
-web crawling using r
-web crawler robot.txt
-web crawler research paper
-web crawler research paper pdf
-web crawler review
-
-
+rvest easy  with r
+ r xml
+r  xpath
+ robot.txt
+ research paper
+ research paper pdf
+ review
