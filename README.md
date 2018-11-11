@@ -20,11 +20,13 @@ More than that,  Rcrawler can help you studies web site structure by building a 
 To receive updates, tutorials ans annoucements, fill out [this form](http://eepurl.com/dMv_7s)
 
 #### Case studies
-Goal	 | Function to use | Argument
+Goal	 | Function to use | Argument to use
 ------------ | -------------| -------------
 Download a web page | LinkExtractor |
 Download a web page using a proxy | LinkExtractor | use_proxy
-Download a web page using a proxy | LinkExtractor | use_proxy
+Download a web page with its extrenal links | LinkExtractor | ExternalLInks
+Download a web page using a web driver | run_browser, LinkExtractor | Browser
+Download a web page requiring authentication  | run_browser, LoginSession, LinkExtractor | LoggedSession
 
 #### Comparison of some popular R packages for data collection.
 ![compare-rcrawler](https://user-images.githubusercontent.com/17308124/33799263-178f2e80-dd20-11e7-85d8-f89053ca3a94.PNG)
