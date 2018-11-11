@@ -22,14 +22,7 @@ To receive updates, tutorials ans annoucements, fill out [this form](http://eepu
 #### Comparison of some popular R packages for data collection.
 ![compare-rcrawler](https://user-images.githubusercontent.com/17308124/33799263-178f2e80-dd20-11e7-85d8-f89053ca3a94.PNG)
 
-#### Case studies
-Goal	 | Function to use | Argument to use
------------- | -------------| -------------
-Download a web page | LinkExtractor |
-Download a web page using a proxy | LinkExtractor | use_proxy
-Download a web page with its extrenal links | LinkExtractor | ExternalLInks
-Download a web page using a web driver, for javascript rendered web pages | run_browser, LinkExtractor | Browser
-Download a web page requiring authentication  | run_browser, LoginSession, LinkExtractor | Browser
+
 
 ## Summary
 1. [RCrawler main features](https://github.com/salimk/Rcrawler#rcrawler-main-features)
