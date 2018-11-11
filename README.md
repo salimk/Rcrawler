@@ -303,8 +303,8 @@ After plotting we get this representation
 
 #### 9- Other useful functionalities 
 
-###### 9-1- Scrape you list of URLs
-If you have already a list of links from same website and you want to scrape them all at once, not one by one as you used to do with rvest. Use **ContentScraper** it can process on or more urls. In the example bellow we collect reviews of 3 cosmetic product.
+###### 9-1- Scrape data from list of URLs
+If you have already a list of links of the same website and you want to scrape all of them at once. Use **ContentScraper** function which can process one or more urls. In the example bellow we collect reviews of 3 cosmetic product.
 
 ```
  listURLs<-c("http://www.thedermreview.com/la-prairie-reviews/",
