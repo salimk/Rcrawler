@@ -28,8 +28,8 @@ Goal	 | Function to use | Argument to use
 Download a web page | LinkExtractor |
 Download a web page using a proxy | LinkExtractor | use_proxy
 Download a web page with its extrenal links | LinkExtractor | ExternalLInks
-Download a web page using a web driver | run_browser, LinkExtractor | Browser
-Download a web page requiring authentication  | run_browser, LoginSession, LinkExtractor | LoggedSession
+Download a web page using a web driver, for javascript rendered web pages | run_browser, LinkExtractor | Browser
+Download a web page requiring authentication  | run_browser, LoginSession, LinkExtractor | Browser
 
 ## Summary
 1. [RCrawler main features](https://github.com/salimk/Rcrawler#rcrawler-main-features)
