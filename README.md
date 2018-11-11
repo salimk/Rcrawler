@@ -37,6 +37,13 @@ Scrape data from a multiple web pages/multiple URLs having a commun extraction p
 Scrape data from pages using webdriver (for javascript rendered pages)|run_browser, ContentScraper | browser 
 Scrape data from password protected pages using webdriver | run_browser, LoginSession, ContentScraper | browser
 ------------ | -------------| -------------
+Crawl and dowload all HTML pages of a specific website | Rcrawler | 
+Crawl and dowload all HTML pages of a specific website using a proxy | Rcrawler | use_proxy
+Crawl and dowload all HTML pages of URLs founded on the start page (crawl only the first level) | Rcrawler | MaxDepth=1
+Crawl the whole website but download only pages whose URLs matches a specific regex pattern | Rcrawler | dataUrlfilter
+Crawl and download only pages whose URLs matches a specific regex pattern | Rcrawler | dataUrlfilter, crawlUrlfilter
+Crawl and download webpages whose URLs retreived from a particular section of web page (crawl a menu section, a pagination section, a specific URL list section) | Rcrawler | crawlZoneCSSPat, crawlZoneXPath
+
 ## Summary
 
 1. [RCrawler main features](https://github.com/salimk/Rcrawler#rcrawler-main-features)
