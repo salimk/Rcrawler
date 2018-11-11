@@ -551,6 +551,12 @@ This expression means : We look for any span with class='itemprop' no mather wha
 ![xpath2](https://user-images.githubusercontent.com/17308124/31853205-cfb00a04-b67c-11e7-8a8c-66f3e75f085b.PNG)
 
 
+  If you got the forllwing error, this means that your operating system or antivirus
+#'  is bloking the webdriver (phantom.js) process, try to disable your antivirus temporarily or
+#'  adjust your system configuration to allow phantomjs and processx executable (\link{browser_path}
+#'  to know where phantomjs is located).
+#'  Error in supervisor_start() :  processx supervisor was not ready after 5 seconds.
+
 #### Keywords
 
  web crawler r
