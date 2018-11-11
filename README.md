@@ -22,7 +22,7 @@ To receive updates, tutorials ans annoucements, fill out [this form](http://eepu
 #### Comparison of some popular R packages for data collection.
 ![compare-rcrawler](https://user-images.githubusercontent.com/17308124/33799263-178f2e80-dd20-11e7-85d8-f89053ca3a94.PNG)
 
-#### Scraping case studies
+#### Scraping cases
 Goal	 | Function to use | Useful arguments
 ------------ | -------------| -------------
 Retreive a web page | LinkExtractor |
@@ -344,10 +344,80 @@ DATA<-ContentScraper(Url = "https://bitcointalk.org/index.php?topic=2334331.0", 
 ```
 From this Forum post Url we want to extract post title and all replies using CSS selectors c(".post"), However, we notice that each reply contain the previous reply as quote so we to exclude all quotes and quotes header (published by,date and time) from each extracted posts we use ExcludeCSSPat c(".quote",".quoteheader a") 
 
+#### 10- Crawl/scrape IMDB website 
+###### 10-1 Tuto 1: crawl and Collect all best movie's pages in imdb 2018 list  
+ crawlUrlfilter ="/title/" : crawl only movie pages
+ dataUrlfilter = "/title/" : collect only movie pages
+ MaxDepth = 1, : only links extracted from the start pages
+```
+Rcrawler(Website = "https://www.imdb.com/list/ls027433291/" , no_cores = 4, no_conn = 4, 
+         MaxDepth = 1, dataUrlfilter = "/title/", crawlUrlfilter ="/title/")
+```
+###### Tuto 2: crawl, collect and scrape all best imdb 2018 movie's to extract their (title, Summarie and score).
+ crawlUrlfilter ="/title/" : crawl only movie pages
+ dataUrlfilter = "/title/" : collect only movie pages
+ MaxDepth = 1, : only links in the start pages
+ ExtractCSSPat : the desired DATA patterns
+ ignoreAllUrlParams = TRUE, remove duplicate elements by ignoring all URL parameters 
+ 
+```
+Rcrawler(Website = "https://www.imdb.com/list/ls027433291/" , no_cores = 4, no_conn = 4, 
+         MaxDepth = 1, dataUrlfilter = "/title/", crawlUrlfilter ="/title/", 
+         ExtractCSSPat =c("div.title_wrapper>h1", "div.summary_text","span[itemprop^='ratingValue']"),
+         PatternsNames =c("Title","Summary","Score"))
+```
+Transfom DATA list into Dataframe
+```
+df<-data.frame(do.call("rbind", DATA))
+```
+# Tuto 3: crawl, collect, and scrape all best imdb 2018 movie's pages and extract their 
+# (title, Summarie and score) in list  
+# ExtractCSSPat is the pattern of data to be scraped
+Rcrawler(Website = "https://www.imdb.com/list/ls027433291/" , no_cores = 4, no_conn = 4, 
+         MaxDepth = 1, dataUrlfilter = "/title/", crawlUrlfilter ="/title/", 
+         ExtractCSSPat =c("div.title_wrapper>h1", "div.summary_text","span[itemprop^='ratingValue']"),
+         PatternsNames =c("Title","Summary","Score"), ignoreAllUrlParams = TRUE)
+df<-data.frame(do.call("rbind", DATA))
+
+# Tuto 4: crawl, collect, and scrape all best imdb 2018 movie's pages and extract their 
+# (title, Summarie scores and Cast overview which is a list of actors)
+# ManyPerPattern = TRUE enable extracting multiple elements for each pattern 
+Rcrawler(Website = "https://www.imdb.com/list/ls027433291/" , no_cores = 4, no_conn = 4, 
+         MaxDepth = 1, dataUrlfilter = "/title/", crawlUrlfilter ="/title/", 
+         ExtractCSSPat =c("div.title_wrapper>h1", "div.summary_text",
+         "span[itemprop^='ratingValue']","table[class='cast_list'] td:nth-child(2) a"),
+         PatternsNames =c("Title","Summary","Score","cast overview"), ManyPerPattern = TRUE,
+         ignoreAllUrlParams = TRUE)
+df<-data.frame(do.call("rbind", DATA))
+# Tuto 4: crawl, collect, and scrape (title, Summaries, scores and Cast overview ) from
+# movies wich have and imdb rating superior to 7.0, Thus, we need to use a custom filter
+# to keep only pages having rating 7.0
+# 
+ratingcondition<- function(x){
+  decision<-FALSE
+  rating<-tryCatch(ContentScraper(HTmlText = x$Info$Source_page,CssPatterns = "span[itemprop^='ratingValue']")[[1]][[1]],
+                   error=function(e) NULL)
+  rat<<-rating
+  if(!is.null(rating) && !is.na(rating)) {
+    if((as.double(rating))>7) decision<-TRUE
+  }
+  
+  decision
+}
+Rcrawler(Website = "https://www.imdb.com/list/ls027433291/" , no_cores = 4, no_conn = 4, 
+         MaxDepth = 1, dataUrlfilter = "/title/", crawlUrlfilter ="/title/", 
+         ExtractCSSPat =c("div.title_wrapper>h1", "div.summary_text",
+                          "span[itemprop^='ratingValue']","table[class='cast_list'] td:nth-child(2) a"),
+         PatternsNames =c("Title","Summary","Score","cast overview"), ManyPerPattern = TRUE,
+         FUNPageFilter = ratingcondition,  ignoreAllUrlParams = TRUE )  
+df<-data.frame(do.call("rbind", DATA))
+
+
 ## Design and Implementation
 If you want to learn more about web scraper/crawler architecture, functional properties and implementation using R language, you can download the published paper for free from this link :  [R web scraping](http://www.sciencedirect.com/science/article/pii/S2352711017300110)
 ## How to cite Rcrawler
 Our paper is submitted, you can cite our work
+
 
 ###### APA :
 `
