@@ -22,7 +22,17 @@ To receive updates, tutorials ans annoucements, fill out [this form](http://eepu
 #### Comparison of some popular R packages for data collection.
 ![compare-rcrawler](https://user-images.githubusercontent.com/17308124/33799263-178f2e80-dd20-11e7-85d8-f89053ca3a94.PNG)
 
-
+#### Case studies
+Goal	 | Function to use | Useful arguments
+------------ | -------------| -------------
+Retreive a web page | LinkExtractor |
+Retreive a web page using a proxy | LinkExtractor | use_proxy
+Retreive a web page and extract external links | LinkExtractor | ExternalLInks
+Retreive a web page using a web driver, for javascript rendered web pages | run_browser, LinkExtractor | Browser
+Retreive a web page requiring authentication | run_browser, LoginSession, LinkExtractor | Browser
+Scrape one or many elements from a web page by XPath or CSS pattern (each element has one occurence in the page) | ContentScraper | XpathPatterns, CssPatterns, PatternsName
+Scrape one or many elements from a web page by XPath or CSS pattern *(each element can have many occurence in the page)* | ContentScraper |  XpathPatterns, CssPatterns, PatternsName, *ManyPerPattern*
+Scrape data from a list of pages having commun extraction pattern(pages from the same website) | ContentScraper | *Url= c("url1","url2")* vector of URLs, XpathPatterns, CssPatterns, PatternsName. 
 
 ## Summary
 1. [RCrawler main features](https://github.com/salimk/Rcrawler#rcrawler-main-features)
