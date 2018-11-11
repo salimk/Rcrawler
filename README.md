@@ -22,17 +22,6 @@ To receive updates, tutorials ans annoucements, fill out [this form](http://eepu
 #### Comparison of some popular R packages for data collection.
 ![compare-rcrawler](https://user-images.githubusercontent.com/17308124/33799263-178f2e80-dd20-11e7-85d8-f89053ca3a94.PNG)
 
-#### Case studies
-Goal	 | Function to use | Useful arguments
------------- | -------------| -------------
-Retreive a web page | LinkExtractor |
-Retreive a web page using a proxy | LinkExtractor | use_proxy
-Retreive a web page and extract external links | LinkExtractor | ExternalLInks
-Retreive a web page using a web driver, for javascript rendered web pages | run_browser, LinkExtractor | Browser
-Retreive a web page requiring authentication | run_browser, LoginSession, LinkExtractor | Browser
-Scrape one or many elements from a web page by XPath or CSS pattern (each element has one occurence in the page) | ContentScraper | XpathPatterns, CssPatterns, PatternsName
-Scrape one or many elements from a web page by XPath or CSS pattern *(each element can have many occurence in the page)* | ContentScraper |  XpathPatterns, CssPatterns, PatternsName, *ManyPerPattern*
-Scrape data from a list of pages having commun extraction pattern(pages from the same website) | ContentScraper | *Url= c("url1","url2")* vector of URLs, XpathPatterns, CssPatterns, PatternsName. 
 
 ## Summary
 1. [RCrawler main features](https://github.com/salimk/Rcrawler#rcrawler-main-features)
@@ -435,4 +424,168 @@ This expression means : We look for any span with class='itemprop' no mather wha
 
 6. At the end after writing your expression on the xpath search field, you shoud see how many nodes are founded. If no one match your expression then try to fix it out until you get some result. 
 ![xpath2](https://user-images.githubusercontent.com/17308124/31853205-cfb00a04-b67c-11e7-8a8c-66f3e75f085b.PNG)
+
+
+#### Keywords
+web crawler r, 
+web scraper r
+web scraping r
+web crawling r
+web crawler r
+web crawler r studio
+web crawler in r language
+web crawling r tutorial
+web crawling through r
+web crawling in r pdf
+web crawling example r
+web crawler package in r
+r web crawler tutorial
+create web crawler in r
+web crawler in r
+web crawling in r
+web crawling in r tutorial
+web crawling code in r
+web crawler using r
+web crawler with r
+web crawling with r
+web scraping r course
+web scraping r cran
+web scraping r code
+web scraping com r
+web scraping crawler
+web scraping curso r
+web scraping r datacamp
+scraping web data r
+scrape web data r
+web scraping r dropdown
+web scraping en r
+web scraping examples r
+web scraping using r examples
+web scraper in r
+web scrape table in r
+web scraping json r
+web scraping r javascript
+web scrape r javascript
+web scraping using r javascript
+web scraping r language
+web scraping loop r
+web scraper library r
+web scraping multiple links r
+r web scraper library
+web scrape r link
+web scraping on r
+scrape web page r
+web scraping r studio
+web scraping sous r
+web scraping sur r
+web scraping using r studio
+web scraper tutorial
+web scraping using r
+web scraping in r using rvest
+simple web scraping using r
+web scraping using r pdf
+web scraping tripadvisor using r
+web page scraping using r
+web scraping with r studio
+web scraping with r and phantomjs
+web scraping facebook fr
+web scraping r wikipedia
+web scraper with r
+web scraping with r examples
+web scraping with r selenium
+web scraping with r datacamp
+web scraping with r analytics vidhya
+web scraping twitter with r
+web scraping linkedin with r
+amazon web scraping with r
+javascript web scraping with r
+web scraping with r tutorial pdf
+web scraping r multiple web pages
+web scraping rss
+web scraping research papers
+web scraping ruby on rails
+web scraping avec r
+web scraping in r analytics vidhya
+r web scraping amazon
+advanced web scraping r
+web scraping a table r
+r and web scraping
+web scraping api r
+automated web scraping r
+r web scraping append
+web scraping a web page in r
+web scraping r bloggers
+web scraping r book
+web scraping by r
+r web scraping basics
+r web scraping click button
+r web scraping click
+r web scraping cookies
+web scraping rapidminer
+web scraping r example
+web scraping en español
+web scraping r fill form
+web scraping en français
+web scraping for r
+web scraping yahoo finance r
+web scraping code for r
+r web scraping download files
+web scraping r github
+r web scraping google
+web scraping r html
+web scraping r httr
+web scraping en html
+r web scraping https
+web scraping html in r
+web scraping r imdb
+web scraping in r studio
+web scraping in r password
+beginners guide on web scraping in r
+web scraping in r
+web scraping in r pdf
+web scraping in r rvest
+web scraping in r book
+web scraping in r datacamp
+web scraping in r vs python
+web scraping in r multiple pages
+web scraping in r code
+web scraping in r package
+web scraping in r programming
+web scraping in r tables
+web scraper
+web page scraping in r
+web scraping en java
+r web scraping java
+web scraping r multiple pages
+web scraping with selenium
+web scraping mit r
+web scraping r packages
+web scraping r phantomjs
+web scraping r pdf
+web scraping r programming
+web scraping r proxy
+web scraping dynamic pages with r
+r project web scraping
+web scraping en python
+web scraping en php
+web page scraping r
+web scraping parallel r
+web scraping using r programming
+web scraping password protected r
+simple web scraping in r
+web scraping r tutorial
+web scraping r table
+web scraping with r
+scraping web data with r
+rvest easy web scraping with r
+web scraping r xml
+r web scraping xpath
+web crawling en español
+web crawling en français
+web crawling using r
+web crawler robot.txt
+web crawler research paper
+web crawler research paper pdf
+web crawler review
+
 
