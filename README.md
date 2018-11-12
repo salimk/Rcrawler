@@ -22,7 +22,7 @@ To receive updates, tutorials ans annoucements, fill out [this form](http://eepu
 #### Comparison of some popular R packages for data collection.
 ![compare-rcrawler](https://user-images.githubusercontent.com/17308124/33799263-178f2e80-dd20-11e7-85d8-f89053ca3a94.PNG)
 
-#### Scraping cases
+#### Scraping cases (Rcrawler Road map)
 Goal	 | Function to use | Useful arguments
 ------------ | -------------| -------------
 Retreive a web page | LinkExtractor |
@@ -88,6 +88,10 @@ In addtition, Rcrawler package provide a set of tools that makes your R web mini
 - Scrape data from a list of URLs you provide ([see 9-1](https://github.com/salimk/Rcrawler/#9-1--scrape-you-list-of-urls))
 
 - Exclude an inner element (node) from scraped data ([see 9-2](https://github.com/salimk/Rcrawler#9-2--exclude-an-inner-element-node-from-scraped-data))
+ 
+ Other Examples :
+ 
+ - Crawl/Scrape IMDB website ([see 10](https://github.com/salimk/Rcrawler#10--crawlscrape-imdb-website))
  
 ## Installation 
 
@@ -172,21 +176,8 @@ Data<-ContentScraper(Url = "http://glofile.com/index.php/2017/06/08/athletisme-m
 
 ###### 3-2- Multiple elements per pattern for every page
 Useful for extracting many elements having the same pattern from each page, like retrieving post comments, product reviews, movie cast, forums replies, the listing of something or even pages hyperlinks.. etc. To enable this option, we need to set **ManyPerPattern** parameter to TRUE.    
-In the example below we will retreive top movies titles, and cast (list of principal actors).
-**Using XPath :**
- ```
-Rcrawler(Website = "http://www.imdb.com/chart/top", no_cores = 4, no_conn = 4, urlregexfilter = "/title/", ExtractXpathPat = c("//head/title","//*/div[@id='titleCast']//span[@class='itemprop']"),PatternsNames = c("title", "Cast"), ManyPerPattern = TRUE, MaxDepth=1 )
-```
-**Using CSS Selector :**
- ```
-Rcrawler(Website = "http://www.imdb.com/chart/top", no_cores = 4, no_conn = 4, urlregexfilter = "/title/", ExtractCSSPat = c(".originalTitle","#titleCast .itemprop"),PatternsNames = c("title", "Cast"), ManyPerPattern = TRUE, MaxDepth=1 )
- ```
-- *urlregexfilter* : Movie pages have the word "title" in its Url. http://www.imdb.com/**title**/tt0111161/, so we tell the crawler to retrieve only those pages.
-- *MaxDepth* is set to 1 to follow only hyperlinks on the source page we provide (not going deep). 
-- *ManyPerPattern* is set to TRUE to enable extracting all actors in each film.
-
 **Retreive all hyperlinks :**
-Another example to scrape all href urls on each page of this website.
+Another way to scrape all href urls on each page of this website.
 ```
 Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4, ExtractPatterns= c("//*/a/@href"),PatternsNames=c("Links"), ManyPerPattern=TRUE)
 ```
@@ -254,7 +245,7 @@ For some reason, you may want to collect just web pages having a specific urls p
 
 In the example below we know that all blog post has dates like 2017/09/08  in their URLs so we can tell the crawler to collect only these pages by flitging only URLs matching this regular expression "/[0-9]{4}/[0-9]{2}/[0-9]{2}/". Ulrs having 4-digit/2-digit/2-digit/, which are blog post pages in our example .
 ```
-Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, urlregexfilter ="/[0-9]{4}/[0-9]{2}/[0-9]{2}/" )
+Rcrawler(Website = "http://www.glofile.com", no_cores = 4, no_conn = 4, dataUrlfilter ="/[0-9]{4}/[0-9]{2}/[0-9]{2}/" )
 ```
 Collected pages are like :
 ```
@@ -262,9 +253,9 @@ Collected pages are like :
  http://www.glofile.com/2017/06/08/jcdecaux-reconduction-dun-cont
  http://www.glofile.com/2017/06/08/taux-nette-detente-en-italie-bc
 ```
-In the following example we crawl the whole website but we collect only pages in section "sport" in url.
+In the following example we crawl and collect only pages in section "sport" in url.
 ```
-Rcrawler(Website = "http://www.glofile.com/sport/", urlregexfilter ="/sport/" )
+Rcrawler(Website = "http://www.glofile.com/sport/", dataUrlfilter ="/sport/", crawlUrlfilter="/sport/" )
 ```
 Downloded/Extracted Pages are like : 
 ```
@@ -285,7 +276,7 @@ Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=1)
 This command will parse only pages related to this link http://101greatgoals.com/betting/ (only links on that page)
 
 ```
-Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=4, urlregexfilter = "/betting/")
+Rcrawler(Website="http://101greatgoals.com/betting/" ,MaxDepth=4, crawlUrlfilter = "/betting/")
 ```
 In this example the crawler start from this http://101greatgoals.com/betting/ and continue crawling until it reach the 4th level , however it will only collect pages of "betting" section ( having /betting/ in their url)
 
