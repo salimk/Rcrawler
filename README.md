@@ -453,6 +453,18 @@ df<-data.frame(do.call("rbind", DATA))
 ![captureimdb4](https://user-images.githubusercontent.com/17308124/48319153-229f7a00-e602-11e8-868e-56f644cb7ea2.JPG)
 
 #### 11- Crawl/scrape Indeed jobs
+Some tutorials on indeed jobs website
+
+######  Tuto 11-1: Collect job pages from indeed search results
+
+Collect job pages from indeed search results of keyword "data analyst"
+
+```
+Rcrawler(Website = "https://www.indeed.com/jobs?q=data+analyst&l=Tampa,+FL", no_cores = 4 , no_conn = 4,
+         crawlUrlfilter = c("/rc/","start="), dataUrlfilter = "/rc/",
+         crawlZoneCSSPat = "td#resultsCol"   
+         )
+```
 
 
 ## Design and Implementation
