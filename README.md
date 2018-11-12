@@ -42,7 +42,17 @@ Crawl and dowload all HTML pages of a specific website using a proxy | Rcrawler 
 Crawl and dowload all HTML pages of URLs founded on the start page (crawl only the first level) | Rcrawler | MaxDepth=1
 Crawl the whole website but download only pages whose URLs matches a specific regex pattern | Rcrawler | dataUrlfilter
 Crawl and download only pages whose URLs matches a specific regex pattern | Rcrawler | dataUrlfilter, crawlUrlfilter
-Crawl and download webpages whose URLs retreived from a particular section of web page (crawl a menu section, a pagination section, a specific URL list section) | Rcrawler | crawlZoneCSSPat, crawlZoneXPath
+Crawl and download webpages whose URLs retreived from a particular section of web page (crawl pages in menu, pagination section, a specific URL list section) | Rcrawler | crawlZoneCSSPat, crawlZoneXPath
+
+###### Some good scraping strategies
+You have a huge website (over 50000 pages) and you are looking for some specific information to extract. 
+- First, try to limit your crawling by looking if your desired content is located under a specific section of the website.
+- The second strategy is to use the website search field to look for what you need then, instead of providing the home page, use this search result page a start point for your crawling.
+- If search option is not provided by the website, then you will make the half work manually. Start by looking for your target pages using google search :  
+```
+Keywords+ site:https://targetwebsite.org
+```
+Then collect manually URLs from google result pages. Finally, use *ContentScraper*  function to scrape all URLs at once ([see 9-1](https://github.com/salimk/Rcrawler/#9-1--scrape-you-list-of-urls)).
 
 ## Summary
 
@@ -229,17 +239,8 @@ of matching keyword1 and keyword2.
 Rcrawler(Website = "http://www.master-maroc.com", KeywordsFilter = c("casablanca", "master"), KeywordsAccuracy = 50, ExtractPatterns = c("//*[@class='article-content']","//*[@class='contentheading clearfix']"))
 ```
 This command will crawl  http://www.master-maroc.com website and looks for pages containing  keywords "casablanca" or "master" , then extract data matching the given XPaths ( title , article) .
-###### Some good scraping strategies
-You have a huge website (over 50000 pages) and you are looking for some specific information to extract. 
-- First, try to limit your crawling by looking if your desired content is located under a specific section of the website.
-- The second strategy is to use the website search field to look for what you need then, instead of providing the home page, use this search result page a start point for your crawling.
-- If search option is not provided by the website, then you will make the half work manually. Start by looking for your target pages using google search :  
-```
-Keywords+ site:https://targetwebsite.org
-```
-Then collect manually URLs from google result pages. Finally, use *ContentScraper*  function to scrape all URLs at once ([see 9-1](https://github.com/salimk/Rcrawler/#9-1--scrape-you-list-of-urls)).
 
-#### 5- Filtering collected/parsed Urls by Regular expression
+#### 5- Filtering Urls to be crawled and collected by Regular expression
 
 For some reason, you may want to collect just web pages having a specific urls pattern , like a website section, posts webpages. In this case, you need filter urls by Regular expressions . 
 
@@ -264,7 +265,44 @@ http://www.glofile.com/sport/balotelli-a-la-conclusion-d-une-belle.html
 http://www.glofile.com/sport/la-reprise-acrobatique-gagnante.html
 ```
 
-**Note:** filtering URLs by a Regular expression, means the crawler will parse content (collect page) only from these specific URLs, It does not mean limiting the crawling process to only those particular URLs. In fact, if a website has 1000 links and just 200 matching the given regex, the crawler still need to crawl all 1000 links to find out those 200. if you want to limit the crawling process you can use MaxDepth parameter (refer to the next section)
+**Note:** 
+
+Provide dataUrlfilter only, means that the crawler will follow all website links but will collect/scrape only web pages whose Urls matching regex pattern. 
+
+Provide crawlUrlfilter means that the crawler will follow only links matching regex pattern
+
+#### 5-1 : Crawl website search result pages
+In this example, we will try to collect pages from a website search result.
+
+Result pages are like: 
+```
+     http://glofile.com/?s=sur
+     http://glofile.com/page/2/?s=sur
+     http://glofile.com/page/2/?s=sur
+```
+*They all have "s=sur" in common
+
+Post pages should be crawled an collected, post urls are like
+```
+http://glofile.com/2017/06/08/placements-quelles-solutions-pour-dper/
+http://glofile.com/2017/06/08/taux-nette-detente/
+```
+*Post urls are distinguished by a date in URLS matching a regex "[0-9]{4}/[0-9]{2}/[0-9]{2}
+
+```
+ Rcrawler(Website = "http://glofile.com/?s=sur", no_cores = 4, no_conn = 4,
+ crawlUrlfilter = c("[0-9]{4}/[0-9]{2}/[0-9]{2}","s=sur"),
+ dataUrlfilter = "[0-9]{4}/[0-9]{2}/[0-9]{2}")
+```
+Follow links like "[0-9]{4}/[0-9]{2}/[0-9]d{2}" or "s=sur"  and collect/scrape links like "[0-9]{4}/[0-9]{2}/[0-9]{2}" 
+
+Note that Post links retreived from post page will be also collected, like "related posts", "see more","recent post" ..  because they are matching same regex, so to limit crawling only on result pages section will use *crawlZoneCSSPat* arguments.
+```
+Rcrawler(Website = "http://glofile.com/?s=sur", no_cores = 4, no_conn = 4,
+         crawlUrlfilter = c("[0-9]{4}/[0-9]{2}/[0-9]{2}","s=sur"),
+         dataUrlfilter = "[0-9]{4}/[0-9]{2}/[0-9]{2}",
+         crawlZoneCSSPat = "body[class^='search'] main#main")
+```
 
 #### 6-Liming the crawling process to a level (MaxDepth parameter) 
 Some popular websites are so big, and you don't have time or dedicated ressources to crawl the whole website, or for some specific reason you may just need to crawl the top links of a given web page. For this purpose, you could use Maxdepth parameter to limit the crawler from going so deep. 
@@ -376,7 +414,7 @@ Rcrawler(Website = "https://www.imdb.com/list/ls027433291/" , no_cores = 4, no_c
          PatternsNames =c("Title","Summary","Score"), ignoreAllUrlParams = TRUE)
 df<-data.frame(do.call("rbind", DATA))
 ```
-
+#### 11- Crawl/scrape Indeed jobs
 
 ######  Tuto 10-4: crawl, collect, and scrape all best imdb 2018 movie's pages and extract their (title, Summarie scores and Cast overview which is a list of actors)
 - ManyPerPattern = TRUE enable extracting multiple elements for each pattern
@@ -389,7 +427,7 @@ Rcrawler(Website = "https://www.imdb.com/list/ls027433291/" , no_cores = 4, no_c
          ignoreAllUrlParams = TRUE)
 df<-data.frame(do.call("rbind", DATA))
 ```
-![captureimdb33](https://user-images.githubusercontent.com/17308124/48319151-07cd0580-e602-11e8-8add-23f36430f974.JPG)
+![captureimdb444](https://user-images.githubusercontent.com/17308124/48345652-85c7f580-e670-11e8-9253-7e53ba7a483e.JPG)
 
 ######  Tuto 10-5: crawl, collect, and scrape (titles, Summaries, scores and Cast overview ) from movies wich have and imdb rating superior to 7.0
 Thus, we need to use a custom filter to scrape only pages having rating 7.0
