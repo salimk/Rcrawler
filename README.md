@@ -414,7 +414,6 @@ Rcrawler(Website = "https://www.imdb.com/list/ls027433291/" , no_cores = 4, no_c
          PatternsNames =c("Title","Summary","Score"), ignoreAllUrlParams = TRUE)
 df<-data.frame(do.call("rbind", DATA))
 ```
-#### 11- Crawl/scrape Indeed jobs
 
 ######  Tuto 10-4: crawl, collect, and scrape all best imdb 2018 movie's pages and extract their (title, Summarie scores and Cast overview which is a list of actors)
 - ManyPerPattern = TRUE enable extracting multiple elements for each pattern
@@ -452,6 +451,9 @@ Rcrawler(Website = "https://www.imdb.com/list/ls027433291/" , no_cores = 4, no_c
 df<-data.frame(do.call("rbind", DATA))
 ```
 ![captureimdb4](https://user-images.githubusercontent.com/17308124/48319153-229f7a00-e602-11e8-868e-56f644cb7ea2.JPG)
+
+#### 11- Crawl/scrape Indeed jobs
+
 
 ## Design and Implementation
 If you want to learn more about web scraper/crawler architecture, functional properties and implementation using R language, you can download the published paper for free from this link :  [R web scraping](http://www.sciencedirect.com/science/article/pii/S2352711017300110)
