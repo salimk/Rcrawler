@@ -19,7 +19,7 @@ This function fetch and parse robots.txt file of the website which is specified 
 }
 \examples{
 
-RobotParser("http://www.glofile.com","AgentX")
+#RobotParser("http://www.glofile.com","AgentX")
 #Return robot.txt rules and check whether AgentX is blocked or not.
 
 

@@ -4,12 +4,14 @@
 \alias{Linkparamsfilter}
 \title{Link parameters filter}
 \usage{
-Linkparamsfilter(URL, params)
+Linkparamsfilter(URL, params, removeAllparams = FALSE)
 }
 \arguments{
 \item{URL}{character, the URL from which params and values have to be removed}
 
 \item{params}{character vector, List of url parameters to be removed}
+
+\item{removeAllparams, }{boolean if true , all url parameters will be removed.}
 }
 \value{
 return a URL wihtout given parameters
@@ -21,10 +23,11 @@ This function remove a given set of parameters from a specific URL
 This function exclude given parameters from the urls,
 }
 \examples{
+#remove ord and tmp parameters from the URL
 url<-"http://www.glogile.com/index.php?name=jake&age=23&tmp=2&ord=1"
 url<-Linkparamsfilter(url,c("ord","tmp"))
-
-#exclude filter and template parameters from URL.
+#remove all URL parameters
+Linkparamsfilter(url,removeAllparams = TRUE)
 
 }
 \author{

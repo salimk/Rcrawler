@@ -7,18 +7,15 @@
 LinkNormalization(links, current)
 }
 \arguments{
-\item{links}{character, the URL to Normalize.}
+\item{links}{character, one or more URLs to Normalize.}
 
-\item{current}{character, The URL of the current page source of the link.}
+\item{current}{character, The current page URL where links are located}
 }
 \value{
-return the simhash as a nmeric value
+Vector of normalized urls
 }
 \description{
-A function that take a URL _charachter_ as input, and transforms it into a canonical form.
-}
-\details{
-This funcion call an external java class
+To normalize and transform URLs into a canonical form.
 }
 \examples{
 
@@ -29,12 +26,16 @@ links<-c("http://www.twitter.com/share?url=http://glofile.com/page.html",
          "./section/subscription.php",
          "//section/",
          "www.glofile.com/home/",
+         "IndexEn.aspx",
          "glofile.com/sport/foot/page.html",
          "sub.glofile.com/index.php",
-         "http://glofile.com/page.html#1"
+         "http://glofile.com/page.html#1",
+         "?tags\%5B\%5D=votingrights&amp;sort=popular"
                    )
 
 links<-LinkNormalization(links,"http://glofile.com" )
+
+links
 
 
 }
