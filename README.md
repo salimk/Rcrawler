@@ -23,27 +23,31 @@ To receive updates, tutorials ans annoucements, fill out [this form](http://eepu
 ![compare-rcrawler](https://user-images.githubusercontent.com/17308124/33799263-178f2e80-dd20-11e7-85d8-f89053ca3a94.PNG)
 
 #### Scraping cases (Rcrawler Road map)
-Goal	 | Function to use | Useful arguments
+Goal	 | Functions to use | Useful arguments
 ------------ | -------------| -------------
 Retreive a web page | LinkExtractor |
 Retreive a web page using a proxy | LinkExtractor | use_proxy
 Retreive a web page and extract external links | LinkExtractor | ExternalLInks
-Retreive a web page using a web driver, for javascript rendered web pages | run_browser, LinkExtractor | Browser
-Retreive a web page requiring authentication | run_browser, LoginSession, LinkExtractor | Browser
+Retreive a web page using a web driver, for javascript rendered web pages | run_browser, LinkExtractor | LinkExtractor(... Browser=)
+Retreive a password protected web page (requires authentication) | run_browser, LoginSession, LinkExtractor | LinkExtractor(... Browser=)
 ------------ | -------------| -------------
 Scrape one or many elements from a web page by XPath or CSS pattern (each element has one occurence in the page) | ContentScraper | XpathPatterns, CssPatterns, PatternsName
 Scrape one or many elements from a web page by XPath or CSS pattern *(each element can have many occurence in the page)* | ContentScraper |  XpathPatterns, CssPatterns, PatternsName, *ManyPerPattern*
-Scrape data from a multiple web pages/multiple URLs having a commun extraction patterns (pages from the same website) | ContentScraper | *Url= c("url1","url2")* vector of URLs, XpathPatterns, CssPatterns, PatternsName. 
-Scrape data from pages using webdriver (for javascript rendered pages)|run_browser, ContentScraper | browser 
-Scrape data from password protected pages using webdriver | run_browser, LoginSession, ContentScraper | browser
+Scrape data from multiple web pages/URLs having a commun extraction patterns (pages from the same website) | ContentScraper | *Url= c("url1","url2")* vector of URLs, XpathPatterns, CssPatterns, PatternsName. 
+Scrape data from pages using webdriver (for javascript rendered pages)| run_browser, ContentScraper | ContentScraper(... browser=) 
+Scrape data from password protected pages using webdriver | run_browser, LoginSession, ContentScraper | ContentScraper(... browser=)
+Scrape data from pages and transform it into a dataframe  | ContentScraper | asDataFrame=TRUE
 ------------ | -------------| -------------
 Crawl and dowload all HTML pages of a specific website | Rcrawler | 
-Crawl and dowload all HTML pages of a specific website using a proxy | Rcrawler | use_proxy
-Crawl and dowload all HTML pages of URLs gathered from the start page (crawl only the first level) | Rcrawler | MaxDepth=1
-Crawl the whole website but download only pages whose URLs matches a specific regex pattern | Rcrawler | dataUrlfilter
-Crawl and download only pages whose URLs matches a specific regex pattern | Rcrawler | dataUrlfilter, crawlUrlfilter
-Crawl and download webpages whose URLs retreived from a particular section of web page (crawl links menu, pagination section, a specific URL list, a search result..etc) | Rcrawler | crawlZoneCSSPat, crawlZoneXPath
-
+Crawl and dowload and scrape data from HTML pages of a specific website | Rcrawler | ExtractXpathPat or  ExtractCSSPat 
+Crawl, dowload/scrape all HTML pages of a specific website using a proxy | Rcrawler | use_proxy
+Crawl and dowload/scrape all HTML pages of URLs gathered from the start page (crawl only the first level) | Rcrawler | MaxDepth=1
+Crawl the whole website but download/scrape only web pages whose URLs matches a specific regex pattern | Rcrawler | dataUrlfilter
+Crawl and download/scrape only web pages whose URLs matches a specific regex pattern | Rcrawler | dataUrlfilter, crawlUrlfilter
+Crawl and download/scrape webpages whose URLs retreived from a particular section of  web pages (crawl links menu, pagination section, a specific URL list ..etc) | Rcrawler | crawlZoneCSSPat, crawlZoneXPath
+Crawl/scrape a website search results  | Rcrawler  | dataUrlfilter, crawlUrlfilter, (crawlZoneCSSPat or crawlZoneXPath)
+Crawl/scrape pages of a website with javascript rendred pages | Rcrawler  |  Vbrowser = TRUE
+Crawl/scrape pages of password protected website | run_browser, LoginSession, Rcrawler  | Rcrawler(... LoggedSession=)
 
 ###### Some good scraping strategies
 You have a huge website (over 50000 pages) and you are looking for some specific information to extract. 
