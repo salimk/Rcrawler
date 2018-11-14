@@ -39,10 +39,11 @@ Scrape data from password protected pages using webdriver | run_browser, LoginSe
 ------------ | -------------| -------------
 Crawl and dowload all HTML pages of a specific website | Rcrawler | 
 Crawl and dowload all HTML pages of a specific website using a proxy | Rcrawler | use_proxy
-Crawl and dowload all HTML pages of URLs founded on the start page (crawl only the first level) | Rcrawler | MaxDepth=1
+Crawl and dowload all HTML pages of URLs gathered from the start page (crawl only the first level) | Rcrawler | MaxDepth=1
 Crawl the whole website but download only pages whose URLs matches a specific regex pattern | Rcrawler | dataUrlfilter
 Crawl and download only pages whose URLs matches a specific regex pattern | Rcrawler | dataUrlfilter, crawlUrlfilter
-Crawl and download webpages whose URLs retreived from a particular section of web page (crawl pages in menu, pagination section, a specific URL list section) | Rcrawler | crawlZoneCSSPat, crawlZoneXPath
+Crawl and download webpages whose URLs retreived from a particular section of web page (crawl links menu, pagination section, a specific URL list, a search result..etc) | Rcrawler | crawlZoneCSSPat, crawlZoneXPath
+
 
 ###### Some good scraping strategies
 You have a huge website (over 50000 pages) and you are looking for some specific information to extract. 
