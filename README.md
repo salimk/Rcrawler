@@ -209,7 +209,7 @@ VecContent<-unlist(lapply(DATA, `[[`, 2))
 ```
 - Tranform DATA list into Dataframe 
 ```
-df<-data.frame(t(do.call("rbind", DATA)))
+df<-data.frame(do.call("rbind", DATA))
 ```
 #### 4-Filter collected/ scraped web page by search terms/keywords
 
