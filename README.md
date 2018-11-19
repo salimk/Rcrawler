@@ -451,6 +451,8 @@ df<-data.frame(do.call("rbind", DATA))
 
 ######  Tuto 10-5: crawl, collect, and scrape (titles, Summaries, scores and Cast overview ) from movies wich have and imdb rating superior to 7.0
 Thus, we need to use a custom filter to scrape only pages having rating 7.0
+
+The custom function must take one argument X (returned by Linkextractor function) and then return a boolean value TRUE/FALSE 
 ```
 ratingcondition<- function(x){
   decision<-FALSE
