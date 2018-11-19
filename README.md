@@ -191,10 +191,26 @@ Data<-ContentScraper(Url = "http://glofile.com/index.php/2017/06/08/athletisme-m
 
 ###### 3-2- Multiple elements per pattern for every page
 Useful for extracting many elements having the same pattern from each page, like retrieving post comments, product reviews, movie cast, forums replies, the listing of something or even pages hyperlinks.. etc. To enable this option, we need to set **ManyPerPattern** parameter to TRUE.    
-**Retreive all hyperlinks :**
+**Retreive  hyperlinks :**
 Another way to scrape all href urls on each page of this website.
+
+- Retrieve all links from a one or multiple specific pages
+
 ```
-Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4, ExtractPatterns= c("//*/a/@href"),PatternsNames=c("Links"), ManyPerPattern=TRUE)
+links<-ContentScraper(Url = "http://glofile.com/2017/06/08/placements-quelles-solutions-pour-doper/", 
+                                      XpathPatterns = "//*/a/@href" ,
+                                       ManyPerPattern = TRUE)
+```
+
+
+- Retrieve all links from the whole website 
+
+```
+Rcrawler( Website = "http://glofile.com/", 
+                 ExtractXpathPat = "//*/a/@href",
+                 ManyPerPattern = TRUE)`
+# Put all links together within one vector
+Allinks<-unlist(lapply(DATA, `[[`, 2))
 ```
 ###### 3-3- Manipuation of Extracted DATA
 By default, extracted data are sotred in a List variable named DATA, It's a list of sublists where each sublist handles extracted elements from one page.   
@@ -241,7 +257,7 @@ Crawl the website and collect only webpages that has an accuracy percentage high
 of matching keyword1 and keyword2.
 
 ```
-Rcrawler(Website = "http://www.master-maroc.com", KeywordsFilter = c("casablanca", "master"), KeywordsAccuracy = 50, ExtractPatterns = c("//*[@class='article-content']","//*[@class='contentheading clearfix']"))
+Rcrawler(Website = "http://www.master-maroc.com", KeywordsFilter = c("casablanca", "master"), KeywordsAccuracy = 50, ExtractXpathPat = c("//*[@class='article-content']","//*[@class='contentheading clearfix']"))
 ```
 This command will crawl  http://www.master-maroc.com website and looks for pages containing  keywords "casablanca" or "master" , then extract data matching the given XPaths ( title , article) .
 
