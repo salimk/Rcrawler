@@ -59,6 +59,7 @@ Keywords+ site:https://targetwebsite.org
 ```
 Then collect manually URLs from google result pages. Finally, use *ContentScraper*  function to scrape all URLs at once ([see 9-1](https://github.com/salimk/Rcrawler/#9-1--scrape-you-list-of-urls)).
 
+- Before scraping the whole website using Rcrawler try to Scrape only one page using ContentScraper, to make sure that your xpath/css patterns are correct 
 ## Summary
 
 1. [RCrawler main features](https://github.com/salimk/Rcrawler#rcrawler-main-features)
@@ -516,10 +517,13 @@ Khalil, S., & Fakir, M. (2017). RCrawler: An R package for parallel web crawling
 ## Updates history
 
 Upcoming updates :
-- json + rss parser 
-- automatic extraction of article, table, lists 
+- json + xml rss scraper 
+- automatic extraction of articles, table, lists 
 - crawl a list of websites
 - content detection 
+- Stopping function to limit the crawling
+- Fix linkNormalization issue with non-sef URLs
+- more examples and documentation
 
 UPDATE V 0.1.9 :
 - Enhance LinkNormalization function
