@@ -42,6 +42,7 @@
 #' @param NetwExtLinks boolean, If TRUE external hyperlinks (outlinks) also will be counted on Network edges and nodes.
 #' @param Vbrowser boolean, If TRUE the crawler will use web driver phantomsjs (virtual browser) to fetch and parse web pages instead of GET request
 #' @param LoggedSession A loggedin browser session object, created by \link{LoginSession} function
+#' @param IndexErrPages character vector, http error code-statut that can be processed, by default, it's \code{IndexErrPages<-c(200)} which means only successfull page request should be parsed .Eg, To parse also 404 error pages add, \code{IndexErrPages<-c(200,404)}.
 #' @return
 #'
 #' The crawling and scraping process may take a long time to finish, therefore, to avoid data loss in the case that a function crashes or stopped in the middle of action, some important data are exported at every iteration to R global environement:
@@ -323,8 +324,9 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,O
                      ignoreUrlParams,ignoreAllUrlParams=FALSE, KeywordsFilter,KeywordsAccuracy,FUNPageFilter,
                      ExtractXpathPat, ExtractCSSPat, PatternsNames, ExcludeXpathPat, ExcludeCSSPat,
                      ExtractAsText=TRUE, ManyPerPattern=FALSE, saveOnDisk=TRUE, NetworkData=FALSE, NetwExtLinks=FALSE,
-                     statslinks=FALSE, Vbrowser=FALSE, LoggedSession) {
+                     statslinks=FALSE, Vbrowser=FALSE, LoggedSession, IndexErrPages) {
 
+  if (missing(IndexErrPages)) errstat<-c(200) else errstat<-c(200, IndexErrPages)
   if (missing(DIR)) DIR<-getwd()
   if (missing(KeywordsAccuracy)) KeywordsAccuracy<-1
   if (missing(ignoreUrlParams)) ignoreUrlParams<-""
