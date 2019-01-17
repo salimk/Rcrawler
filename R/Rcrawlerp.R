@@ -437,7 +437,7 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,O
   } else {urlbotfiler=" "}
 
 
-  IndexErrPages<-c(200)
+  #IndexErrPages<-c(200)
 
   #create repository
   tryCatch(curdate<-format(Sys.time(), "%d%H%M"),error=function(e) curdate<-sample(1000:9999, 1) )
