@@ -12,6 +12,7 @@
 #' @param asDataFrame boolean, transform scraped data into a Dataframe. default is False (data is returned as List)
 #' @param browser, a web driver session, or a loggedin session of the web driver (see examples)
 #' @param encod character, set the weppage character encoding.
+#' @param IndexErrPages character vector, http error code-statut that can be processed, by default, it's \code{IndexErrPages<-c(200)} which means only successfull page request should be parsed .Eg, To parse also 404 error pages add, \code{IndexErrPages<-c(200,404)}.
 #' @return
 #' return a named list of scraped content
 #' @author salim khalil
@@ -95,8 +96,9 @@
 #'
 #'
 ContentScraper <- function(Url, HTmlText, browser, XpathPatterns, CssPatterns, PatternsName,
-                           ExcludeXpathPat, ExcludeCSSPat, ManyPerPattern=FALSE, astext=TRUE, asDataFrame=FALSE, encod) {
-
+                           ExcludeXpathPat, ExcludeCSSPat, ManyPerPattern=FALSE, astext=TRUE, asDataFrame=FALSE, encod, IndexErrPages) {
+  if (missing(IndexErrPages)) errstat<-c(200) else errstat<-c(200, IndexErrPages)
+  
   if(!missing(Url) && !missing(HTmlText) ){
     stop("Please supply Url or HTmlText, not both !")
   }
