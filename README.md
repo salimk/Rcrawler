@@ -11,8 +11,10 @@ For example collect all published posts on a blog, or extract all products data 
 
 More than that,  Rcrawler can help you studies web site structure by building a network representation of a website internal and external hyperlinks (nodes & edges). 
 
+>  **Announcements** : Actually I'm looking for a one or two more people to maintain the package: implementing new features, writing documentation. Especially those interested in publishing scientific paper. Skills needed : R programming, c++ and good writing. 
+
 > Help us improve Rcrawler by **asking questions**, **revealing issues**, **suggesting new features**.
-> If you have a blog **write** about it, or just **share** it with your collegues. 
+> If you have a blog **write** about it, or just **share** it with your colleg,ues. 
 
 > :thumbsup: Thank you  :relaxed:
 
