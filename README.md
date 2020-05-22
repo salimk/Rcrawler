@@ -115,7 +115,7 @@ In addtition, Rcrawler package provide a set of tools that makes your R web mini
 
 Install the release version from CRAN (Stable version):
 ```
-install.packages("Rcrawler", dependencies = TRUE))
+install.packages("Rcrawler", dependencies = TRUE)
 ```
 Or the development version from GitHub (may have errors):
 ```
