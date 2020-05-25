@@ -359,7 +359,7 @@ Set *NetworkData* parameter  to TRUE then Crawler will create two additional glo
 - **NetwEdges** : data.frame representing edges of the network, with these columns: From, To, Weight (the Depth level where the link connection has been discovered) and Type (number 1 for internal links, number 2 for external links).
 
 ```
-Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4 , NetworkData = TRUE, NetwExtLinks =TRUE,  statslinks = TRUE)
+Rcrawler(Website = "http://glofile.com/", no_cores = 4, no_conn = 4 , NetworkData = TRUE,  statslinks = TRUE)
 ```
 *statslinks* argument is optional, it counts for each page the number of inbound links.
 This command crawl our demo website, and create network edges data of internal links. Using Igraph library you can plot the network by  the following commands (you can use any other library):
