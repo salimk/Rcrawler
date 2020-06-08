@@ -59,7 +59,8 @@ You have a huge website (over 50000 pages) and you are looking for some specific
 ```
 Keywords+ site:https://targetwebsite.org
 ```
-Then collect manually URLs from google result pages. Finally, use *ContentScraper*  function to scrape all URLs at once ([see 9-1](https://github.com/salimk/Rcrawler/#9-1--scrape-you-list-of-urls)).
+Then collect manually URLs from google result pages. Finally, use *ContentScraper*  function to scrape all URLs at once ([see 9-1](https://github.com/salimk/Rcrawler/#9-1--scrape-data-from-list-of-urls)).
+
 
 - Before scraping the whole website using Rcrawler try to Scrape only one page using ContentScraper, to make sure that your xpath/css patterns are correct 
 ## Summary
@@ -103,7 +104,7 @@ In Web structure mining field Rcrawler provide some starter kit to analyze the w
 
 In addtition, Rcrawler package provide a set of tools that makes your R web mining life easier:
 
-- Scrape data from a list of URLs you provide ([see 9-1](https://github.com/salimk/Rcrawler/#9-1--scrape-you-list-of-urls))
+- Scrape data from a list of URLs you provide ([see 9-1](https://github.com/salimk/Rcrawler/#9-1--scrape-data-from-list-of-urls))
 
 - Exclude an inner element (node) from scraped data ([see 9-2](https://github.com/salimk/Rcrawler#9-2--exclude-an-inner-element-node-from-scraped-data))
  
