@@ -513,7 +513,7 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,O
       cat("Preparing browser process ")
       for(i in 1:no_cores){
         pkg.env$Lbrowsers[[i]]<-run_browser()
-        cat("browser:"+i+" port:"+pkg.env$Lbrowsers[[i]]$process$port)
+        cat("browser:",i," port:",pkg.env$Lbrowsers[[i]]$process$port)
         Sys.sleep(1)
         cat(".")
         flush.console()
@@ -960,7 +960,7 @@ Rcrawler <- function(Website, no_cores,no_conn, MaxDepth, DIR, RequestsDelay=0,O
       Sys.sleep(1)
       cat(".")
       }
-      rm(pkg.env$Lbrowsers)
+      pkg.env$Lbrowsers<-list()
   }
   #assign("Browsers", pkg.env$browsers, envir = envi )
   #rm(Browsers, envir = envi)
