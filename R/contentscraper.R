@@ -97,6 +97,7 @@
 ContentScraper <- function(Url, HTmlText, browser, XpathPatterns, CssPatterns, PatternsName,
                            ExcludeXpathPat, ExcludeCSSPat, ManyPerPattern=FALSE, astext=TRUE, asDataFrame=FALSE, encod) {
 
+  
   if(!missing(Url) && !missing(HTmlText) ){
     stop("Please supply Url or HTmlText, not both !")
   }
